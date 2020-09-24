@@ -15,6 +15,9 @@ To start the client, open a terminal in the client folder and run `npm start`. T
 I have left the default React readme below for more information.
 
 
+
+
+
 # Other React Data -------
 ## Available Scripts
 
