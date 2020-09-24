@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[Class Wiki](https://github.com/cs428TAs/f2020/wiki/Event-planning-app)
 
 ## Available Scripts
 
