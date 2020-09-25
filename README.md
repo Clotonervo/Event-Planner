@@ -1,5 +1,24 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[Class Wiki](https://github.com/cs428TAs/f2020/wiki/Event-planning-app)
 
+# Cloning the Project
+When you first clone the project, you need to make sure all dependencies are installed for both the client and server sides.
+Once you clone the repo, follow these steps:
+* Open a new terminal in the client folder
+* Run `npm install` and wait for it to finish
+* Open another terminal in the server folder
+* Run `npm install` inside the server folder and wait for it to finish
+
+## Running the app
+To start the server, open a terminal in the server folder and run `node server.js`. This will start the server at localhost:5000
+To start the client, open a terminal in the client folder and run `npm start`. This will start the React app at [http://localhost:3000](http://localhost:3000)
+
+I have left the default React readme below for more information.
+
+
+
+
+
+# Other React Data -------
 ## Available Scripts
 
 In the project directory, you can run:
