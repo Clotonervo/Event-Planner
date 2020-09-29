@@ -17,8 +17,8 @@ const LogoPaths = {
   'mark-with-text': 'logo_marktext.svg',
 };
 
-const Logo = (props) => {
-  const logoPath = LogoPaths[props.type];
+const Logo = ({ type }) => {
+  const logoPath = LogoPaths[type];
 
   return (
     <Wrapper>
