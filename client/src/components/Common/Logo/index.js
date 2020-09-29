@@ -1,34 +1,30 @@
 import React from "react";
 import styled from "styled-components";
-import { spacing8 } from "../../../resources/style-constants";
 
 const Wrapper = styled.div`
-  padding: ${spacing8} 0;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
+  height: 100%;
+  width: 100%;
 `;
 
-const Logo = (props) => {
-  const logoPath = './cal-logo.svg';
+const Img = styled.img`
+  outline: none;
+  user-drag: none;
+  user-select: none;
+`;
 
-  if (props.type === 'mark-only') {
-    return (
-      <Wrapper>
-        <img src={logoPath} alt='Event Planner Logo' />
-      </Wrapper>
-    );
-  } else if (props.type === 'mark-with-text') {
-    return (
-      <Wrapper>
-        <img src={logoPath} alt='Event Planner Logo' />
-        <h3>Event Planner</h3>
-      </Wrapper>
-    );
-  }
-
-  throw Error(`${props.type} is not a valid logo type.`);
+const LogoPaths = {
+  'mark-only': 'logo_markonly.svg',
+  'mark-with-text': 'logo_marktext.svg',
 };
+
+const Logo = (props) => {
+  const logoPath = LogoPaths[props.type];
+
+  return (
+    <Wrapper>
+      <Img src={logoPath} alt='Event Planner Logo' />
+    </Wrapper>
+  );
+}
 
 export default Logo;
