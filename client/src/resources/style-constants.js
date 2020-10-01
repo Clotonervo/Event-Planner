@@ -16,6 +16,15 @@ export const theme3 = "#a2e9db"; // slightly lighter color
 export const grey1 = "#9e9e9e"; // gray
 export const grey2 = "#424242"; // dark gray
 export const grey3 = "#e0e0e0"; // light gray
+export const link = "#2196f3"; // color for links
+export const highlightedLink = "#35baf6"; // color of links on hover
 
-/* Fonts */
+/* Font Sizes */
+export const fontSize8 = "0.5rem";
+export const fontSize16 = "1rem";
+export const fontSize24 = "1.5rem";
+export const fontSize48 = "2rem";
+export const fontSize56 = "2.5rem";
+export const fontSize64 = "3rem";
+
 // Later we will add our default font here
