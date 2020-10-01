@@ -4,33 +4,39 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 const crypto = require('crypto');
+const schemas = require('./schemas');
 
-// connect to the database
+//------ Database Schemas from schemas.js
+const Register = mongoose.model('Register');
+const Login = mongoose.model('Login');
+const Authentication = mongoose.model('Authentication');
+
+
+// Connect to the database
 mongoose.connect('mongodb://localhost:27017/eventplannerDB', {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true
 });
 
-const loginSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true},
-  password: { type: String, required: true },
-  salt: { type: String, required: true },
-});
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 
-const Login = mongoose.model('Login', loginSchema);
+const port = process.env.PORT || 5000;
 
-const registerSchema = new mongoose.Schema({
-  username: { type: String, required: true, unique: true}, 
-  password: { type: String, required: true },
-  name: { type: String, required: true },
-});
-
-const Register = mongoose.model('Register', registerSchema)
+// Server is up and running
+app.listen(port, () => console.log(`Listening on port ${port}`));
 
 
-
-/* Create a new user for testing: */
-const salt = "Test salt 123"  //uuidv4();
+/* --------------------------- Create a new user for testing: 
+ *  Username: Test@gmail.com
+ *  Password: password
+ *  Salt: Test salt 123 
+ */
+const salt = "Test salt 123"  //uuidv4(); (this is the code for a unique salt)
 const hashedPassword = crypto.createHash('md5').update("password" + salt).digest('hex');
 
 const newUser = new Register({
@@ -43,75 +49,89 @@ const newLogin = new Login({
   password: hashedPassword,
   salt: salt,
 });
+const testAuth = new Authentication({
+  username: "Test@gmail.com",
+  authToken: "Test",
+  expiration: 0
+});
 try {
-  newUser.save();
-  newLogin.save();
-  // newLogin.find();
-  console.log("Test user ready!");
+  var result = Login.findOne({
+    username: "Test@gmail.com"
+  }).then(function (info) {
+    if(info == null){
+      newUser.save();
+      newLogin.save();
+      testAuth.save();
+    }
+  });
+    console.log("Test user ready!");
 } catch (error) {
   console.log(error);
 }
+//--------------------------------------^ Test User ^
 
-
-
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
-
-const port = process.env.PORT || 5000;
-
-// console.log that your server is up and running
-app.listen(port, () => console.log(`Listening on port ${port}`));
-
-// create a GET route
-app.get('/express_backend', (req, res) => {
-  res.send({ express: 'YOUR EXPRESS BACKEND IS CONNECTED TO REACT' });
-});
-
+/* ----------------------------- API Endpoints -----------------------------*/
 // Login api endpoint
 app.post('/login', async (req, res) => {
-  // console.log(req.body);
-  //Salt password
-
   try {
-    // let test = await Login.deleteMany();
-    // let test2 = await Register.deleteMany();
     // console.log(test);
     let user = await Login.findOne({
       username: req.body.username
     });
-    console.log(user);
     //Check database for correct inputs
     if (user === null){
       res.statusCode = 200;
-      res.send({ body: "Sign up in order to log in!" });
+      res.send({ 
+        success: false,
+        message: "User not found!"
+      }); 
       return;
     }
-    
+
+    //Salt password
     var password = crypto.createHash('md5').update(req.body.password + user.salt).digest('hex');
 
     if (user.password === password){
+      //Create and store auth token into authentication database
+      let authToken = uuidv4();
+      let expriationTime = new Date().getTime() + 15000; //Should be 15 minutes after logging in
+  
+      let authItem = await Authentication.findOneAndUpdate({
+          username: req.body.username,
+          authToken: authToken,
+          expiration: expriationTime
+      })
+      
       res.statusCode = 200;
-      res.send({ body: "User logged in successfully!" });
+      res.send({ 
+        success: true,
+        authToken: authToken
+      });
     }
     else {
       //If not correct inputs, then send an error message
       res.statusCode = 200;
-      res.send({ body: "Invalid password!" });
+      res.send({ 
+        success: false,
+        message: "Invalid credentials!"
+      });    
     }
   } catch (error) {
-    res.statusCode = 200;
-    res.send({ body: "Something went wrong!" });
+    res.statusCode = 500;
+    res.send({ 
+      success: false,
+      message: "Something went wrong!"
+    });  
   }
 });
 
-
+// Register endpoint
 app.post('/register', (req, res) => {
   console.log(req.body);
   res.statusCode = 200;
   //Salt password
-  //Store name, username, and password into database
+  //Store name, username, and password into register database
+  //Store name, password, and salt into login database
   //Return some sort of response
   res.send({ body: "Here is the info" });
 });
