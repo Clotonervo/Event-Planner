@@ -6,7 +6,7 @@ const MainPage = () => {
   return (
     <Layout>
       <div>This will be the home page</div>
-      <PrimaryButton title = "SIGN IN"></PrimaryButton>
+      <PrimaryButton title = "SIGN IN" className = 'Signed in'></PrimaryButton>
     </Layout>
   );
 };
