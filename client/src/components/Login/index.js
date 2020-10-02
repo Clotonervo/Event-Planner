@@ -24,18 +24,12 @@ const ColorOverlay = styled(animated.div)`
   left: 0%;
 `;
 
-const AnimatedSignUpView = styled(SignUpView)`
-  opacity: 0;
-  // opacity: ${({ isLogin }) => (isLogin ? 0 : 1)};
-  animation: ${({ isLogin }) => (isLogin ? fadeOut : fadeIn)} 3s ease-in
-    forwards;
+const AnimatedSignUpView = styled(animated.div)`
+  display: ${({ isLogin }) => (isLogin ? "none" : "block")};
 `;
 
-const AnimatedLoginView = styled(LoginView)`
-  opacity: 0;
-  // opacity: ${({ isLogin }) => (isLogin ? 1 : 0)};
-  animation: ${({ isLogin }) => (isLogin ? fadeIn : fadeOut)} 3s ease-in
-    forwards;
+const AnimatedLoginView = styled(animated.div)`
+  display: ${({ isLogin }) => (isLogin ? "block" : "none")};
 `;
 
 const StyledCard = styled(Card)`
@@ -62,6 +56,9 @@ const Login = () => {
 
   const props = useSpring({ left: isLogin ? 0 : getOffset(width) });
 
+  const loginOpacity = useSpring({ opacity: isLogin ? 1 : 0 });
+  const signUpOpacity = useSpring({ opacity: isLogin ? 0 : 1 });
+
   useEffect(() => {
     if (!isLogin) {
       setEnableAnimation(true);
@@ -76,11 +73,12 @@ const Login = () => {
         <LogoWrapper>
           <Logo type="mark-with-text" />
         </LogoWrapper>
-        {isLogin ? (
-          <AnimatedLoginView {...{ setIsLogin }} />
-        ) : (
-          <AnimatedSignUpView {...{ setIsLogin }} />
-        )}
+        <AnimatedLoginView style={loginOpacity} {...{ isLogin }}>
+          <LoginView {...{ setIsLogin }} />
+        </AnimatedLoginView>
+        <AnimatedSignUpView style={signUpOpacity} {...{ isLogin }}>
+          <SignUpView {...{ setIsLogin }} />
+        </AnimatedSignUpView>
       </StyledCard>
     </div>
   );
