@@ -7,7 +7,7 @@ const StyledLink = styled.div`
   color: ${link};
 
   &:hover {
-    mouse: cursor;
+    cursor: pointer;
     color: ${highlightedLink};
   }
 `;
