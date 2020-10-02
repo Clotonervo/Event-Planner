@@ -15,7 +15,7 @@ const Button = styled.button`
   font-weight: bold;
   border-radius: 7px;
   border-width: 0px;
-  width: 40%;
+  width: 40%
   outline: 0;
   cursor: pointer;
   margin: 1% 0%;
@@ -42,7 +42,7 @@ Button.defaultProps = {
 };
 
 /** button is colored with the theme color */
-const PrimaryButton = ({title, className, ...props}) => {
-  return <Button onClick = {className == 'Signed in' ? clicked : clicked2}>{title}</Button>;
+const PrimaryButton = ({title, className, width,...props}) => {
+  return <Button style={{width: width}} onClick = {className == "Signed in" ? clicked : clicked2}>{title}</Button>;
 };
 export default PrimaryButton;
