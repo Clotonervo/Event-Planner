@@ -6,7 +6,7 @@ const StyledInput = styled.input`
     background-color: white;
     margin: 0px;
     padding: ${spacing16};
-    width: 40%;
+    width: ${ ({fullwidth}) => fullwidth ? "100%" : "40%"}
     border-radius: 10px;
     border-width: 1px;
     height: 20px;
