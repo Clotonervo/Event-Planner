@@ -6,7 +6,11 @@ const StyledInput = styled.input`
     background-color: white;
     margin: 0px;
     padding: ${spacing16};
+<<<<<<< HEAD
     width: ${ ({fullwidth}) => fullwidth ? "100%" : "40%"}
+=======
+    width: 40%;
+>>>>>>> fe51bb251b3fe75b6b66f75fd49089188e665524
     border-radius: 10px;
     border-width: 1px;
     height: 20px;
