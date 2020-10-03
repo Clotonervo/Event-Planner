@@ -1,7 +1,7 @@
 /* Imports always go at the top.
  * Always include import React from "react".
  * Any hooks you import go inside of {} */
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 /* Imports from within our app, should go below third party imports */
@@ -43,9 +43,7 @@ const LogoWrapper = styled.div`
 
 const Login = () => {
   /* Variables, hooks, methods go inside the component  */
-  const [enableAnimation, setEnableAnimation] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
-
   const [bind, { width }] = useMeasure();
 
   const rightOffset = 0.65;
@@ -54,16 +52,27 @@ const Login = () => {
     return rightOffset * width;
   };
 
-  const props = useSpring({ left: isLogin ? 0 : getOffset(width) });
+  const props = useSpring({
+    to: {
+      left: isLogin ? 0 : getOffset(width)
+    },
+    config: { duration: 1000 }
+  });
 
-  const loginOpacity = useSpring({ opacity: isLogin ? 1 : 0 });
-  const signUpOpacity = useSpring({ opacity: isLogin ? 0 : 1 });
-
-  useEffect(() => {
-    if (!isLogin) {
-      setEnableAnimation(true);
-    }
-  }, [isLogin]);
+  const loginOpacity = useSpring({
+    to: {
+      opacity: isLogin ? 1 : 0
+    },
+    delay: 100,
+    config: { duration: 2500 }
+  });
+  const signUpOpacity = useSpring({
+    to: {
+      opacity: isLogin ? 0 : 1
+    },
+    delay: 100,
+    config: { duration: 2500 }
+  });
 
   /* The return is what's is actually being rendered */
   return (
