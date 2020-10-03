@@ -41,13 +41,16 @@ const JacsonLogin = () => {
     console.log("This code will be triggered whenever email updates");
   },[email]);
 
+    const changeHandler = () => {
+        console.log("input change");
+    }
   /* The return is what's is actually being rendered */
   return (
     <div>
 
       <FormWrapper>
         <p><strong>Email</strong></p>
-        <StyledInput placeholder = "example@email.com"/>
+        <Input placeholder = "example@email.com" fullwidth onChange = {changeHandler}/>
         <p><strong>Password</strong></p>
         <StyledInput placeholder = "Enter Your Password" type = "password"/>
       </FormWrapper>
