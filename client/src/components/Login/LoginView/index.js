@@ -36,7 +36,7 @@ const WhiteSpace = styled.div`
   padding: ${spacing32};
 `;
 
-const LoginView = ({ setIsLogin, ...props }) => {
+const LoginView = ({ setIsLogin }) => {
   return (
     <SplitView>
       <Left>

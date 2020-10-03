@@ -113,7 +113,7 @@ const SignUpForm = ({ setIsLogin }) => {
                 </StyledButton>
               </ButtonWrapper>
               <AdditionalLink>
-                Already have an account
+                Already have an account?
                 <PaddedLink onClick={switchView} text="Sign in" />
               </AdditionalLink>
             </div>

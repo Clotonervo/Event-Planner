@@ -18,6 +18,7 @@ export const grey2 = "#424242"; // dark gray
 export const grey3 = "#e0e0e0"; // light gray
 export const link = "#2196f3"; // color for links
 export const highlightedLink = "#35baf6"; // color of links on hover
+export const errorRed = "#FF0002";
 
 /* Font Sizes */
 export const fontSize8 = "0.5rem";
