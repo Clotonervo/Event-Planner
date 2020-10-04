@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import ClientService from "../../../services";
@@ -46,6 +46,22 @@ const LoginForm = ({ setIsLogin }) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const [loginError, setLoginError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
+  const [validationState, setValidationState] = useState({
+    username: {
+      error: true,
+      message: ""
+    },
+    password: {
+      error: true,
+      message: ""
+    }
+  });
+
+  useEffect(() => {
+    setIsDisabled(
+      validationState.password.error || validationState.username.error
+    );
+  }, [validationState]);
 
   const switchView = () => {
     setIsLogin(false);
@@ -69,9 +85,37 @@ const LoginForm = ({ setIsLogin }) => {
     }
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    login();
+  const validateUsername = () => {
+    let usernameState = {
+      error: false,
+      message: ""
+    };
+    if (!username) {
+      usernameState.error = true;
+      usernameState.message = "Username is required";
+    }
+    setValidationState({
+      ...validationState,
+      username: usernameState
+    });
+  };
+
+  const validatePassword = () => {
+    let passwordState = {
+      error: false,
+      message: ""
+    };
+    if (!password) {
+      passwordState.error = true;
+      passwordState.message = "Password is required.";
+    } else if (password.length < 8) {
+      passwordState.error = true;
+      passwordState.message = "Password must be at least 8 characters.";
+    }
+    setValidationState({
+      ...validationState,
+      password: passwordState
+    });
   };
 
   const login = async () => {
@@ -80,12 +124,18 @@ const LoginForm = ({ setIsLogin }) => {
       debugger;
       if (loginStatus.success) {
         updateAuthToken(loginStatus.authToken);
+        //TODO: if success, redirect to home page
       } else if (loginStatus.success ?? false) {
         setErrorMessage(loginStatus.message);
       }
     } catch (error) {
       setLoginError(true);
     }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    login();
   };
 
   const updateAuthToken = (token) => {
@@ -112,6 +162,8 @@ const LoginForm = ({ setIsLogin }) => {
               name="username"
               fullWidth
               label="Username"
+              onBlur={validateUsername}
+              validityState={validationState.username}
             />
             <InputField
               value={password}
@@ -120,6 +172,8 @@ const LoginForm = ({ setIsLogin }) => {
               fullWidth
               label="Password"
               type="password"
+              onBlur={validatePassword}
+              validityState={validationState.password}
             >
               <AdditionalLink>
                 <Link url="/signup">Forgot Password?</Link>

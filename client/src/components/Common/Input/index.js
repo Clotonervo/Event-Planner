@@ -12,10 +12,10 @@ const StyledInput = styled.input`
   padding: ${spacing8} 0;
 `;
 
-const Input = ({ fullWidth, ...props }) => {
+const Input = ({ fullWidth, type = "text", ...props }) => {
   return (
     <Wrapper fullWidth={fullWidth} {...props}>
-      <StyledInput type="text" fullWidth={fullWidth} {...props} />
+      <StyledInput {...{ type, fullWidth, ...props }} />
     </Wrapper>
   );
 };
