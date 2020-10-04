@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/Clotonervo/Event-Planner#readme",
   "dependencies": {
-    "express": "^4.17.1"
+    "crypto": "^1.0.1",
+    "express": "^4.17.1",
+    "mongoose": "^5.10.7",
+    "uuid": "^8.3.0"
   }
 }
