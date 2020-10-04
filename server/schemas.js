@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+var bcrypt = require('bcrypt');
 
 /*
 ____________________ Database Schemas _________________________ 
@@ -16,19 +17,21 @@ const loginSchema = new mongoose.Schema({
   
 const Login = mongoose.model('Login', loginSchema);
   
-const registerSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true}, 
     password: { type: String, required: true },
     name: { type: String, required: true },
   });
   
-const Register = mongoose.model('Register', registerSchema);
 
-const authenticationSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true},
-    authToken: { type: String, required: true, unique: true },
-    expiration: { type: Number, required: true }
-});
-  
-const Authentication = mongoose.model('Authentication', authenticationSchema);
-  
+userSchema.methods.generateHash = function(password) {
+    console.log(password)
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+userSchema.methods.validPassword = function(password) {
+      return bcrypt.compareSync(password, this.password);
+};
+
+const User = mongoose.model('User', userSchema);
+module.exports = User;
