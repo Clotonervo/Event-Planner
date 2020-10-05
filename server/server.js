@@ -2,11 +2,12 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const crypto = require('crypto');
+const { v4: uuidv4 } = require('uuid');
 const schemas = require('./schemas');
 
 //------ Database Schemas from schemas.js
 const User = mongoose.model('User');
+const Authentication = mongoose.model('Authentication');
 
 // Connect to the database
 mongoose.connect('mongodb://localhost:27017/eventplannerDB', {
@@ -16,7 +17,7 @@ mongoose.connect('mongodb://localhost:27017/eventplannerDB', {
   useCreateIndex: true
 });
 
-//app.use(bodyParser.json());
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -39,12 +40,19 @@ const newUser = new User({
 });
 newUser.password = newUser.generateHash(tempPassword);
 
+const testAuth = new Authentication({
+    username: "Test@gmail.com",
+    authToken: "Test",
+    expiration: 0
+  });
+
 try {
   var result = User.findOne({
     username: "Test@gmail.com"
   }).then(function (info) {
     if(info == null){
       newUser.save();
+      testAuth.save();
     }
   });
   console.log("Test user ready!");
@@ -58,13 +66,61 @@ try {
 /* ----------------------------- API Endpoints -----------------------------*/
 // Login api endpoint
 app.post('/login', function(req, res) {
-  User.findOne({username: req.body.username}, function(err, user) {
-    if (!user.validPassword(req.body.password)) {
-    	res.send("Incorrect password\n")
-	} else {
-    	res.send("Correct password!\n")
+    try {
+        User.findOne({username: req.body.username}, function(err, user) {
+            // Check database for correct inputs
+            if (user === null){
+                res.statusCode = 200;
+                res.send({ 
+                    success: false,
+                    message: "User not found!"
+                }); 
+                return;
+            }
+
+            if (user.validPassword(req.body.password)) {
+                //Create and store auth token into authentication database
+                let authToken = uuidv4();       //Uniquely generated auth token
+                let expirationTime = new Date().getTime() + 15000; //Should be 15 minutes after logging in
+
+                Authentication.findOneAndUpdate({
+                    username: req.body.username,
+                    },{
+                        authToken: authToken,
+                        expiration: expirationTime
+                    }, 
+                    function(err, authentication){
+                        if(err){
+                            res.statusCode = 500;
+                            res.send({
+                                success: false,
+                                message: "Error: Could not update authToken!"
+                            });
+                        } else {
+                            res.statusCode = 200;
+                            res.send({ 
+                                success: true,
+                                authToken: authToken
+                            });
+                        }
+                    });
+                
+            } else {
+                res.statusCode = 200;
+                res.send({ 
+                    success: false,
+                    message: "Invalid credentials!"
+                });        
+            }
+    });
+    } catch (error){
+        console.log(error);
+        res.statusCode = 500;
+        res.send({ 
+            success: false,
+            message: "Error: Something went wrong in the server!"
+        });   
     }
-  });
 });
 
 
