@@ -8,8 +8,8 @@ const MainPage = () => {
       <div>This will be the home page</div>
       <PrimaryButton 
         title = "SIGN IN" 
-        className = "Signed in"
-        width = '100%'>
+        onClick = "login()"
+        width = '40%'>
       </PrimaryButton>
     </Layout>
   );

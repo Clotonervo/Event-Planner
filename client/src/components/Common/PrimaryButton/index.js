@@ -29,12 +29,12 @@ const Button = styled.button`
   }
 `;
 
-function clicked() {
-  alert("Proceeding to main page...");
+function login() {
+  alert("Logging you in...");
 }
 
-function clicked2() {
-  alert("Further functionality will come here");
+function register() {
+  alert("Registering user...");
 }
 
 Button.defaultProps = {
@@ -42,7 +42,7 @@ Button.defaultProps = {
 };
 
 /** button is colored with the theme color */
-const PrimaryButton = ({title, className, width,...props}) => {
-  return <Button style={{width: width}} onClick = {className == "Signed in" ? clicked : clicked2}>{title}</Button>;
+const PrimaryButton = ({title, onClick, width,...props}) => {
+  return <Button style = {{width: width}} onClick = {onClick}>{title}</Button>;
 };
 export default PrimaryButton;
