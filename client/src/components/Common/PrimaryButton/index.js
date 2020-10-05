@@ -29,14 +29,6 @@ const Button = styled.button`
   }
 `;
 
-function login() {
-  alert("Logging you in...");
-}
-
-function register() {
-  alert("Registering user...");
-}
-
 Button.defaultProps = {
   theme: "teal"
 };
