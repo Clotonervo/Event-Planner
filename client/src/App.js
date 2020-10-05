@@ -6,22 +6,11 @@ import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import MainPage from "./pages";
 import ErrorPage from "./pages/error";
 import LoginPage from "./pages/login";
-import ServiceClient from "./services";
 
 class App extends React.Component {
   state = {
     data: null
   };
-
-  // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
-  callBackendAPI = async () => {
-    const response = await ServiceClient.test();
-    return response;
-  };
-
-  componentDidMount() {
-    this.callBackendAPI();
-  }
 
   render() {
     return (

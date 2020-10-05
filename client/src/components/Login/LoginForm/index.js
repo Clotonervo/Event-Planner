@@ -134,6 +134,7 @@ const LoginForm = ({ setIsLogin }) => {
   };
 
   const handleSubmit = (e) => {
+    setLoginError(false);
     e.preventDefault();
     login();
   };

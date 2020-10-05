@@ -16,8 +16,9 @@ const fetchWrapper = async (url, params, additionalHeaders = {}) => {
   }
 
   let token = getAuthToken();
-  // add auth token to request headers
-  fetchRequest.headers.Authorization = `Bearer ${token}`;
+  if (token) {
+    fetchRequest.headers.Authorization = `Bearer ${token}`;
+  }
 
   try {
     let response = await fetch(url, fetchRequest);
