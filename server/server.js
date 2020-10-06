@@ -33,12 +33,9 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
  *  Password: password
  *  Salt: Test salt 123 
  */
-const salt = "Test salt 123"  //uuidv4(); (this is the code for a unique salt)
-const hashedPassword = crypto.createHash('md5').update("password" + salt).digest('hex');
-
-const newUser = new Register({
+var tempPassword = "password"
+const newUser = new User({
   username: "Test@gmail.com", 
-  password: hashedPassword,
   name: "Test User",
 });
 newUser.password = newUser.generateHash(tempPassword);
@@ -50,7 +47,7 @@ const testAuth = new Authentication({
   });
 
 try {
-  var result = Login.findOne({
+  var result = User.findOne({
     username: "Test@gmail.com"
   }).then(function (info) {
     if(info == null){
@@ -58,7 +55,7 @@ try {
       testAuth.save();
     }
   });
-    console.log("Test user ready!");
+  console.log("Test user ready!");
 } catch (error) {
   console.log(error);
 }
