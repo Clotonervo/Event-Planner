@@ -7,22 +7,21 @@ ____________________ Database Schemas _________________________
     > Add any new database Schemas here, and then reference them from server.js
 */
 
-
-const loginSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true},
-    password: { type: String, required: true },
-    salt: { type: String, required: true },
-  });
-  
-const Login = mongoose.model('Login', loginSchema);
-  
-const registerSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true}, 
     password: { type: String, required: true },
     name: { type: String, required: true },
   });
-  
-const Register = mongoose.model('Register', registerSchema);
+
+userSchema.methods.generateHash = function(password) {
+    return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
+
+userSchema.methods.validPassword = function(password) {
+      return bcrypt.compareSync(password, this.password);
+};
+
+const User = mongoose.model('User', userSchema);
 
 const authenticationSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true},
@@ -31,4 +30,3 @@ const authenticationSchema = new mongoose.Schema({
 });
   
 const Authentication = mongoose.model('Authentication', authenticationSchema);
-  
