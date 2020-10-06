@@ -77,12 +77,6 @@ const LoginForm = ({ setIsLogin }) => {
     } else {
       setPassword(value);
     }
-    if (username.includes("@") && password.length > 6) {
-      setIsDisabled(false);
-      //TODO: set up proper validation
-    } else {
-      setIsDisabled(true);
-    }
   };
 
   const validateUsername = () => {
@@ -121,7 +115,6 @@ const LoginForm = ({ setIsLogin }) => {
   const login = async () => {
     try {
       const loginStatus = await ClientService.login({ username, password });
-      debugger;
       if (loginStatus.success) {
         updateAuthToken(loginStatus.authToken);
         //TODO: if success, redirect to home page
@@ -158,22 +151,24 @@ const LoginForm = ({ setIsLogin }) => {
         <form onSubmit={handleSubmit}>
           <Stack gapSize={spacing32}>
             <InputField
-              value={username}
-              changeHandler={handleChange}
               name="username"
-              fullWidth
+              value={username}
+              placeholder="Enter your username"
               label="Username"
-              onBlur={validateUsername}
+              required
+              changeHandler={handleChange}
+              validateInput={validateUsername}
               validityState={validationState.username}
             />
             <InputField
-              value={password}
-              changeHandler={handleChange}
               name="password"
-              fullWidth
-              label="Password"
+              value={password}
+              placeholder="Enter your password"
               type="password"
-              onBlur={validatePassword}
+              label="Password"
+              required
+              changeHandler={handleChange}
+              validateInput={validatePassword}
               validityState={validationState.password}
             >
               <AdditionalLink>

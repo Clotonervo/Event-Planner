@@ -3,10 +3,8 @@ import styled from "styled-components";
 
 import Input from "../../Common/Input";
 import Error from "../../Common/Error";
-import { spacing8 } from "../../../resources/style-constants";
 
 const PaddedLabel = styled.label`
-  padding: ${spacing8} 0;
   font-weight: bold;
 `;
 
@@ -15,22 +13,24 @@ const InputWrapper = styled.div`
 `;
 
 const InputField = ({
+  name,
+  value,
+  placeholder,
   label,
   changeHandler,
   validityState = {},
-  children,
   validateInput,
+  children,
+  required,
   ...props
 }) => {
   return (
     <InputWrapper>
       <PaddedLabel>{label}</PaddedLabel>
       <Input
-        fullWidth
         onChange={changeHandler}
         onBlur={validateInput}
-        {...{ ...props }}
-        required
+        {...{ name, value, placeholder, required, ...props }}
       />
       {children}
       {validityState.error && validityState.message && (
