@@ -12,8 +12,7 @@ import LinkButton from "../LinkButton";
 import {
   spacing8,
   spacing16,
-  spacing32,
-  theme1
+  spacing32
 } from "../../../resources/style-constants";
 
 const FormWrapper = styled.div`
@@ -36,7 +35,7 @@ const ButtonWrapper = styled.div`
   padding: ${spacing8} 0;
 `;
 
-const LoginForm = ({ setIsLogin }) => {
+const LoginForm = ({ updateAuthToken, switchView }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
@@ -58,10 +57,6 @@ const LoginForm = ({ setIsLogin }) => {
       validationState.password.error || validationState.username.error
     );
   }, [validationState]);
-
-  const switchView = () => {
-    setIsLogin(false);
-  };
 
   const handleChange = (e) => {
     const input = e.target;
@@ -112,7 +107,7 @@ const LoginForm = ({ setIsLogin }) => {
     try {
       const loginStatus = await ClientService.login({ username, password });
       if (loginStatus.success) {
-        updateAuthToken(loginStatus.authToken);
+        updateAuthToken && updateAuthToken(loginStatus.authToken);
         //TODO: if success, redirect to home page
       } else if (loginStatus.success ?? false) {
         setErrorMessage(loginStatus.message);
@@ -126,18 +121,6 @@ const LoginForm = ({ setIsLogin }) => {
     setLoginError(false);
     e.preventDefault();
     login();
-  };
-
-  const updateAuthToken = (token) => {
-    let name = "access-token";
-    let timeToLive = 15 * 60; //15 minutes;
-
-    // Encode value in order to escape semicolons, commas, and whitespace
-    var cookie = name + "=" + encodeURIComponent(token);
-
-    cookie += "; max-age=" + timeToLive;
-
-    document.cookie = cookie;
   };
 
   return (

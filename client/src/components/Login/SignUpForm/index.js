@@ -9,8 +9,7 @@ import InputField from "../InputField";
 import {
   spacing8,
   spacing16,
-  spacing32,
-  theme1
+  spacing32
 } from "../../../resources/style-constants";
 
 const FormWrapper = styled.div`
@@ -33,15 +32,11 @@ const ButtonWrapper = styled.div`
   padding: ${spacing8} 0;
 `;
 
-const SignUpForm = ({ setIsLogin }) => {
+const SignUpForm = ({ switchView }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
-
-  const switchView = () => {
-    setIsLogin(true);
-  };
 
   const handleChange = (e) => {
     const input = e.target;

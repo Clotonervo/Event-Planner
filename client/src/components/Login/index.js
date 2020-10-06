@@ -74,6 +74,22 @@ const Login = () => {
     config: { duration: 2500 }
   });
 
+  const switchView = () => {
+    setIsLogin(!isLogin);
+  };
+
+  const updateAuthToken = (token) => {
+    let name = "access-token";
+    let timeToLive = 15 * 60; //15 minutes;
+
+    // Encode value in order to escape semicolons, commas, and whitespace
+    var cookie = name + "=" + encodeURIComponent(token);
+
+    cookie += "; max-age=" + timeToLive;
+
+    document.cookie = cookie;
+  };
+
   /* The return is what's is actually being rendered */
   return (
     <div {...bind}>
@@ -83,10 +99,10 @@ const Login = () => {
           <Logo type="mark-with-text" />
         </LogoWrapper>
         <AnimatedLoginView style={loginOpacity} {...{ isLogin }}>
-          <LoginView {...{ setIsLogin }} />
+          <LoginView {...{ updateAuthToken, switchView }} />
         </AnimatedLoginView>
         <AnimatedSignUpView style={signUpOpacity} {...{ isLogin }}>
-          <SignUpView {...{ setIsLogin }} />
+          <SignUpView {...{ updateAuthToken, switchView }} />
         </AnimatedSignUpView>
       </StyledCard>
     </div>
