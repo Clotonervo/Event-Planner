@@ -5,6 +5,7 @@ import {
   spacing8,
   spacing24,
   fontSize20,
+  borderRadius,
   grey1,
   theme1
 } from "../../../resources/style-constants";
@@ -17,7 +18,7 @@ const StyledInput = styled.input`
   height: ${fontSize20};
   width: 100%;
   border: 1px solid ${grey1};
-  border-radius: 12px;
+  border-radius: ${borderRadius};
   font-size: ${fontSize20};
 
   &:focus {

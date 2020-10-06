@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
-import PrimaryButton from "../../Common/PrimaryButton";
+import PrimaryButton from "../../Common/Buttons/PrimaryButton";
 import LinkButton from "../LinkButton";
 import H1 from "../../Common/Headings/Heading1";
 import Stack from "../../Common/Stack";
@@ -31,9 +31,6 @@ const PaddedLink = styled(LinkButton)`
 
 const ButtonWrapper = styled.div`
   padding: ${spacing8} 0;
-`;
-const StyledButton = styled(PrimaryButton)`
-  background-color: ${theme1};
 `;
 
 const SignUpForm = ({ setIsLogin }) => {
@@ -81,36 +78,39 @@ const SignUpForm = ({ setIsLogin }) => {
         <form onSubmit={handleSubmit}>
           <Stack gapSize={spacing32}>
             <InputField
-              value={name}
-              changeHandler={handleChange}
               name="name"
-              fullWidth
+              value={name}
+              placeholder="John Doe"
               label="Name"
+              changeHandler={handleChange}
+              fullWidth
             />
             <InputField
-              value={email}
-              changeHandler={handleChange}
               name="email"
-              fullWidth
+              value={email}
+              placeholder="something@gmail.com"
               label="Email"
+              changeHandler={handleChange}
+              fullWidth
             />
             <InputField
-              value={password}
-              changeHandler={handleChange}
               name="password"
-              fullWidth
+              value={password}
+              placeholder="Enter your password"
               label="Password"
               type="password"
+              changeHandler={handleChange}
+              fullWidth
             ></InputField>
             <div>
               <ButtonWrapper>
-                <StyledButton
+                <PrimaryButton
                   fullWidth
                   onClick={handleSubmit}
                   disabled={isDisabled}
                 >
-                  Sign In
-                </StyledButton>
+                  Sign Up
+                </PrimaryButton>
               </ButtonWrapper>
               <AdditionalLink>
                 Already have an account?

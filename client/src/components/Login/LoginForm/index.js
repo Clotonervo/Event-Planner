@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import ClientService from "../../../services";
-
-import PrimaryButton from "../../Common/PrimaryButton";
+import PrimaryButton from "../../Common/Buttons/PrimaryButton";
 import Link from "../../Common/Link";
 import H1 from "../../Common/Headings/Heading1";
 import Error from "../../Common/Error";
@@ -35,9 +34,6 @@ const PaddedLink = styled(LinkButton)`
 
 const ButtonWrapper = styled.div`
   padding: ${spacing8} 0;
-`;
-const StyledButton = styled(PrimaryButton)`
-  background-color: ${theme1};
 `;
 
 const LoginForm = ({ setIsLogin }) => {
@@ -153,8 +149,8 @@ const LoginForm = ({ setIsLogin }) => {
             <InputField
               name="username"
               value={username}
-              placeholder="Enter your username"
-              label="Username"
+              placeholder="something@gmail.com"
+              label="Email"
               required
               changeHandler={handleChange}
               validateInput={validateUsername}
@@ -164,8 +160,8 @@ const LoginForm = ({ setIsLogin }) => {
               name="password"
               value={password}
               placeholder="Enter your password"
-              type="password"
               label="Password"
+              type="password"
               required
               changeHandler={handleChange}
               validateInput={validatePassword}
@@ -177,13 +173,13 @@ const LoginForm = ({ setIsLogin }) => {
             </InputField>
             <div>
               <ButtonWrapper>
-                <StyledButton
+                <PrimaryButton
                   fullWidth
                   onClick={handleSubmit}
                   disabled={isDisabled}
                 >
                   Sign In
-                </StyledButton>
+                </PrimaryButton>
               </ButtonWrapper>
               <AdditionalLink>
                 Don't have an account?{" "}
