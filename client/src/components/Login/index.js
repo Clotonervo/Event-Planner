@@ -4,12 +4,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
+import { useHistory } from "react-router-dom";
 /* Imports from within our app, should go below third party imports */
 import Card from "../Common/Card";
 import Logo from "../Common/Logo";
 import LoginView from "./LoginView";
 import SignUpView from "./SignUpView";
-import useMeasure from "../../Hooks/useMeasure";
 
 /* style-constants has multiple exported items, you have to destructure it using {} */
 import { theme1 } from "../../resources/style-constants";
@@ -25,11 +25,11 @@ const ColorOverlay = styled(animated.div)`
 `;
 
 const AnimatedSignUpView = styled(animated.div)`
-  display: ${({ isLogin }) => (isLogin ? "none" : "block")};
+  display: ${(props) => (props.$isLogin ? "none" : "block")};
 `;
 
 const AnimatedLoginView = styled(animated.div)`
-  display: ${({ isLogin }) => (isLogin ? "block" : "none")};
+  display: ${(props) => (props.$isLogin ? "block" : "none")};
 `;
 
 const StyledCard = styled(Card)`
@@ -44,17 +44,16 @@ const LogoWrapper = styled.div`
 const Login = () => {
   /* Variables, hooks, methods go inside the component  */
   const [isLogin, setIsLogin] = useState(true);
-  const [bind, { width }] = useMeasure();
 
-  const rightOffset = 0.65;
+  const rightOffset = 0.6;
 
-  const getOffset = (width = 1000) => {
-    return rightOffset * width;
+  const getOffset = () => {
+    return rightOffset * window.innerWidth;
   };
 
   const props = useSpring({
     to: {
-      left: isLogin ? 0 : getOffset(width)
+      left: isLogin ? 0 : getOffset()
     },
     config: { duration: 1000 }
   });
@@ -90,19 +89,25 @@ const Login = () => {
     document.cookie = cookie;
   };
 
+  const history = useHistory();
+
+  const redirectToHome = () => {
+    history.replace("/");
+  };
+
   /* The return is what's is actually being rendered */
   return (
-    <div {...bind}>
-      <ColorOverlay style={props} {...{ isLogin }} />
+    <div>
+      <ColorOverlay style={props} />
       <StyledCard>
         <LogoWrapper>
           <Logo type="mark-with-text" />
         </LogoWrapper>
-        <AnimatedLoginView style={loginOpacity} {...{ isLogin }}>
-          <LoginView {...{ updateAuthToken, switchView }} />
+        <AnimatedLoginView style={loginOpacity} $isLogin={isLogin}>
+          <LoginView {...{ updateAuthToken, switchView, redirectToHome }} />
         </AnimatedLoginView>
-        <AnimatedSignUpView style={signUpOpacity} {...{ isLogin }}>
-          <SignUpView {...{ updateAuthToken, switchView }} />
+        <AnimatedSignUpView style={signUpOpacity} $isLogin={isLogin}>
+          <SignUpView {...{ updateAuthToken, switchView, redirectToHome }} />
         </AnimatedSignUpView>
       </StyledCard>
     </div>

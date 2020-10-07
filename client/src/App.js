@@ -1,33 +1,23 @@
-import React from "react";
+import React, { Component } from "react";
 import "./App.css";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 
 //Pages
 import MainPage from "./pages";
 import ErrorPage from "./pages/error";
 import LoginPage from "./pages/login";
 
-class App extends React.Component {
-  state = {
-    data: null
-  };
-
+class App extends Component {
   render() {
     return (
-      <BrowserRouter>
+      <div>
         <Switch>
-          <Route exact path="/">
-            <MainPage />
-          </Route>
-          <Route exact path="/login">
-            <LoginPage />
-          </Route>
-          <Route path="/404">
-            <ErrorPage />
-          </Route>
+          <Route path="/" component={MainPage} exact />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/404" component={ErrorPage} />
           <Redirect to="/404" />
         </Switch>
-      </BrowserRouter>
+      </div>
     );
   }
 }

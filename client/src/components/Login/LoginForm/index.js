@@ -35,7 +35,7 @@ const ButtonWrapper = styled.div`
   padding: ${spacing8} 0;
 `;
 
-const LoginForm = ({ updateAuthToken, switchView }) => {
+const LoginForm = ({ updateAuthToken, switchView, redirectToHome }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
@@ -108,7 +108,7 @@ const LoginForm = ({ updateAuthToken, switchView }) => {
       const loginStatus = await ClientService.login({ username, password });
       if (loginStatus.success) {
         updateAuthToken && updateAuthToken(loginStatus.authToken);
-        //TODO: if success, redirect to home page
+        redirectToHome();
       } else if (loginStatus.success ?? false) {
         setErrorMessage(loginStatus.message);
       }

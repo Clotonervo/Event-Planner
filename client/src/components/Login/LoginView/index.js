@@ -36,7 +36,7 @@ const WhiteSpace = styled.div`
   padding: ${spacing32};
 `;
 
-const LoginView = ({ updateAuthToken, switchView }) => {
+const LoginView = ({ updateAuthToken, switchView, redirectToHome }) => {
   return (
     <SplitView>
       <Left>
@@ -46,7 +46,7 @@ const LoginView = ({ updateAuthToken, switchView }) => {
       </Left>
       <Right>
         <RightContent>
-          <LoginForm {...{ updateAuthToken, switchView }} />
+          <LoginForm {...{ updateAuthToken, switchView, redirectToHome }} />
           <WhiteSpace />
         </RightContent>
       </Right>
