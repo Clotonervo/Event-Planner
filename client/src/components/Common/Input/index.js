@@ -7,6 +7,7 @@ import {
   fontSize20,
   borderRadius,
   grey1,
+  grey3,
   theme1
 } from "../../../resources/style-constants";
 
@@ -24,6 +25,9 @@ const StyledInput = styled.input`
   &:focus {
     outline: none;
     box-shadow: 0 0 0 2px ${theme1};
+  }
+  ::placeholder {
+    color: ${grey3};
   }
 `;
 
