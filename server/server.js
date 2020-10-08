@@ -135,3 +135,8 @@ app.post('/register', (req, res) => {
   //Return some sort of response
   res.send({ body: "Here is the info" });
 });
+
+
+app.delete('/event', (req, res) => {
+    //When we get more code in for the event objects I will finish this
+})
