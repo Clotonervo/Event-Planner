@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-var bcrypt = require('bcrypt');
 
 /*
 ____________________ Database Schemas _________________________ 
