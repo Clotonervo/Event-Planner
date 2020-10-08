@@ -7,6 +7,8 @@ background-color: theme1;
 padding: 0% 0%;
 border-radius: 7px;
 border-width: 10px;
+height: 150px;
+width:100px;
 outline: 5px;
 outline-color: #bdbdbd;
 cursor: pointer;
