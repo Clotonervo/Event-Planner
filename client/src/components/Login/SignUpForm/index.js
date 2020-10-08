@@ -32,11 +32,13 @@ const ButtonWrapper = styled.div`
   padding: ${spacing8} 0;
 `;
 
-const SignUpForm = ({ switchView }) => {
+const SignUpForm = ({ updateAuthToke, switchView, redirectToHome}) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
+  const [signUpError, setSignUpError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState();
 
   const handleChange = (e) => {
     const input = e.target;
@@ -59,11 +61,27 @@ const SignUpForm = ({ switchView }) => {
     }
   };
 
+  const signUp = async () => {
+    try {
+        const signUpStatus = await ServiceClient.signUp({ name, username, password });
+        if (signUpStatus.success) {
+            updateAuthToken && udpateAuthtoken(signUpStatus.authToken);
+            redirectToHome(); // ?
+        }
+        else if (signUpStatus.success ?? false) {
+            setErrorMessage(signUpStatus.message);
+        }
+    } catch (error) {
+        setSignUpError(true);
+    }
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("clicked sign in");
     console.log(`email: ${email}`);
     console.log(`password: ${password}`);
+    SignUp();
   };
 
   return (
@@ -111,6 +129,10 @@ const SignUpForm = ({ switchView }) => {
                 Already have an account?
                 <PaddedLink onClick={switchView} text="Sign in" />
               </AdditionalLink>
+              {errorMessage && <Error>{errorMessage}</Error>}
+              {signUpError && (
+                <Error>Something went wrong. Please try again later.</Error>
+              )}
             </div>
           </Stack>
         </form>
