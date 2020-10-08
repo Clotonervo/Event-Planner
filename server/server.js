@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const { v4: uuidv4 } = require('uuid');
 const schemas = require('./schemas');
+const bcrypt = require('bcrypt');
 
 //------ Database Schemas from schemas.js
 const User = mongoose.model('User');
@@ -35,21 +36,21 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
  *  Salt: Test salt 123 
  */
 
-const newUser = new Register({
-  username: "Test@gmail.com", 
-  password: hashedPassword,
-  name: "Test User",
-});
-newUser.password = newUser.generateHash(tempPassword);
+const newUser = new User({
+    username: "Test@gmail.com",
+
+    name:"Test User",
+})
+newUser.password = newUser.generateHash("password");
 
 const testAuth = new Authentication({
     username: "Test@gmail.com",
     authToken: "Test",
     expiration: 0
-  });
+});
 
 try {
-  var result = Login.findOne({
+  var result = User.findOne({
     username: "Test@gmail.com"
   }).then(function (info) {
     if(info == null){
@@ -126,22 +127,49 @@ app.post('/login', function(req, res) {
 
 // Register endpoint
 app.post('/register', (req, res) => {
-    var newUser = new User({
-      username : req.body.username,
+	User.findOne({
+		username: req.body.email
+	}, function(err, user){
+		if(user != null){
+			res.statusCode = 200;
+			res.send({ 
+				success: false,
+				message: "User already exists!"
+			});
+			return;
+		}
+
+		var newUser = new User({
+      username : req.body.email,
       name : req.body.name,
-    })
-    console.log(req.body);
-    newUser.password = newUser.generateHash(req.body.password);
-  
+		})
+		newUser.password = newUser.generateHash(req.body.password);
+		
     try {
       newUser.save();
+			let authToken = uuidv4(); 
+			let expirationTime = new Date().getTime() + 15000; 
+
+			const testAuth = new Authentication({
+				username: "req.body.username",
+				authToken: authToken,
+				expiration: expirationTime
+			});
+
       res.statusCode = 200;
-      res.send("added user successfully\n")
+      res.send({ 
+        success: true,
+        authToken: authToken
+    	});
   
     } catch (error) {
         console.log(error);
         res.statusCode = 500;
-        res.send("failed to add user to database")
+        res.send({ 
+          success: false,
+        	message: "Error: Something went wrong in the server!"
+        });
     }
     
+	});
 });
