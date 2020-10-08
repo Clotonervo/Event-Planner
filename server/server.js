@@ -126,42 +126,22 @@ app.post('/login', function(req, res) {
 
 // Register endpoint
 app.post('/register', (req, res) => {
-  var newUser = new User({
-    username : req.body.username,
-    name : req.body.name,
-  })
-  var password = newUser.generateHash(req.body.password);
-    
-    if (user.password === password){
-      //Create and store auth token into authentication database
-      let authToken = uuidv4();
-      let expriationTime = new Date().getTime() + 15000; //Should be 15 minutes after logging in
+    var newUser = new User({
+      username : req.body.username,
+      name : req.body.name,
+    })
+    console.log(req.body);
+    newUser.password = newUser.generateHash(req.body.password);
   
-      let authItem = await Authentication.findOneAndUpdate({
-          username: req.body.username,
-          authToken: authToken,
-          expiration: expriationTime
-      })
-      
+    try {
+      newUser.save();
       res.statusCode = 200;
-      res.send({ 
-        success: true,
-        authToken: authToken
-      });
+      res.send("added user successfully\n")
+  
+    } catch (error) {
+        console.log(error);
+        res.statusCode = 500;
+        res.send("failed to add user to database")
     }
-    else {
-      //If not correct inputs, then send an error message
-      res.statusCode = 200;
-      res.send({ 
-        success: false,
-        message: "Invalid credentials!"
-      });    
-    }
-  } catch (error) {
-    res.statusCode = 500;
-    res.send({ 
-      success: false,
-      message: "Something went wrong!"
-    });  
-  }
+    
 });
