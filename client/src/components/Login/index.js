@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useSpring, animated } from "react-spring";
 import { useHistory } from "react-router-dom";
+import * as easings from "d3-ease";
 /* Imports from within our app, should go below third party imports */
 import Card from "../Common/Card";
 import Logo from "../Common/Logo";
@@ -55,7 +56,7 @@ const Login = () => {
     to: {
       left: isLogin ? 0 : getOffset()
     },
-    config: { duration: 1000 }
+    config: { duration: 1000, easing: easings.easeBack }
   });
 
   const loginOpacity = useSpring({
