@@ -10,7 +10,7 @@ const Wrapper = styled.div`
 
 const Home = () => {
   return <Wrapper>
-    <Invitation></Invitation>
+    <Invitation isUnopened={true}></Invitation>
   </Wrapper>;
 };
 

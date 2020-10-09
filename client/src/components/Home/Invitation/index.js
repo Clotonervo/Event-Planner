@@ -15,8 +15,37 @@ const TemporaryContainer = styled.div`
   cursor: pointer;
 `;
 
+const StackContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  position: relative;
+`;
+
+const StackElement = styled.div`
+  height: 100%;
+  width: 100%;
+  position: absolute;
+`;
+
 const TriangleFlapContainer = styled.div`
   width: 100%;
+  pointer-events: none;
+`;
+
+const NotifcationDotContainer = styled.div`
+  height: calc(100% - 16px);
+  width: calc(100% - 16px);
+  padding: 8px;
+  vertical-align: top;
+  text-align: right;
+`;
+
+const NotificationDot = styled.div`
+  height: 24px;
+  width: 24px;
+  background-color: blue;
+  border-radius: 50%;
+  display: inline-block;
 `;
 
 const TriangleFlap = styled.svg`
@@ -25,8 +54,7 @@ const TriangleFlap = styled.svg`
   filter: drop-shadow( 3px 8px 4px rgba(0, 0, 0, .2));
 `;
 
-const TriangleFlapPolygon = styled.polygon`
-`;
+const TriangleFlapPolygon = styled.polygon``;
 
 const getCSSFlapTransformation = (isRotated) => {
   const rotation = `rotateX(${isRotated ? -40 : 0}deg)`;
@@ -34,7 +62,7 @@ const getCSSFlapTransformation = (isRotated) => {
   return trfm;
 }
 
-const Invitation = () => {
+const Invitation = ({ isUnopened, onClick }) => {
   const [springProps, setSpring] = useSpring(() => ({
     transform: getCSSFlapTransformation(false),
     transformOrigin: `50% 0%`,
@@ -46,26 +74,40 @@ const Invitation = () => {
     },
   }))
 
+  const backLayer = (
+    <TriangleFlapContainer as={animated.div} style={springProps}>
+      <TriangleFlap width="100%" height="20%" viewBox="0 0 100 100">
+        <TriangleFlapPolygon points="2,2 98,2 50,30" />
+      </TriangleFlap>
+    </TriangleFlapContainer>
+  );
+
+  const frontLayer = !!isUnopened ?
+    (
+      <NotifcationDotContainer>
+        <NotificationDot />
+      </NotifcationDotContainer>
+    ) : <div />;
+
   return (
     <TemporaryContainer
       onMouseEnter={() => {
-        console.log(`setting spring ENTER`)
         setSpring({
           transform: getCSSFlapTransformation(true),
         });
       }}
       onMouseLeave={() => {
-        console.log(`setting spring EXIT`)
         setSpring({
           transform: getCSSFlapTransformation(false),
         });
       }}
     >
-      <TriangleFlapContainer as={animated.div} style={springProps}>
-        <TriangleFlap width="100%" height="100%" viewBox="0 0 100 100">
-          <TriangleFlapPolygon points="2,2 98,2 50,30" />
-        </TriangleFlap>
-      </TriangleFlapContainer>
+      <StackContainer
+        onClick={onClick}
+      >
+        <StackElement>{backLayer}</StackElement>
+        <StackElement>{frontLayer}</StackElement>
+      </StackContainer>
     </TemporaryContainer>
   );
 }
