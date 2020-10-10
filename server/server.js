@@ -44,11 +44,18 @@ const newUser = new User({
 })
 newUser.password = newUser.generateHash("password");
 
+const newUser = new User({
+    eventID: "",
+
+    name:"Test User",
+})
+
 const testAuth = new Authentication({
     username: "Test@gmail.com",
     authToken: "Test",
     expiration: 0
 });
+
 
 try {
   var result = User.findOne({
@@ -175,7 +182,10 @@ app.post('/register', (req, res) => {
 	});
 });
 
+
+//app.get(/event)
 app.post('/event', (req, res) => {
   //after schema
+
 
 );

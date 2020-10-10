@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const { v4: uuidv4 } = require('uuid');
 
 /*
 ____________________ Database Schemas _________________________
@@ -35,10 +36,21 @@ const Authentication = mongoose.model('Authentication', authenticationSchema);
 const eventSchema = new mongoose.Schema({
     eventID: { type: String, required: true, unique: true},
     eventName: { type: String, required: true},
-    location: { type: String, required: true },
-    collaborators: {type: Schema.ObjectId},
-    past: { type: Boolean, required: true}
+    location: { type: String },
+    collaborators: [{ type: String }],
+    viewers: [{ type: String }],
+    past: { type: Boolean }
 
 });
 
+eventSchema.methods.createEventID = function() {
+      return uuidv4().substring(0, 8)
+};
+
 const Event = mongoose.model('Event', eventSchema);
+
+const userToEvents = new mongoose.Schema({
+    username: {type: String, required: true, unique: true},
+    events: [{ type: String }]
+  
+});
