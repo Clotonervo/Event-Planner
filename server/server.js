@@ -44,7 +44,7 @@ const newUser = new User({
 })
 newUser.password = newUser.generateHash("password");
 
-const newUser = new User({
+const newUserEvent = new User({
     eventID: "",
 
     name:"Test User",
@@ -184,8 +184,57 @@ app.post('/register', (req, res) => {
 
 
 //app.get(/event)
-app.post('/event', (req, res) => {
+app.post('/event', async (req, res) => {
+    await isValidAuth(req.body.authToken); //You will need to call 'await' before it because it needs to be asynchronous due to mongo db
   //after schema
 
+});
 
-);
+
+const isValidAuth = async (token) => {
+    try {
+        const authentication = await Authentication.findOne({
+            authToken: token,
+        })
+        let expirationTime = new Date().getTime() + 15000;
+
+        if(authentication == null){
+            return { isValid: false, timeout: false };
+        }
+        else if(authentication.expiration > expirationTime){
+            return { isValid: false, timeout: true };
+        }
+        else {
+            await Authentication.findOneAndUpdate({
+                authToken: token
+            }, {
+                expiration: expirationTime,  
+            });
+
+            return { isValid: true }
+        }
+    } catch (error){
+        console.log(error);
+    }
+}
+
+
+const getCurrentUser = async (token) => {
+    try {
+        const authentication = await Authentication.findOne({
+            authToken: token,
+        })
+
+        if(authentication == null){
+            return null;
+        }
+        else {
+            return authentication.username;
+        }
+
+    } catch (error){
+        console.log(error);
+    }
+}
+
+

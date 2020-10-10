@@ -40,7 +40,6 @@ const eventSchema = new mongoose.Schema({
     collaborators: [{ type: String }],
     viewers: [{ type: String }],
     past: { type: Boolean }
-
 });
 
 eventSchema.methods.createEventID = function() {
@@ -52,5 +51,4 @@ const Event = mongoose.model('Event', eventSchema);
 const userToEvents = new mongoose.Schema({
     username: {type: String, required: true, unique: true},
     events: [{ type: String }]
-
 });
