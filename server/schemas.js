@@ -52,5 +52,5 @@ const Event = mongoose.model('Event', eventSchema);
 const userToEvents = new mongoose.Schema({
     username: {type: String, required: true, unique: true},
     events: [{ type: String }]
-  
+
 });
