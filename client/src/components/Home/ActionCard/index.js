@@ -3,11 +3,12 @@ import styled from "styled-components";
 
 import Card from "../../Common/Card";
 
-import { borderRadius } from "../../../resources/style-constants";
+import { borderRadius, spacing8 } from "../../../resources/style-constants";
 
 const CardContainer = styled(Card)`
   height: 9vw;
   width: 15vw;
+  padding: ${spacing8};
   border-radius: ${borderRadius};
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.06), 0 6px 8px 0 rgba(0, 0, 0, 0.06);
   transition: transform 0.1s ease-in-out;
@@ -26,7 +27,7 @@ const CardContainer = styled(Card)`
  * component in an <ActionCard> to have consistent
  * hover, border-radius, size behaviour.
  */
-const ActionCard = ({ children }) => {
+const ActionCard = ({ children, ...props }) => {
   return (
     <CardContainer>
       {children}

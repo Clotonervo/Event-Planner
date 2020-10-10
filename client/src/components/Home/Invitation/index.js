@@ -2,17 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { useSpring, animated } from 'react-spring'
 
-/**
- * TODO: Replace this with Justin's card component which
- * will be reused between the different cards in the home 
- * view.
- */
-const TemporaryContainer = styled.div`
-  height: 200px;
-  width: 300px;
-  border-radius: 8px;
-  box-shadow: 0px 10px 8px 0px #888888;
-  cursor: pointer;
+import ActionCard from '../ActionCard';
+
+const RootCardContainer = styled(ActionCard)`
+  padding: 0px;
+  margin: 0px;
 `;
 
 const StackContainer = styled.div`
@@ -77,7 +71,7 @@ const Invitation = ({ isUnopened, onClick }) => {
   const backLayer = (
     <TriangleFlapContainer as={animated.div} style={springProps}>
       <TriangleFlap width="100%" height="20%" viewBox="0 0 100 100">
-        <TriangleFlapPolygon points="2,2 98,2 50,30" />
+        <TriangleFlapPolygon points="0,0 100,0 50,30" />
       </TriangleFlap>
     </TriangleFlapContainer>
   );
@@ -90,25 +84,24 @@ const Invitation = ({ isUnopened, onClick }) => {
     ) : <div />;
 
   return (
-    <TemporaryContainer
-      onMouseEnter={() => {
-        setSpring({
-          transform: getCSSFlapTransformation(true),
-        });
-      }}
-      onMouseLeave={() => {
-        setSpring({
-          transform: getCSSFlapTransformation(false),
-        });
-      }}
-    >
+    <RootCardContainer>
       <StackContainer
         onClick={onClick}
+        onMouseEnter={() => {
+          setSpring({
+            transform: getCSSFlapTransformation(true),
+          });
+        }}
+        onMouseLeave={() => {
+          setSpring({
+            transform: getCSSFlapTransformation(false),
+          });
+        }}
       >
         <StackElement>{backLayer}</StackElement>
         <StackElement>{frontLayer}</StackElement>
       </StackContainer>
-    </TemporaryContainer>
+    </RootCardContainer>
   );
 }
 

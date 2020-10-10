@@ -12,7 +12,7 @@ import LoginView from "./LoginView";
 import SignUpView from "./SignUpView";
 
 /* style-constants has multiple exported items, you have to destructure it using {} */
-import { theme1 } from "../../resources/style-constants";
+import { theme1, spacing16 } from "../../resources/style-constants";
 
 const ColorOverlay = styled(animated.div)`
   position: fixed;
@@ -34,6 +34,7 @@ const AnimatedLoginView = styled(animated.div)`
 
 const StyledCard = styled(Card)`
   height: 70%;
+  padding: ${spacing16};
 `;
 
 const LogoWrapper = styled.div`
