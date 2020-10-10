@@ -20,6 +20,20 @@ export const link = "#2196f3"; // color for links
 export const highlightedLink = "#35baf6"; // color of links on hover
 export const errorRed = "#FF0002";
 
+/*
+Swatches (shades of colors).
+*/
+export const primarySwatch = {
+  // TODO: Define 50, 100, 200, 300, 400
+  "500": "#8be4d2",
+  // TODO: Define 600, 700, 800, 900
+};
+export const secondarySwatch = {
+  // TODO: Define 50, 100, 200, 300, 400
+  "500": "#2196f3",
+  // TODO: Define 600, 700, 800, 900
+};
+
 /* Font Sizes */
 export const fontSize8 = "0.5rem";
 export const fontSize16 = "1rem";
