@@ -2,14 +2,14 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
 /*
-____________________ Database Schemas _________________________ 
+____________________ Database Schemas _________________________
 ---------------------------------------------------------------
     > This file is mainly to keep our database structure organized and easily referenced
     > Add any new database Schemas here, and then reference them from server.js
 */
 
 const userSchema = new mongoose.Schema({
-    username: { type: String, required: true, unique: true}, 
+    username: { type: String, required: true, unique: true},
     password: { type: String, required: true },
     name: { type: String, required: true },
   });
@@ -29,5 +29,16 @@ const authenticationSchema = new mongoose.Schema({
     authToken: { type: String, required: true, unique: true },
     expiration: { type: Number, required: true }
 });
-  
+
 const Authentication = mongoose.model('Authentication', authenticationSchema);
+
+const eventSchema = new mongoose.Schema({
+    eventID: { type: String, required: true, unique: true},
+    eventName: { type: String, required: true},
+    location: { type: String, required: true },
+    collaborators: {type: Schema.ObjectId},
+    past: { type: Boolean, required: true}
+
+});
+
+const Event = mongoose.model('Event', eventSchema);

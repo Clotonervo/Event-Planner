@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt');
 
 //------ Database Schemas from schemas.js
 const User = mongoose.model('User');
+const Event = mongoose.model('Event');
 const Authentication = mongoose.model('Authentication');
 
 
@@ -30,10 +31,10 @@ const port = process.env.PORT || 5000;
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 
-/* --------------------------- Create a new user for testing: 
+/* --------------------------- Create a new user for testing:
  *  Username: Test@gmail.com
  *  Password: password
- *  Salt: Test salt 123 
+ *  Salt: Test salt 123
  */
 
 const newUser = new User({
@@ -72,10 +73,10 @@ app.post('/login', function(req, res) {
             // Check database for correct inputs
             if (user === null){
                 res.statusCode = 200;
-                res.send({ 
+                res.send({
                     success: false,
                     message: "User not found!"
-                }); 
+                });
                 return;
             }
 
@@ -89,7 +90,7 @@ app.post('/login', function(req, res) {
                     },{
                         authToken: authToken,
                         expiration: expirationTime
-                    }, 
+                    },
                     function(err, authentication){
                         if(err){
                             res.statusCode = 500;
@@ -99,28 +100,28 @@ app.post('/login', function(req, res) {
                             });
                         } else {
                             res.statusCode = 200;
-                            res.send({ 
+                            res.send({
                                 success: true,
                                 authToken: authToken
                             });
                         }
                     });
-                
+
             } else {
                 res.statusCode = 200;
-                res.send({ 
+                res.send({
                     success: false,
                     message: "Invalid credentials!"
-                });        
+                });
             }
     });
     } catch (error){
         console.log(error);
         res.statusCode = 500;
-        res.send({ 
+        res.send({
             success: false,
             message: "Error: Something went wrong in the server!"
-        });   
+        });
     }
 });
 
@@ -132,7 +133,7 @@ app.post('/register', (req, res) => {
 	}, function(err, user){
 		if(user != null){
 			res.statusCode = 200;
-			res.send({ 
+			res.send({
 				success: false,
 				message: "User already exists!"
 			});
@@ -144,11 +145,11 @@ app.post('/register', (req, res) => {
       name : req.body.name,
 		})
 		newUser.password = newUser.generateHash(req.body.password);
-		
+
     try {
       newUser.save();
-			let authToken = uuidv4(); 
-			let expirationTime = new Date().getTime() + 15000; 
+			let authToken = uuidv4();
+			let expirationTime = new Date().getTime() + 15000;
 
 			const testAuth = new Authentication({
 				username: "req.body.username",
@@ -157,19 +158,24 @@ app.post('/register', (req, res) => {
 			});
 
       res.statusCode = 200;
-      res.send({ 
+      res.send({
         success: true,
         authToken: authToken
     	});
-  
+
     } catch (error) {
         console.log(error);
         res.statusCode = 500;
-        res.send({ 
+        res.send({
           success: false,
         	message: "Error: Something went wrong in the server!"
         });
     }
-    
+
 	});
 });
+
+app.post('/event', (req, res) => {
+  //after schema
+
+);
