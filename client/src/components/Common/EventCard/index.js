@@ -4,6 +4,7 @@ import {theme1, theme2} from "../../../resources/style-constants"
 
 const Button = styled.div`
   background-color: theme1;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   padding: 0% 0%;
   border-radius: 7px;
   border-width: 10px;
