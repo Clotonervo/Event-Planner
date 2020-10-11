@@ -209,8 +209,8 @@ app.post('/event/create', async (req, res) => {
             });
         }
 		var newEvent = new Event({
-            eventID : newEvent.createEventID,
-            name : req.body.name,
+            eventID : uuidv4().substring(0,8),
+            eventName : req.body.eventName,
 		})
         if (req.body.location != null) {
             newEvent.location = req.body.location;
@@ -227,6 +227,11 @@ app.post('/event/create', async (req, res) => {
 
         try {
             newEvent.save();
+            res.statusCode = 200;
+            res.send({
+                success: true,
+                message: "Successfully added event to database"
+            });
 
         } catch (error) {
             console.log(error);
