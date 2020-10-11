@@ -9,11 +9,13 @@ const Wrapper = styled.div`
   padding: ${spacing64};
 `;
 
-const Home = () => {
-  return <Wrapper>
-    <Invitation isUnopened={true}></Invitation>
-    <ActionCard></ActionCard>
-  </Wrapper>;
+const Main = () => {
+  return (
+    <Wrapper>
+      <Invitation isUnopened={true}></Invitation>
+      <ActionCard></ActionCard>
+    </Wrapper>
+  );
 };
 
-export default Home;
+export default Main;

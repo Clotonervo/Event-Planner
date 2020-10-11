@@ -10,15 +10,24 @@ const CardContainer = styled(Card)`
   width: 15vw;
   padding: ${spacing8};
   border-radius: ${borderRadius};
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.06), 0 6px 8px 0 rgba(0, 0, 0, 0.06);
-  transition: transform 0.1s ease-in-out;
-  transition: box-shadow 0.1s ease-in-out;
+  transition: transform 0.08s ease-in-out;
+  transition: box-shadow 0.08s ease-in-out;
   transform: scale(1.0, 1.0);
   cursor: pointer;
 
+  // TODO: Define shadow constants in style-constants.js and replace this.
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.06), 0 6px 8px 0 rgba(0, 0, 0, 0.06);
+
   :hover {
-    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.08), 0 6px 20px 0 rgba(0, 0, 0, 0.08);
     transform: scale(1.01, 1.01);
+    
+    // TODO: Define shadow constants in style-constants.js and replace this.
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.08), 0 6px 20px 0 rgba(0, 0, 0, 0.08);
+  }
+
+  :active {
+    // TODO: Define shadow constants in style-constants.js and replace this.
+    box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.06), 0 6px 8px 0 rgba(0, 0, 0, 0.06);
   }
 `;
 
@@ -29,7 +38,7 @@ const CardContainer = styled(Card)`
  */
 const ActionCard = ({ children, ...props }) => {
   return (
-    <CardContainer>
+    <CardContainer {...{ ...props }}>
       {children}
     </CardContainer>
   );

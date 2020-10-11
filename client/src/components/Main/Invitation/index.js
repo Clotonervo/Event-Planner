@@ -4,7 +4,7 @@ import { useSpring, animated } from 'react-spring'
 
 import ActionCard from '../ActionCard';
 
-import { secondarySwatch, spacing16, spacing8, spacing24 } from "../../../resources/style-constants";
+import { spacing8, spacing16, spacing24, link } from "../../../resources/style-constants";
 
 const StackContainer = styled.div`
   height: 100%;
@@ -34,7 +34,7 @@ const NotifcationDotContainer = styled.div`
 const NotificationDot = styled.div`
   height: ${spacing24};
   width: ${spacing24};
-  background-color: ${secondarySwatch["500"]};
+  background-color: ${link};
   border-radius: 50%;
   display: inline-block;
 `;
@@ -81,20 +81,20 @@ const Invitation = ({ isUnopened, onClick }) => {
     ) : <div />;
 
   return (
-    <ActionCard>
-      <StackContainer
-        onClick={onClick}
-        onMouseEnter={() => {
-          setSpring({
-            transform: getCSSFlapTransformation(true),
-          });
-        }}
-        onMouseLeave={() => {
-          setSpring({
-            transform: getCSSFlapTransformation(false),
-          });
-        }}
-      >
+    <ActionCard
+      onClick={onClick}
+      onMouseEnter={() => {
+        setSpring({
+          transform: getCSSFlapTransformation(true),
+        });
+      }}
+      onMouseLeave={() => {
+        setSpring({
+          transform: getCSSFlapTransformation(false),
+        });
+      }}
+    >
+      <StackContainer>
         <StackElement>{backLayer}</StackElement>
         <StackElement>{frontLayer}</StackElement>
       </StackContainer>
