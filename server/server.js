@@ -148,13 +148,13 @@ app.post('/register', (req, res) => {
 		}
 
 		var newUser = new User({
-      username : req.body.email,
-      name : req.body.name,
+            username : req.body.email,
+            name : req.body.name,
 		})
 		newUser.password = newUser.generateHash(req.body.password);
 
     try {
-      newUser.save();
+        newUser.save();
 			let authToken = uuidv4();
 			let expirationTime = new Date().getTime() + 15000;
 
@@ -164,11 +164,11 @@ app.post('/register', (req, res) => {
 				expiration: expirationTime
 			});
 
-      res.statusCode = 200;
-      res.send({
-        success: true,
-        authToken: authToken
-    	});
+        res.statusCode = 200;
+        res.send({
+            success: true,
+            authToken: authToken
+        });
 
     } catch (error) {
         console.log(error);
@@ -184,12 +184,60 @@ app.post('/register', (req, res) => {
 
 
 //app.get(/event)
-app.post('/event', async (req, res) => {
-    await isValidAuth(req.body.authToken); //You will need to call 'await' before it because it needs to be asynchronous due to mongo db
-  //after schema
+app.post('/event/create', async (req, res) => {
+    const authentication = await isValidAuth(req.body.authToken);
+    
+    if (!authentication.isValid && !authentication.timeout) {
+        //This authentication token does not exist
+        res.send({
+            success: false,
+            message: "Error: This authentication token does not exist"
+        });
+    } else if (!authentication.isValid && authentication.timeout) {
+        //This authentication token is expired, send back to login screen
+        res.send({
+            success: false,
+            message: "Error: This authentication token is expired, please login again"
+        });
+    } else {
+        //Authentication token is valid
+        if (req.body.eventName == null) {
+            //eventName is required error
+            res.send({
+                success: false,
+                message: "Error: An eventname is required"
+            });
+        }
+		var newEvent = new Event({
+            eventID : newEvent.createEventID,
+            name : req.body.name,
+		})
+        if (req.body.location != null) {
+            newEvent.location = req.body.location;
+        }
+        if (req.body.collaborators != null) {
+            newEvent.collaborators = req.body.collaborators;
+        }
+        if (req.body.viewers != null) {
+            newEvent.viewers = req.body.viewers;
+        }
+        if (req.body.past != null) {
+            newEvent.past = req.body.past;
+        }
 
+        try {
+            newEvent.save();
+
+        } catch (error) {
+            console.log(error);
+            res.statusCode = 500;
+            res.send({
+                success: false,
+                message: "Error: Failed to save event to database"
+            });
+        }
+    }
 });
-
 
 const isValidAuth = async (token) => {
     try {
