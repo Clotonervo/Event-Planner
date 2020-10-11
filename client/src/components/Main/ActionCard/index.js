@@ -3,12 +3,11 @@ import styled from "styled-components";
 
 import Card from "../../Common/Card";
 
-import { borderRadius, spacing8 } from "../../../resources/style-constants";
+import { borderRadius } from "../../../resources/style-constants";
 
 const CardContainer = styled(Card)`
-  height: 9vw;
+  height: 10vw;
   width: 15vw;
-  padding: ${spacing8};
   border-radius: ${borderRadius};
   transition: transform 0.08s ease-in-out;
   transition: box-shadow 0.08s ease-in-out;

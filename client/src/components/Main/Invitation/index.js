@@ -4,7 +4,7 @@ import { useSpring, animated } from 'react-spring'
 
 import ActionCard from '../ActionCard';
 
-import { spacing8, spacing16, spacing24, link } from "../../../resources/style-constants";
+import { spacing8, spacing16, spacing24, fontSize16, link } from "../../../resources/style-constants";
 
 const StackContainer = styled.div`
   height: 100%;
@@ -19,14 +19,15 @@ const StackElement = styled.div`
 `;
 
 const TriangleFlapContainer = styled.div`
-  width: 100%;
+  width: calc(100% - ${spacing8});
   pointer-events: none;
+  padding: ${spacing8};
 `;
 
 const NotifcationDotContainer = styled.div`
-  height: calc(100% - ${spacing16});
-  width: calc(100% - ${spacing16});
-  padding: ${spacing8};
+  height: calc(100% - ${spacing16 * 2});
+  width: calc(100% - ${spacing16 * 2});
+  padding: ${spacing16};
   vertical-align: top;
   text-align: right;
 `;
@@ -45,6 +46,17 @@ const TriangleFlap = styled.svg`
   filter: drop-shadow( 3px 8px 4px rgba(0, 0, 0, .1));
 `;
 
+const ChildContainer = styled.div`
+  height: calc(100% - ${spacing16} * 2);
+  width: calc(100% - ${spacing16} * 2);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-size: ${fontSize16};
+  padding: ${spacing16} ${spacing16};
+  text-align: center;
+`;
+
 const TriangleFlapPolygon = styled.polygon``;
 
 const getCSSFlapTransformation = (isRotated) => {
@@ -53,7 +65,7 @@ const getCSSFlapTransformation = (isRotated) => {
   return trfm;
 }
 
-const Invitation = ({ isUnopened, onClick }) => {
+const Invitation = ({ children, isUnopened, onClick }) => {
   const [springProps, setSpring] = useSpring(() => ({
     transform: getCSSFlapTransformation(false),
     transformOrigin: `50% 0%`,
@@ -65,7 +77,7 @@ const Invitation = ({ isUnopened, onClick }) => {
     },
   }))
 
-  const backLayer = (
+  const envelopeLayer = (
     <TriangleFlapContainer as={animated.div} style={springProps}>
       <TriangleFlap width="100%" height="20%" viewBox="0 0 100 100">
         <TriangleFlapPolygon points="0,0 100,0 50,30" />
@@ -73,12 +85,18 @@ const Invitation = ({ isUnopened, onClick }) => {
     </TriangleFlapContainer>
   );
 
-  const frontLayer = !!isUnopened ?
+  const notifLayer = !!isUnopened ?
     (
       <NotifcationDotContainer>
         <NotificationDot />
       </NotifcationDotContainer>
     ) : <div />;
+
+  const childLayer = (
+    <ChildContainer>
+      {children}
+    </ChildContainer>
+  );
 
   return (
     <ActionCard
@@ -95,8 +113,9 @@ const Invitation = ({ isUnopened, onClick }) => {
       }}
     >
       <StackContainer>
-        <StackElement>{backLayer}</StackElement>
-        <StackElement>{frontLayer}</StackElement>
+        <StackElement>{envelopeLayer}</StackElement>
+        <StackElement>{notifLayer}</StackElement>
+        <StackElement>{childLayer}</StackElement>
       </StackContainer>
     </ActionCard>
   );
