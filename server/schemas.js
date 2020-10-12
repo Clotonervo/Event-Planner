@@ -48,7 +48,9 @@ eventSchema.methods.createEventID = function() {
 
 const Event = mongoose.model('Event', eventSchema);
 
-const userToEvents = new mongoose.Schema({
+const UserToEvents = new mongoose.Schema({
     username: {type: String, required: true, unique: true},
     events: [{ type: String }]
 });
+
+const UseToEvents = mongoose.model('usertoEvents', usertoEventsSchema);

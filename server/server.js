@@ -10,6 +10,7 @@ const bcrypt = require('bcrypt');
 const User = mongoose.model('User');
 const Event = mongoose.model('Event');
 const Authentication = mongoose.model('Authentication');
+const UseToEvents = mongoose.model('usertoEvents', usertoEventsSchema);
 
 
 // Connect to the database
@@ -182,11 +183,53 @@ app.post('/register', (req, res) => {
 	});
 });
 
+app.get('/event/read', async (req, res) => {
+  try {
+         const authTokenResult = await util.isValidAuth(req.body.authToken);
+         if(authTokenResult.isValid){
+             const event = await Event.findOne({
+                 eventID: req.body.eventID
+             })
 
+             if (event == null){
+                 res.statusCode = 200;
+                 res.send({
+                     success: false,
+                     message: "Event can't be found!"
+                 });
+                 return;
+             }
+             //const currentUser = await util.getCurrentUser(req.body.authToken);
+
+             else {
+                 res.send(event
+                 );
+             }
+         }
+         else {
+             res.statusCode = 200;
+             res.send({
+                 success: false,
+                 message: "Authtoken is invalid, please login again to renew!"
+             })
+             return;
+         }
+     } catch (err) {
+         res.statusCode = 500;
+         res.send({
+             success: false,
+             message: "Error: Something went wrong in the server!"
+         });
+         return;
+     }
+});
 //app.get(/event)
 app.post('/event/create', async (req, res) => {
-    const authentication = await isValidAuth(req.body.authToken);
-    
+
+    var authHeader = req.headers['Authorization'];
+    const authentication = await isValidAuth(authHeader);
+    //const authentication = await isValidAuth(req.body.authToken);
+
     if (!authentication.isValid && !authentication.timeout) {
         //This authentication token does not exist
         res.send({
@@ -261,7 +304,7 @@ const isValidAuth = async (token) => {
             await Authentication.findOneAndUpdate({
                 authToken: token
             }, {
-                expiration: expirationTime,  
+                expiration: expirationTime,
             });
 
             return { isValid: true }
@@ -289,5 +332,3 @@ const getCurrentUser = async (token) => {
         console.log(error);
     }
 }
-
-
