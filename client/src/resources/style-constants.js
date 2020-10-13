@@ -33,3 +33,5 @@ export const fontSize64 = "3rem";
 export const borderRadius = "12px";
 
 // Later we will add our default font here
+
+// TODO: We should probably have some other constants for shadows as well? - Josiah
