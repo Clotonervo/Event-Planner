@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const User = mongoose.model('User');
 const Authentication = mongoose.model('Authentication');
-const UserToEvent = mongoose.model('UserToEvent');
+const Event = mongoose.model('Event');
 
 
 module.exports = {
@@ -25,7 +25,7 @@ module.exports = {
                     expiration: expirationTime,  
                 });
 
-                return { isValid: true }
+                return { isValid: true, timeout: false }
             }
         } catch (error){
             console.log(error);
@@ -50,16 +50,10 @@ module.exports = {
     },
     removeEventFromUsers: async (eventID) => {
         try {
-            const userList = await UserToEvent.find({
-                events: { $in: [eventID] }
-            })
-            console.log(userList)
-            userList.forEach(element => {
-                element.events = element.events.filter( event => event !== eventID);
-                UserToEvent.updateOne({ username: element.username }
-                    , { events: element.events });
+            const event = await Event.findOneAndDelete({
+                eventID: eventID
             });
-
+            
         } catch (err) {
             console.log(error);
         }
