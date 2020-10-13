@@ -8,8 +8,8 @@ import {
   spacing32,
   spacing128,
   appBarHeight
-} from "../../resources/style-constants";
-import Logo from "../Common/Logo";
+} from "../../../resources/style-constants";
+import Logo from "../Logo";
 
 const Wrapper = styled.div`
   height: ${spacing32};

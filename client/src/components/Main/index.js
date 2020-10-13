@@ -1,5 +1,5 @@
 import React from "react";
-import AppBar from "../AppBar";
+import AppBar from "../Common/AppBar";
 import { eventPink } from "../../resources/style-constants";
 
 const Main = () => {
