@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import {
   theme1,
   spacing8,
+  spacing24,
   spacing32,
   spacing128,
   appBarHeight
@@ -56,7 +57,8 @@ const PaddedIcon = styled.div`
 `;
 
 const Username = styled.h3`
-  padding: 0;
+  padding-top: ${spacing24};
+  margin: 0;
 `;
 
 const AppBar = ({ username = "Username", color = theme1 }) => {
