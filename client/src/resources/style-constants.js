@@ -39,3 +39,5 @@ export const borderRadius = "12px";
 /* Other */
 export const appBarHeight = "96px";
 // Later we will add our default font here
+
+// TODO: We should probably have some other constants for shadows as well? - Josiah
