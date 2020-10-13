@@ -53,4 +53,4 @@ const UserToEvents = new mongoose.Schema({
     events: [{ type: String }]
 });
 
-const UseToEvents = mongoose.model('usertoEvents', usertoEventsSchema);
+const UseToEvents = mongoose.model('UserToEvents', UserToEvents);

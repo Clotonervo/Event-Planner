@@ -10,7 +10,7 @@ const bcrypt = require('bcrypt');
 const User = mongoose.model('User');
 const Event = mongoose.model('Event');
 const Authentication = mongoose.model('Authentication');
-const UseToEvents = mongoose.model('usertoEvents', usertoEventsSchema);
+const UseToEvents = mongoose.model('UserToEvents');
 
 
 // Connect to the database
@@ -183,9 +183,10 @@ app.post('/register', (req, res) => {
 	});
 });
 
-app.get('/event/read', async (req, res) => {
+app.get('/event', async (req, res) => {
   try {
-         const authTokenResult = await util.isValidAuth(req.body.authToken);
+         var authHeader = req.headers['authorization'];
+         const authTokenResult = await isValidAuth(authHeader);
          if(authTokenResult.isValid){
              const event = await Event.findOne({
                  eventID: req.body.eventID
@@ -202,8 +203,7 @@ app.get('/event/read', async (req, res) => {
              //const currentUser = await util.getCurrentUser(req.body.authToken);
 
              else {
-                 res.send(event
-                 );
+                 res.send(event);
              }
          }
          else {
@@ -223,10 +223,49 @@ app.get('/event/read', async (req, res) => {
          return;
      }
 });
-//app.get(/event)
-app.post('/event/create', async (req, res) => {
 
-    var authHeader = req.headers['Authorization'];
+// API to get all events of a user
+app.get('/events', async (req, res) => {
+    try {
+        const authHeader = req.headers['authorization'];
+        const authentication = await isValidAuth(authHeader);
+
+        if(authentication.timeout){
+            res.send({
+                success: false,
+                message: "Error: This authentication token does not exist"
+            });
+            return;
+        }
+        else if(!authentication.isValid){
+            res.send({
+                success: false,
+                message: "Error: This authentication token is expired, please login again"
+            });
+            return;
+        }
+
+        const currentUser = await getCurrentUser(authHeader);
+
+        const result = await Event.find({
+            collaborators: { $in: [currentUser] }
+        });
+
+        res.send( result );
+    } catch (err) {
+        console.log(err);
+        res.statusCode = 500;
+        res.send({
+            success: false,
+            message: "Error getting user events!"
+        })
+    }
+
+})
+
+app.post('/event', async (req, res) => {
+
+    var authHeader = req.headers['authorization'];
     const authentication = await isValidAuth(authHeader);
     //const authentication = await isValidAuth(req.body.authToken);
 
@@ -258,8 +297,9 @@ app.post('/event/create', async (req, res) => {
         if (req.body.location != null) {
             newEvent.location = req.body.location;
         }
-        if (req.body.collaborators != null) {
-            newEvent.collaborators = req.body.collaborators;
+        if (req.body.collaborators == null) {
+            const currentUser = await getCurrentUser(authHeader);
+            newEvent.collaborators.push(currentUser);
         }
         if (req.body.viewers != null) {
             newEvent.viewers = req.body.viewers;
@@ -307,7 +347,7 @@ const isValidAuth = async (token) => {
                 expiration: expirationTime,
             });
 
-            return { isValid: true }
+            return { isValid: true, timeout: false };
         }
     } catch (error){
         console.log(error);
