@@ -20,6 +20,12 @@ export const link = "#2196f3"; // color for links
 export const highlightedLink = "#35baf6"; // color of links on hover
 export const errorRed = "#FF0002";
 
+/* Remove the following colors once we get the event color from the backend */
+export const eventOrange = "#FFA089";
+export const eventYellow = "#FFD958";
+export const eventGreen = "#E7FF89";
+export const eventPink = "#FF8989";
+
 /* Font Sizes */
 export const fontSize8 = "0.5rem";
 export const fontSize16 = "1rem";
@@ -32,6 +38,8 @@ export const fontSize64 = "3rem";
 /** Border Radiuses */
 export const borderRadius = "12px";
 
+/* Other */
+export const appBarHeight = "96px";
 // Later we will add our default font here
 
 // TODO: We should probably have some other constants for shadows as well? - Josiah
