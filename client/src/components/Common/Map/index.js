@@ -3,7 +3,7 @@ import styled from "styled-components";
 import GoogleMapReact from 'google-map-react'
 
 import { borderRadius } from '../../../resources/style-constants'
-import { MapPin } from '../MapPin';
+import MapPin from '../MapPin';
 
 const Container = styled.div`
   height: 100%;
@@ -21,18 +21,19 @@ const Container = styled.div`
  * }
  */
 const Map = ({ location, zoomLevel }) => {
+  console.log(`API: ${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`)
   return (
     <Container>
       <GoogleMapReact
-        bootstrapURLKeys={{ key: '' }}
+        bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
         defaultCenter={location}
         defaultZoom={zoomLevel}
       >
-        <MapPin
+        {/* <MapPin
           lat={location.lat}
           lng={location.lng}
           text={location.address}
-        />
+        /> */}
       </GoogleMapReact>
       hello
     </Container >
