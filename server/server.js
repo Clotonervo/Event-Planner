@@ -244,6 +244,57 @@ app.post('/event/create', async (req, res) => {
     }
 });
 
+
+app.post('/rsvp', async (req, res) => {
+    const authentication = await isValidAuth(req.body.authToken);
+    
+    if (!authentication.isValid && !authentication.timeout) {
+        //This authentication token does not exist
+        res.send({
+            success: false,
+            message: "Error: This authentication token does not exist"
+        });
+    } else if (!authentication.isValid && authentication.timeout) {
+        //This authentication token is expired, send back to login screen
+        res.send({
+            success: false,
+            message: "Error: This authentication token is expired, please login again"
+        });
+    } else {
+        //Authentication token is valid
+        if (req.body.eventID == null || req.body.attending) {
+            //eventName is required error
+            res.send({
+                success: false,
+                message: "Error: An eventID and attending response is required"
+            });
+        }
+		var rsvp = new RSVP({
+            eventID : req.body.eventID,
+            attending : getCurrentUser(authentication),
+            username : req.body.eventName,
+		})
+
+        try {
+            rsvp.save();
+            res.statusCode = 200;
+            res.send({
+                success: true,
+                message: "Successfully added RSVP to database"
+            });
+
+        } catch (error) {
+            console.log(error);
+            res.statusCode = 500;
+            res.send({
+                success: false,
+                message: "Error: Failed to save RSVP to database"
+            });
+        }
+    }
+});
+
+
 const isValidAuth = async (token) => {
     try {
         const authentication = await Authentication.findOne({

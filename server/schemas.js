@@ -52,3 +52,13 @@ const userToEvents = new mongoose.Schema({
     username: {type: String, required: true, unique: true},
     events: [{ type: String }]
 });
+
+const rsvpSchema = new mongoose.schema({
+    eventID: { type: String, required: true},
+    username: { type: String, required: true},
+    attending: { type: String, enum: ['yes', 'no', 'maybe', 'pending']}
+});
+
+const RSVP = mongoose.model('RSVP', rsvpSchema);
+
+rsvpSchema.index({eventID:1, username:1}, { unique: true });
