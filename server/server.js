@@ -271,7 +271,7 @@ app.put('/event', async (req, res) => {
         }
         const event = await Event.findOne({
             eventID: req.body.eventID,
-        }
+        });
         if (req.body.eventName != null) {
             event.eventName = req.body.eventName;
         }
