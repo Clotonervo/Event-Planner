@@ -71,10 +71,12 @@ const Map = ({ location, zoomLevel, locationLabel }) => {
   const DEFAULT_LOCATION = { lat: 59.95, lng: 30.33 };
   const DEFAULT_ZOOM = 11;
 
-  console.log(`API: ${process.env.REACT_APP_GOOGLE_MAPS_API_KEY}`)
+  if (process.env.REACT_APP_GOOGLE_MAPS_API_KEY === undefined) {
+    console.error(`REACT_APP_GOOGLE_MAPS_API_KEY not specified.`);
+  }
 
-  const map = process.env.REACT_APP_GOOGLE_MAPS_API_KEY !== undefined ?
-    (
+  return (
+    <Container>
       <MapContainer as={GoogleMapReact}
         bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
         defaultCenter={location ?? DEFAULT_LOCATION}
@@ -86,18 +88,6 @@ const Map = ({ location, zoomLevel, locationLabel }) => {
           text={locationLabel}
         />
       </MapContainer>
-    ) :
-    (
-      <InvalidMapContainer>
-        <p>
-          Unable to render map. No API key present.
-        </p >
-      </InvalidMapContainer >
-    );
-
-  return (
-    <Container>
-      {map}
     </Container>
   );
 }
