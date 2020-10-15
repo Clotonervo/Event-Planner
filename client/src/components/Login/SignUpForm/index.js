@@ -61,6 +61,12 @@ const SignUpForm = ({ updateAuthToken, switchView, redirectToHome}) => {
     }
   };
 
+  useEffect(() => {
+    setIsDisabled(
+      validationState.password.error || validationState.username.error || validationState.email.error
+    );
+  }, [validationState]);
+
   const validateUsername = () => {
     let usernameState = {
       error: false,
@@ -73,6 +79,21 @@ const SignUpForm = ({ updateAuthToken, switchView, redirectToHome}) => {
     setValidationState({
       ...validationState,
       username: usernameState
+    });
+  };
+
+  const validateEmail = () => {
+    let usernameState = {
+      error: false,
+      message: ""
+    };
+    if (!username) {
+      emailState.error = true;
+      emailState.message = "Email is required";
+    }
+    setValidationState({
+      ...validationState,
+      email: emailState
     });
   };
 
@@ -111,9 +132,6 @@ const SignUpForm = ({ updateAuthToken, switchView, redirectToHome}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("clicked sign in");
-    console.log(`email: ${email}`);
-    console.log(`password: ${password}`);
     SignUp();
   };
 
@@ -129,6 +147,7 @@ const SignUpForm = ({ updateAuthToken, switchView, redirectToHome}) => {
               placeholder="John Doe"
               label="Name"
               changeHandler={handleChange}
+              validityState={validationState.name}
               fullWidth
             />
             <InputField
@@ -139,7 +158,7 @@ const SignUpForm = ({ updateAuthToken, switchView, redirectToHome}) => {
               required
               validateInput={validateUsername}
               changeHandler={handleChange}
-              validityState={validationState.username}
+              validityState={validationState.email}
               fullWidth
             />
             <InputField
