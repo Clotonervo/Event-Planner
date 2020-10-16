@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 
 import PrimaryButton from "../../Common/Buttons/PrimaryButton";
-import LinkButton from "../LinkButton";
+import LinkButton from "../../Common/LinkButton";
 import H1 from "../../Common/Headings/Heading1";
 import Stack from "../../Common/Stack";
 import InputField from "../InputField";
