@@ -8,11 +8,6 @@ const Main = () => {
     <div>
       <AppBar color={eventPink} />
       Page coming soon ...
-      <p>
-      </p>
-      <Invitee text = "Barney" rsvpStatus = "declined"></Invitee>
-      <Invitee text = "Ted" rsvpStatus = "accepted"></Invitee>
-      <Invitee text = "Marshall" rsvpStatus = "pending"></Invitee>
     </div>
   );
 };

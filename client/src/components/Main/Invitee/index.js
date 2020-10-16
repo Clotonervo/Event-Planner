@@ -45,11 +45,11 @@ top:0;
 `;
 
 //rsvpStatus: accepted, declined, pending
-const Invitee = ({color,text,onClick,rsvpStatus,...props}) => {
+const Invitee = ({color,name,rsvpStatus,...props}) => {
     //style = {{backgroundColor: color}}
-return <InviteeContainer onClick = {onClick}><ImgFace src = "face.svg"></ImgFace>
+return <InviteeContainer><ImgFace src = "face.svg"></ImgFace>
         <CardStyle><RsvpStatus {...{rsvpStatus}}/>
-        <TextBar>{text}</TextBar></CardStyle>
+        <TextBar>{name}</TextBar></CardStyle>
     </InviteeContainer>
 };
 export default Invitee;
