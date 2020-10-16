@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { Grid } from "@material-ui/core";
-import ActionCard from "../ActionCard";
+import Event from "../EventCard";
+import AddEvent from "../AddEventCard";
 import LinkButton from "../../Common/LinkButton";
 import {
   fontSize24,
   fontSize56,
-  spacing24
+  spacing24,
+  eventYellow,
+  eventOrange,
+  eventGreen,
+  eventPink
 } from "../../../resources/style-constants";
 
 const StyledH1 = styled.h1`
@@ -20,13 +25,17 @@ const ViewAllWrapper = styled.div`
   padding: ${spacing24};
 `;
 
-const eventsToShow = 6;
-
-const filterEvents = (events) => {
-  return events.length > eventsToShow ? events.slice(0, eventsToShow) : events;
-};
+const colors = [eventYellow, eventOrange, eventGreen, eventPink];
 
 const Events = ({ isUpcoming, events = [] }) => {
+  const eventsToShow = isUpcoming ? 5 : 6;
+
+  const filterEvents = (events) => {
+    return events.length > eventsToShow
+      ? events.slice(0, eventsToShow)
+      : events;
+  };
+
   const [viewAll, setViewAll] = useState(false);
   const [visibleEvents, setVisibleEvents] = useState(filterEvents(events));
 
@@ -42,14 +51,21 @@ const Events = ({ isUpcoming, events = [] }) => {
 
   return (
     <div>
-      <StyledH1>{isUpcoming ? "Upcoming Events" : "PastEvents"}</StyledH1>
+      <StyledH1>{isUpcoming ? "Upcoming Events" : "Past Events"}</StyledH1>
       {visibleEvents.length > 0 && (
         <Grid container direction="row" justify="flex-start" spacing={10}>
-          {/* {isUpcoming && <Grid item><ActionCard />} */}
+          {isUpcoming && (
+            <Grid item>
+              <AddEvent />
+            </Grid>
+          )}
           {visibleEvents.map((event) => {
             return (
               <Grid item>
-                <ActionCard />
+                <Event
+                  {...{ event }}
+                  color={colors[Math.floor(Math.random() * colors.length)]}
+                />
               </Grid>
             );
           })}
