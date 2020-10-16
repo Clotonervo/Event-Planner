@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import {theme1, theme2} from "../../../resources/style-constants"
 import ActionCard from "../ActionCard"
+import { borderRadius } from "../../../resources/style-constants";
 
 const CardStyle = styled.div`
 display: flex;
@@ -11,6 +12,7 @@ align-items: center;
 `;
 
 const TextBar = styled.div`
+padding: 4%;
 font-size: 1.8vw;
 display: flex;
 flex-direction: row;
@@ -24,8 +26,8 @@ bottom: 0;
 const ColorBar = styled.div`
 background-color: ${({ color }) => color};
 opacity: .9;
-border-top-left-radius: 7px;
-border-top-right-radius: 7px;
+border-top-left-radius: ${borderRadius};;
+border-top-right-radius: ${borderRadius};;
 width: 100%;
 height: 60%;
 display: flex;
