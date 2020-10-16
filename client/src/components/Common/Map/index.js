@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 import GoogleMapReact from 'google-map-react'
-import { HiLocationMarker } from 'react-icons/hi';
 
-import { borderRadius, red1 } from '../../../resources/style-constants'
+import { borderRadius } from '../../../resources/style-constants'
+import MapPin from './MapPin';
 
 const Container = styled.div`
   width: 100%;
@@ -18,45 +18,6 @@ const MapContainer = styled.div`
   border-radius: ${borderRadius};
 `;
 
-const MapPinContainer = styled.div`
-  width: 128px;
-  color: ${red1};
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const MapPinIcon = styled.div`
-  height: 48px;
-  width: 48px;
-`;
-
-const MapPinLabel = styled.h4`
-  margin: 0;
-  padding: 0;
-  line-height: 0;
-`;
-
-const InvalidMapContainer = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-`;
-
-const MapPin = ({ text }) => {
-  return (
-    <MapPinContainer>
-      <MapPinIcon as={HiLocationMarker} />
-      <br />
-      <MapPinLabel>{text}</MapPinLabel>
-    </MapPinContainer>
-  );
-}
-
 /**
  * @coords 
  * ({ lat: 0, lng: 0 }) The coordinates of the the destination.
@@ -67,10 +28,11 @@ const MapPin = ({ text }) => {
  * @locationLabel
  * (string) The text that appears below the map pin.
  */
-const Map = ({ location, zoomLevel, locationLabel }) => {
-  const DEFAULT_LOCATION = { lat: 59.95, lng: 30.33 };
-  const DEFAULT_ZOOM = 11;
-
+const Map = ({ 
+  location = { lat: 59.95, lng: 30.33 }, 
+  zoomLevel = 11, 
+  locationLabel = ''
+}) => {
   if (process.env.REACT_APP_GOOGLE_MAPS_API_KEY === undefined) {
     console.error(`REACT_APP_GOOGLE_MAPS_API_KEY not specified.`);
   }
@@ -79,12 +41,12 @@ const Map = ({ location, zoomLevel, locationLabel }) => {
     <Container>
       <MapContainer as={GoogleMapReact}
         bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_MAPS_API_KEY }}
-        defaultCenter={location ?? DEFAULT_LOCATION}
-        defaultZoom={zoomLevel ?? DEFAULT_ZOOM}
+        defaultCenter={location}
+        defaultZoom={zoomLevel}
       >
         <MapPin
-          lat={DEFAULT_LOCATION.lat}
-          lng={DEFAULT_LOCATION.lng}
+          lat={location.lat}
+          lng={location.lng}
           text={locationLabel}
         />
       </MapContainer>
