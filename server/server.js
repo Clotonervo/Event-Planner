@@ -202,7 +202,6 @@ app.get('/event', async (req, res) => {
                  });
                  return;
              }
-             //const currentUser = await util.getCurrentUser(req.body.authToken);
 
              else {
                  res.send(event);
@@ -267,7 +266,7 @@ app.get('/events', async (req, res) => {
 
 app.post('/event', async (req, res) => {
     var authHeader = req.headers['authorization'];
-    const authentication = await util. isValidAuth(authHeader);
+    const authentication = await util.isValidAuth(authHeader);
 
     if (!authentication.isValid && !authentication.timeout) {
         //This authentication token does not exist
@@ -328,7 +327,8 @@ app.post('/event', async (req, res) => {
 });
 
 app.put('/event', async (req, res) => {
-    const authentication = await isValidAuth(req.body.authToken);
+    var authHeader = req.headers['authorization'];
+    const authentication = await util.isValidAuth(authHeader);
     
     if (!authentication.isValid && !authentication.timeout) {
         //This authentication token does not exist
