@@ -327,6 +327,76 @@ app.post('/event', async (req, res) => {
     }
 });
 
+app.put('/event', async (req, res) => {
+    const authentication = await isValidAuth(req.body.authToken);
+    
+    if (!authentication.isValid && !authentication.timeout) {
+        //This authentication token does not exist
+        res.send({
+            success: false,
+            message: "Error: This authentication token does not exist"
+        });
+    } else if (!authentication.isValid && authentication.timeout) {
+        //This authentication token is expired, send back to login screen
+        res.send({
+            success: false,
+            message: "Error: This authentication token is expired, please login again"
+        });
+    } else {
+        //Authentication token is valid
+        if (req.body.eventID == null) {
+            //eventName is required error
+            res.send({
+                success: false,
+                message: "Error: An eventID is required"
+            });
+        }
+        const event = await Event.findOne({
+            eventID: req.body.eventID,
+        });
+        if (event == null) {
+            res.send({
+                success: false,
+                message: "Error: The provided eventID does not exist in the database."
+            });
+            return;
+        }
+        if (req.body.eventName != null) {
+            event.eventName = req.body.eventName;
+        }
+        if (req.body.location != null) {
+            event.location = req.body.location;
+        }
+        if (req.body.collaborators != null) {
+            event.collaborators = req.body.collaborators;
+        }
+        if (req.body.viewers != null) {
+            event.viewers = req.body.viewers;
+        }
+        if (req.body.past != null) {
+            event.past = req.body.past;
+        }
+
+        try {
+            event.save();
+            res.statusCode = 200;
+            res.send({
+                success: true,
+                message: "Successfully updated event"
+            });
+
+        } catch (error) {
+            console.log(error);
+            res.statusCode = 500;
+            res.send({
+                success: false,
+                message: "Error: Failed to update event"
+            });
+        }
+    }
+});
+
+
 app.delete('/event', async (req, res) => {
     try {
         var authHeader = req.headers['authorization'];
