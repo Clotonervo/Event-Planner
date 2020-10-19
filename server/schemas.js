@@ -53,7 +53,7 @@ const userToEvents = new mongoose.Schema({
     events: [{ type: String }]
 });
 
-const rsvpSchema = new mongoose.schema({
+const rsvpSchema = new mongoose.Schema({
     eventID: { type: String, required: true},
     username: { type: String, required: true},
     attending: { type: String, enum: ['yes', 'no', 'maybe', 'pending']}

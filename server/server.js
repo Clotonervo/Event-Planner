@@ -10,7 +10,7 @@ const bcrypt = require('bcrypt');
 const User = mongoose.model('User');
 const Event = mongoose.model('Event');
 const Authentication = mongoose.model('Authentication');
-
+const RSVP = mongoose.model('RSVP');
 
 // Connect to the database
 mongoose.connect('mongodb://localhost:27017/eventplannerDB', {
@@ -174,8 +174,8 @@ app.post('/register', (req, res) => {
         console.log(error);
         res.statusCode = 500;
         res.send({
-          success: false,
-        	message: "Error: Something went wrong in the server!"
+            success: false,
+            message: "Error: Something went wrong in the server!"
         });
     }
 
@@ -230,7 +230,8 @@ app.post('/event/create', async (req, res) => {
             res.statusCode = 200;
             res.send({
                 success: true,
-                message: "Successfully added event to database"
+                message: "Successfully added event to database",
+                eventID: newEvent.eventID
             });
 
         } catch (error) {
@@ -262,27 +263,30 @@ app.post('/rsvp', async (req, res) => {
         });
     } else {
         //Authentication token is valid
-        if (req.body.eventID == null || req.body.attending) {
+        if (req.body.eventID == null) {
             //eventName is required error
             res.send({
                 success: false,
-                message: "Error: An eventID and attending response is required"
+                message: "Error: An eventID is required"
             });
         }
+        var username = await getCurrentUser(req.body.authToken);
 		var rsvp = new RSVP({
             eventID : req.body.eventID,
-            attending : getCurrentUser(authentication),
-            username : req.body.eventName,
+            username : username,
 		})
-
+        if (req.body.attending == null) {
+            rsvp.attending = 'pending';
+        } else {
+            rsvp.attending = req.body.attending;
+        }
         try {
             rsvp.save();
             res.statusCode = 200;
             res.send({
                 success: true,
-                message: "Successfully added RSVP to database"
+                message: "Successfully added RSVP to database for the user " + username
             });
-
         } catch (error) {
             console.log(error);
             res.statusCode = 500;
