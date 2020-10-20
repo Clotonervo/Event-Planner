@@ -91,42 +91,42 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/tr
 
 ## /login
 ### POST
-Accepts: username, password
-Returns: success, authToken
-Note: Could this return the events and invitations for the user so the frontend doesn't need to request them separately?
+Accepts: username, password\
+Returns: success, authToken\
+Note: Could this return the events and invitations for the user so the frontend doesn't need to request them separately?\
 
 ## /register
 ### POST
-Accepts: email, password, name
-Returns: success, authToken
-Note: We need to change the name from email to username, frontend should send it as username so it's standardized. This could also return events and invitations like login.
+Accepts: email, password, name\
+Returns: success, authToken\
+Note: We need to change the name from email to username, frontend should send it as username so it's standardized. This could also return events and invitations like login.\
 
 ## /event
 ### GET - returns event corresponding to requested eventID
-Accepts: authToken (in header), eventID
-Returns: event
+Accepts: authToken (in header), eventID\
+Returns: event\
 
 ### POST
 Accepts: authToken (in header), eventName (required), location, collaborators, viewers, past
-Returns: success, message
-Note: We're going to have it return the eventID also
+Returns: success, message\
+Note: We're going to have it return the eventID also\
 
 ### PUT
-Accepts: authToken (in header), eventID (required), eventName, location, collaborators, viewers, past
-Returns: success, message
-Note: Backend will update any values included in the request to the event with the corresponding eventID
+Accepts: authToken (in header), eventID (required), eventName, location, collaborators, viewers, past\
+Returns: success, message\
+Note: Backend will update any values included in the request to the event with the corresponding eventID\
 
 ### DELETE
-Accepts: authToken (in header), eventID
-Returns: success, message
+Accepts: authToken (in header), eventID\
+Returns: success, message\
 
 ## /events
 ### GET - returns all events corresponding to logged in user
-Accepts: authToken (in header)
-Returns: list of events
+Accepts: authToken (in header)\
+Returns: list of events\
 
 ## /invitation
-I think the only endpoint we need is for GET because the invitations sent when the user creates/updates an event and sets the collaborators
-Accepts: authToken (in header)
-Returns: list of events?
+I think the only endpoint we need is for GET because the invitations sent when the user creates/updates an event and sets the collaborators\
+Accepts: authToken (in header)\
+Returns: list of events?\
 
