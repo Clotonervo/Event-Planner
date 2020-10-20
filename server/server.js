@@ -11,7 +11,6 @@ const util = require('./util');
 const User = mongoose.model('User');
 const Event = mongoose.model('Event');
 const Authentication = mongoose.model('Authentication');
-const UserToEvents = mongoose.model('UserToEvents');
 
 
 
@@ -47,10 +46,34 @@ const newUser = new User({
 })
 newUser.password = newUser.generateHash("password");
 
-const newUserEvent = new User({
-    eventID: "",
+var date = new Date()
 
-    name:"Test User",
+const viewOnlyEvent = new Event({
+    eventID: "12345",
+    eventName: "View Only Event",
+    viewers: ["Test@gmail.com"],
+    date: date.getDate() + 7
+})
+
+const Event1 = new Event({
+    eventID: "12346",
+    eventName: "Wedding",
+    collaborators: ["Test@gmail.com"],
+    date: date.getDate() + 7
+})
+
+const Event2 = new Event({
+    eventID: "12347",
+    eventName: "Burfday",
+    collaborators: ["Test@gmail.com"],
+    date: date.getDate() + 4
+})
+
+const Event3 = new Event({
+    eventID: "12348",
+    eventName: "Funeral",
+    collaborators: ["Test@gmail.com"],
+    date: date.getDate() - 7
 })
 
 const testAuth = new Authentication({
@@ -58,6 +81,11 @@ const testAuth = new Authentication({
     authToken: "Test",
     expiration: 0
 });
+
+// viewOnlyEvent.save();
+// Event1.save();
+// Event2.save();
+// Event3.save();
 
 
 try {
@@ -67,6 +95,7 @@ try {
     if(info == null){
       newUser.save();
       testAuth.save();
+      viewOnlyEvent.save();
     }
   });
     console.log("Test user ready!");
@@ -248,9 +277,27 @@ app.get('/events', async (req, res) => {
 
         const currentUser = await util.getCurrentUser(authHeader);
 
-        const result = await Event.find({
+        //Get all collaborating events
+        const collaborating = await Event.find({
             collaborators: { $in: [currentUser] }
+        }).lean();
+
+        // Get all view only events
+        const viewing = await Event.find({
+            viewers: { $in: [currentUser] }
+        }).lean();
+
+        collaborating.forEach( element => { element["isCollaborator"] = true });
+        viewing.forEach( element => { element["isCollaborator"] = false });
+        
+        const result = collaborating.concat(viewing);
+
+        result.sort(function(a,b){
+            return b.date - a.date;
         });
+
+        result.forEach( element => { element["past"] = util.isPast(element["date"]) });   
+
 
         res.send( result );
     } catch (err) {
@@ -303,6 +350,9 @@ app.post('/event', async (req, res) => {
         if (req.body.viewers != null) {
             newEvent.viewers = req.body.viewers;
         }
+        if (req.body.date != null){
+            newEvent.date = req.body.date;
+        }
         if (req.body.past != null) {
             newEvent.past = req.body.past;
         }
@@ -348,7 +398,7 @@ app.put('/event', async (req, res) => {
             //eventName is required error
             res.send({
                 success: false,
-                message: "Error: An eventID is required"
+                message: "Error: An event name is required"
             });
         }
         const event = await Event.findOne({
@@ -372,6 +422,9 @@ app.put('/event', async (req, res) => {
         }
         if (req.body.viewers != null) {
             event.viewers = req.body.viewers;
+        }
+        if(req.body.date != null) {
+            event.date = req.body.date;
         }
         if (req.body.past != null) {
             event.past = req.body.past;

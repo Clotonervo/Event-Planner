@@ -39,6 +39,7 @@ const eventSchema = new mongoose.Schema({
     location: { type: String },
     collaborators: [{ type: String }],
     viewers: [{ type: String }],
+    date: { type: Date},
     past: { type: Boolean }
 });
 
