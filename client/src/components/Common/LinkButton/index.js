@@ -15,6 +15,7 @@ const StyledLink = styled.div`
     cursor: pointer;
     color: ${highlightedLink};
   }
+  transition: 0.3s;
 `;
 
 const LinkButton = ({ text, onClick, fontSize = spacing16, ...props }) => {
