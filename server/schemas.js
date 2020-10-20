@@ -39,6 +39,7 @@ const eventSchema = new mongoose.Schema({
     location: { type: String },
     collaborators: [{ type: String }],
     viewers: [{ type: String }],
+    date: { type: Date},
     past: { type: Boolean }
 });
 
@@ -52,3 +53,5 @@ const userToEvents = new mongoose.Schema({
     username: {type: String, required: true, unique: true},
     events: [{ type: String }]
 });
+
+const UserToEvents = mongoose.model('UserToEvents', userToEvents);
