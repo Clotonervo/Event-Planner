@@ -12,7 +12,7 @@ const CardStyle = styled.div`
 `;
 
 const TextStyle = styled.div`
-  font-size: 1.5vw;
+  font-size: 1.8vw;
   color: ${link};
 `;
 

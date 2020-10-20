@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
+import ClientService from "../../services";
 import AppBar from "../Common/AppBar";
 import CenteredLoadingSpinner from "../Common/CenteredLoadingSpinner";
 import Error from "../Common/Error";
@@ -61,12 +62,30 @@ const Main = () => {
     loadPageData();
   }, []);
 
-  const loadPageData = () => {
-    setApiStatus({ ...apiStatus, loading: false, error: false });
+  const loadPageData = async () => {
+    setApiStatus({ ...apiStatus, loading: true, error: false });
+    const newApiStatus = { ...apiStatus };
+    try {
+      const results = await ClientService.events();
+      if (results.success) {
+        prepareData(results);
+      }
+    } catch (error) {
+      newApiStatus.error = true;
+      newApiStatus.message = error.message;
+    }
+    newApiStatus.loading = false;
+
+    setApiStatus(newApiStatus);
+  };
+
+  const prepareData = (pageData) => {
+    console.log(pageData);
+    debugger;
     //TODO: connect to backend
-    setInvites(testInvites);
-    setUpcomingEvents(testEvents);
-    setPastEvents(testEvents);
+    // setInvites(testInvites);
+    // setUpcomingEvents(testEvents);
+    // setPastEvents(testEvents);
   };
 
   const history = useHistory();

@@ -9,6 +9,10 @@ var ServiceClient = {
     return this.getDataFromApi("/express_backend");
   },
 
+  events: async function () {
+    return this.getDataFromApi("/events");
+  },
+
   getDataFromApi: async function (url) {
     let headers = {
       Accept: "application/json"
