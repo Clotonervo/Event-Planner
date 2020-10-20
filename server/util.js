@@ -57,5 +57,9 @@ module.exports = {
         } catch (err) {
             console.log(error);
         }
+    },
+    isPast: (date) => {
+        var today = new Date();
+        return new Date().getDate() > date;
     }
 }
