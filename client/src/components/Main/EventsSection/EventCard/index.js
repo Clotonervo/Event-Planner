@@ -1,7 +1,8 @@
 import React from "react";
 import styled from "styled-components";
-import ActionCard from "../ActionCard";
-import { borderRadius } from "../../../resources/style-constants";
+import ActionCard from "../../ActionCard";
+import Menu from "../Menu";
+import { borderRadius } from "../../../../resources/style-constants";
 
 const CardStyle = styled.div`
   display: flex;
@@ -37,25 +38,38 @@ const ColorBar = styled.div`
   top: 0;
 `;
 
-const ImgDot = styled.img`
-  height: 40%;
+const EventMenu = styled(Menu)`
   position: absolute;
   right: 0;
   top: 0;
 `;
 
 const EventCard = ({
+  event,
   event: { eventName },
   color,
   text,
-  onClick,
+  redirectToEventView,
+  redirectToEventEdit,
+  leaveEvent,
   ...props
 }) => {
+  const menuItems = event.isCollaborator
+    ? [
+        { text: "View Event", onClick: redirectToEventView },
+        { text: "Edit Event", onClick: redirectToEventEdit },
+        { text: "Leave Event", onClick: leaveEvent }
+      ]
+    : [
+        { text: "View Event", onClick: redirectToEventView },
+        { text: "Leave Event", onClick: leaveEvent }
+      ];
+
   return (
-    <ActionCard onClick={onClick}>
+    <ActionCard {...props}>
       <CardStyle>
         <ColorBar {...{ color }}>
-          <ImgDot src="menu_dots.svg"></ImgDot>
+          <EventMenu items={menuItems} {...{ event }} />
         </ColorBar>
         <TextBar>{eventName}</TextBar>
       </CardStyle>

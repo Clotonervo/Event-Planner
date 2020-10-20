@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { Grid } from "@material-ui/core";
 import Event from "../EventCard";
 import AddEvent from "../AddEventCard";
-import LinkButton from "../../Common/LinkButton";
+import LinkButton from "../../../Common/LinkButton";
 import {
   fontSize24,
   fontSize56,
@@ -12,11 +12,7 @@ import {
   eventOrange,
   eventGreen,
   eventPink
-} from "../../../resources/style-constants";
-
-const StyledH1 = styled.h1`
-  font-size: ${fontSize56};
-`;
+} from "../../../../resources/style-constants";
 
 const ViewAllWrapper = styled.div`
   display: flex;
@@ -27,7 +23,13 @@ const ViewAllWrapper = styled.div`
 
 const colors = [eventYellow, eventOrange, eventGreen, eventPink];
 
-const Events = ({ isUpcoming, events = [] }) => {
+const Events = ({
+  isUpcoming,
+  events = [],
+  redirectToEventView,
+  redirectToEventEdit,
+  leaveEvent
+}) => {
   const eventsToShow = isUpcoming ? 5 : 6;
 
   const filterEvents = (events) => {
@@ -37,7 +39,13 @@ const Events = ({ isUpcoming, events = [] }) => {
   };
 
   const [viewAll, setViewAll] = useState(false);
-  const [visibleEvents, setVisibleEvents] = useState(filterEvents(events));
+  const [visibleEvents, setVisibleEvents] = useState([]);
+
+  useEffect(() => {
+    setVisibleEvents(filterEvents(events));
+  }, [events]);
+
+  const displayGrid = isUpcoming ? true : events.length > 0;
 
   useEffect(() => {
     if (viewAll) {
@@ -50,20 +58,29 @@ const Events = ({ isUpcoming, events = [] }) => {
   };
 
   return (
-    <div>
-      <StyledH1>{isUpcoming ? "Upcoming Events" : "Past Events"}</StyledH1>
-      {visibleEvents.length > 0 && (
-        <Grid container direction="row" justify="flex-start" spacing={10}>
+    <>
+      {displayGrid && (
+        <Grid
+          container
+          direction="row"
+          justify-content="space-between"
+          spacing={8}
+        >
           {isUpcoming && (
-            <Grid item>
-              <AddEvent />
+            <Grid item key="add">
+              <AddEvent onClick={redirectToEventEdit} />
             </Grid>
           )}
-          {visibleEvents.map((event) => {
+          {visibleEvents.map((event, index) => {
             return (
-              <Grid item>
+              <Grid item key={index}>
                 <Event
-                  {...{ event }}
+                  {...{
+                    event,
+                    redirectToEventView,
+                    redirectToEventEdit,
+                    leaveEvent
+                  }}
                   color={colors[Math.floor(Math.random() * colors.length)]}
                 />
               </Grid>
@@ -72,7 +89,7 @@ const Events = ({ isUpcoming, events = [] }) => {
         </Grid>
       )}
       <ViewAllWrapper>
-        {events.length !== visibleEvents.length && (
+        {visibleEvents.length > 0 && events.length !== visibleEvents.length && (
           <LinkButton
             text="View All"
             onClick={clickViewAll}
@@ -80,7 +97,7 @@ const Events = ({ isUpcoming, events = [] }) => {
           />
         )}
       </ViewAllWrapper>
-    </div>
+    </>
   );
 };
 
