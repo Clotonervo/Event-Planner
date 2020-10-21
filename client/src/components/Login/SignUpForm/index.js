@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
+import ClientService from "../../../services";
 import PrimaryButton from "../../Common/Buttons/PrimaryButton";
 import LinkButton from "../LinkButton";
 import H1 from "../../Common/Headings/Heading1";
 import Stack from "../../Common/Stack";
 import InputField from "../InputField";
+import Error from "../../Common/Error";
 import {
   spacing8,
   spacing16,
@@ -32,13 +34,28 @@ const ButtonWrapper = styled.div`
   padding: ${spacing8} 0;
 `;
 
-const SignUpForm = ({ updateAuthToken, switchView, redirectToHome}) => {
+const SignUpForm = ({ updateAuthToken, switchView, redirectToHome }) => {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
   const [signUpError, setSignUpError] = useState(false);
   const [errorMessage, setErrorMessage] = useState();
+
+  const [validationState, setValidationState] = useState({
+    name: {
+      error: true,
+      message: ""
+    },
+    username: {
+      error: true,
+      message: ""
+    },
+    password: {
+      error: true,
+      message: ""
+    }
+  });
 
   const handleChange = (e) => {
     const input = e.target;
@@ -47,25 +64,35 @@ const SignUpForm = ({ updateAuthToken, switchView, redirectToHome}) => {
 
     if (name === "name") {
       setName(value);
-    } else if (name === "email") {
-      setEmail(value);
+    } else if (name === "username") {
+      setUsername(value);
     } else {
       setPassword(value);
-    }
-
-    if (email.includes("@") && password.length > 6) {
-      setIsDisabled(false);
-      //TODO: set up proper validation
-    } else {
-      setIsDisabled(true);
     }
   };
 
   useEffect(() => {
     setIsDisabled(
-      validationState.password.error || validationState.username.error || validationState.email.error
+      validationState.password.error ||
+        validationState.username.error ||
+        validationState.name.error
     );
   }, [validationState]);
+
+  const validateName = () => {
+    let nameState = {
+      error: false,
+      message: ""
+    };
+    if (!name) {
+      nameState.error = true;
+      nameState.message = "Name is required";
+    }
+    setValidationState({
+      ...validationState,
+      name: nameState
+    });
+  };
 
   const validateUsername = () => {
     let usernameState = {
@@ -74,26 +101,11 @@ const SignUpForm = ({ updateAuthToken, switchView, redirectToHome}) => {
     };
     if (!username) {
       usernameState.error = true;
-      usernameState.message = "Username is required";
+      usernameState.message = "Email is required";
     }
     setValidationState({
       ...validationState,
       username: usernameState
-    });
-  };
-
-  const validateEmail = () => {
-    let usernameState = {
-      error: false,
-      message: ""
-    };
-    if (!username) {
-      emailState.error = true;
-      emailState.message = "Email is required";
-    }
-    setValidationState({
-      ...validationState,
-      email: emailState
     });
   };
 
@@ -117,22 +129,25 @@ const SignUpForm = ({ updateAuthToken, switchView, redirectToHome}) => {
 
   const signUp = async () => {
     try {
-        const signUpStatus = await ServiceClient.signUp({ name, username, password });
-        if (signUpStatus.success) {
-            updateAuthToken && udpateAuthtoken(signUpStatus.authToken);
-            redirectToHome(); // ?
-        }
-        else if (signUpStatus.success ?? false) {
-            setErrorMessage(signUpStatus.message);
-        }
+      const signUpStatus = await ClientService.register({
+        name,
+        username,
+        password
+      });
+      if (signUpStatus.success) {
+        updateAuthToken && updateAuthToken(signUpStatus.authToken);
+        redirectToHome(); // ?
+      } else if (!signUpStatus.success ?? false) {
+        setErrorMessage(signUpStatus.message);
+      }
     } catch (error) {
-        setSignUpError(true);
+      setSignUpError(true);
     }
-  }
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    SignUp();
+    signUp();
   };
 
   return (
@@ -147,18 +162,19 @@ const SignUpForm = ({ updateAuthToken, switchView, redirectToHome}) => {
               placeholder="John Doe"
               label="Name"
               changeHandler={handleChange}
+              validateInput={validateName}
               validityState={validationState.name}
               fullWidth
             />
             <InputField
-              name="email"
-              value={email}
+              name="username"
+              value={username}
               placeholder="something@gmail.com"
-              label="Email"
+              label="Username"
               required
               validateInput={validateUsername}
               changeHandler={handleChange}
-              validityState={validationState.email}
+              validityState={validationState.username}
               fullWidth
             />
             <InputField
