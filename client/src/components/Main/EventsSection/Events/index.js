@@ -6,7 +6,6 @@ import AddEvent from "../AddEventCard";
 import LinkButton from "../../../Common/LinkButton";
 import {
   fontSize24,
-  fontSize56,
   spacing24,
   eventYellow,
   eventOrange,
@@ -30,20 +29,18 @@ const Events = ({
   redirectToEventEdit,
   leaveEvent
 }) => {
-  const eventsToShow = isUpcoming ? 5 : 6;
-
-  const filterEvents = (events) => {
-    return events.length > eventsToShow
-      ? events.slice(0, eventsToShow)
-      : events;
-  };
-
   const [viewAll, setViewAll] = useState(false);
   const [visibleEvents, setVisibleEvents] = useState([]);
 
   useEffect(() => {
+    const eventsToShow = isUpcoming ? 5 : 6;
+    const filterEvents = (events) => {
+      return events.length > eventsToShow
+        ? events.slice(0, eventsToShow)
+        : events;
+    };
     setVisibleEvents(filterEvents(events));
-  }, [events]);
+  }, [events, isUpcoming]);
 
   const displayGrid = isUpcoming ? true : events.length > 0;
 

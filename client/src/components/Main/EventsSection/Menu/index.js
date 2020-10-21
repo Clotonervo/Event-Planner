@@ -30,7 +30,6 @@ const StyledSvg = styled.svg`
 `;
 
 const EventMenu = ({ event, items = [], ...props }) => {
-  console.log(items);
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = (event) => {

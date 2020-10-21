@@ -21,33 +21,6 @@ const testInvites = [
   { name: "event4", isUnopened: true, id: "9" }
 ];
 
-const testEvents = [
-  {
-    neventId: "123",
-    eventName: "Event 1",
-    location: "123 Apple St.",
-    collaborators: [],
-    viewers: [],
-    past: true
-  },
-  {
-    eventId: "123",
-    eventName: "Event 2",
-    location: "123 Apple St.",
-    collaborators: [],
-    viewers: [],
-    past: false
-  },
-  {
-    eventId: "123",
-    eventName: "Event 3",
-    location: "123 Apple St.",
-    collaborators: [],
-    viewers: [],
-    past: false
-  }
-];
-
 const Main = () => {
   const [invites, setInvites] = useState([]);
   const [upcomingEvents, setUpcomingEvents] = useState([]);
@@ -60,6 +33,7 @@ const Main = () => {
 
   useEffect(() => {
     loadPageData();
+    // eslint-disable-next-line
   }, []);
 
   const loadPageData = async () => {
@@ -67,11 +41,12 @@ const Main = () => {
     const newApiStatus = { ...apiStatus };
     try {
       const results = await ClientService.events();
-      if (results.success) {
-        prepareData(results);
-      } else {
+      //TODO: call endpoint for invites
+      if (results.success !== undefined && !results.success) {
         newApiStatus.error = true;
         newApiStatus.message = results.message;
+      } else {
+        prepareData(results);
       }
     } catch (error) {
       newApiStatus.error = true;
@@ -83,25 +58,26 @@ const Main = () => {
   };
 
   const prepareData = (pageData) => {
-    console.log(pageData);
-    debugger;
-    //TODO: connect to backend
-    // setInvites(testInvites);
-    // setUpcomingEvents(testEvents);
-    // setPastEvents(testEvents);
+    let upcoming = pageData.filter((event) => !event.past);
+    let past = pageData.filter((event) => event.past);
+    setUpcomingEvents(upcoming);
+    setPastEvents(past);
+
+    //TODO: set invites from api data
+    setInvites(testInvites);
   };
 
   const history = useHistory();
 
   const redirectToEventView = (event) => {
-    let eventId = event.eventId;
-    history.push(`/event/${eventId}`);
+    let eventID = event.eventID;
+    history.push(`/event/${eventID}`);
   };
 
   const redirectToEventEdit = (event) => {
-    let eventId = event?.eventId;
-    if (eventId) {
-      history.push(`/event-edit/${eventId}`);
+    let eventID = event?.eventID;
+    if (eventID) {
+      history.push(`/event-edit/${eventID}`);
     } else {
       history.push(`/event-edit`);
     }
@@ -109,7 +85,9 @@ const Main = () => {
 
   const leaveEvent = (event) => {
     //TODO: call backend to leave event;
+
     // On success, filterOutEvent(event);
+    filterOutEvent(event);
   };
 
   const filterOutEvent = (departedEvent) => {
@@ -132,7 +110,9 @@ const Main = () => {
         />
       ) : (
         <Stack gapSize={spacing64}>
-          <InvitesSection {...{ invites, setInvites }} />
+          {invites.length > 0 && (
+            <InvitesSection {...{ invites, setInvites }} />
+          )}
           <EventsSection
             isUpcoming={true}
             events={upcomingEvents}
