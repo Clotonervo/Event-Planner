@@ -69,6 +69,9 @@ const Main = () => {
       const results = await ClientService.events();
       if (results.success) {
         prepareData(results);
+      } else {
+        newApiStatus.error = true;
+        newApiStatus.message = results.message;
       }
     } catch (error) {
       newApiStatus.error = true;
