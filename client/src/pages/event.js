@@ -1,13 +1,13 @@
 import React from "react";
 import Layout from "../components/Layout";
-import Main from "../components/Main";
+import EventView from "../components/EventView";
 
-const EventView = () => {
+const EventViewPage = () => {
   return (
     <Layout>
-      <Main />
+      <EventView />
     </Layout>
   );
 };
 
-export default EventView;
+export default EventViewPage;

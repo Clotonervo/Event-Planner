@@ -1,13 +1,14 @@
 import React from "react";
 import Layout from "../components/Layout";
-import Main from "../components/Main";
+import EventEdit from "../components/EventEdit";
 
-const EventEdit = () => {
+const EventEditPage = () => {
+  //TODO: will need to get the eventId from the url
   return (
     <Layout>
-      <Main />
+      <EventEdit />
     </Layout>
   );
 };
 
-export default EventEdit;
+export default EventEditPage;
