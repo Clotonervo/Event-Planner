@@ -1,13 +1,15 @@
 import React from "react";
 import AppBar from "../Common/AppBar";
-import { eventPink } from "../../resources/style-constants";
+import { eventPink, eventYellow } from "../../resources/style-constants";
 import Invitee from "../../components/Main/Invitee/index.js";
+import RSVP from "../../components/Main/RSVP/index.js"
 
 const Main = () => {
   return (
     <div>
-      <AppBar color={eventPink} />
-      Page coming soon ...
+
+        <RSVP color={eventYellow} />
+
     </div>
   );
 };
