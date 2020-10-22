@@ -9,7 +9,6 @@ const InviteeContainer = styled.div`
   transition: box-shadow 0.08s ease-in-out;
   transform: scale(1.0, 1.0);
   cursor: pointer;
-
   :hover {
     opacity: .5;
   }
