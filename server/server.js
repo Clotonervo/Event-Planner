@@ -39,69 +39,68 @@ app.listen(port, () => console.log(`Listening on port ${port}`));
  *  Salt: Test salt 123
  */
 
-const newUser = new User({
-    username: "Test@gmail.com",
+// const newUser = new User({
+//     username: "Test@gmail.com",
+//     name:"Test User",
+// })
+// newUser.password = newUser.generateHash("password");
 
-    name:"Test User",
-})
-newUser.password = newUser.generateHash("password");
+// var date = new Date()
 
-var date = new Date()
+// const viewOnlyEvent = new Event({
+//     eventID: "12345",
+//     eventName: "View Only Event",
+//     viewers: ["Test@gmail.com"],
+//     date: date.getDate() + 7
+// })
 
-const viewOnlyEvent = new Event({
-    eventID: "12345",
-    eventName: "View Only Event",
-    viewers: ["Test@gmail.com"],
-    date: date.getDate() + 7
-})
+// const Event1 = new Event({
+//     eventID: "12346",
+//     eventName: "Wedding",
+//     collaborators: ["Test@gmail.com"],
+//     date: date.getDate() + 7
+// })
 
-const Event1 = new Event({
-    eventID: "12346",
-    eventName: "Wedding",
-    collaborators: ["Test@gmail.com"],
-    date: date.getDate() + 7
-})
+// const Event2 = new Event({
+//     eventID: "12347",
+//     eventName: "Burfday",
+//     collaborators: ["Test@gmail.com"],
+//     date: date.getDate() + 4
+// })
 
-const Event2 = new Event({
-    eventID: "12347",
-    eventName: "Burfday",
-    collaborators: ["Test@gmail.com"],
-    date: date.getDate() + 4
-})
+// const Event3 = new Event({
+//     eventID: "12348",
+//     eventName: "Funeral",
+//     collaborators: ["Test@gmail.com"],
+//     date: date.getDate() - 7
+// })
 
-const Event3 = new Event({
-    eventID: "12348",
-    eventName: "Funeral",
-    collaborators: ["Test@gmail.com"],
-    date: date.getDate() - 7
-})
+// const testAuth = new Authentication({
+//     username: "Test@gmail.com",
+//     authToken: "Test",
+//     expiration: 0
+// });
 
-const testAuth = new Authentication({
-    username: "Test@gmail.com",
-    authToken: "Test",
-    expiration: 0
-});
-
-// viewOnlyEvent.save();
-// Event1.save();
-// Event2.save();
-// Event3.save();
+// // viewOnlyEvent.save();
+// // Event1.save();
+// // Event2.save();
+// // Event3.save();
 
 
-try {
-  var result = User.findOne({
-    username: "Test@gmail.com"
-  }).then(function (info) {
-    if(info == null){
-      newUser.save();
-      testAuth.save();
-      viewOnlyEvent.save();
-    }
-  });
-    console.log("Test user ready!");
-} catch (error) {
-  console.log(error);
-}
+// try {
+//   var result = User.findOne({
+//     username: "Test@gmail.com"
+//   }).then(function (info) {
+//     if(info == null){
+//       newUser.save();
+//       testAuth.save();
+//       viewOnlyEvent.save();
+//     }
+//   });
+//     console.log("Test user ready!");
+// } catch (error) {
+//   console.log(error);
+// }
 //--------------------------------------^ Test User ^
 
 /* ----------------------------- API Endpoints -----------------------------*/
