@@ -122,7 +122,7 @@ app.post('/login', function(req, res) {
             if (user.validPassword(req.body.password)) {
                 //Create and store auth token into authentication database
                 let authToken = uuidv4();       //Uniquely generated auth token
-                let expirationTime = new Date().getTime() + 15*60000; //Should be 15 minutes after logging in
+                let expirationTime = new Date().getTime() + 900000; //Should be 15 minutes after logging in
 
                 Authentication.findOneAndUpdate({
                     username: req.body.username,
