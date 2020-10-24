@@ -17,6 +17,7 @@ export const grey1 = "#9e9e9e"; // gray
 export const grey2 = "#424242"; // dark gray
 export const grey3 = "#e0e0e0"; // light gray
 export const link = "#2196f3"; // color for links
+export const lightBlue = "#4fc3f7" // color for yes button
 export const highlightedLink = "#35baf6"; // color of links on hover
 export const errorRed = "#FF0002";
 export const red1 = "#FF5666";

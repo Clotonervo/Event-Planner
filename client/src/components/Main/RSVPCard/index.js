@@ -6,8 +6,8 @@ import Card from "../../Common/Card";
 import { borderRadius } from "../../../resources/style-constants";
 
 const CardContainer = styled(Card)`
-  height: 5vw;
-  width: 20vw;
+  height: 75px;
+  width: 390px;
   border-radius: ${borderRadius};
   transition: transform 0.08s ease-in-out;
   transition: box-shadow 0.08s ease-in-out;

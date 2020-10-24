@@ -1,16 +1,54 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { theme1, grey3 } from "../../../resources/style-constants";
+import { theme1, grey3, lightBlue, eventPink, eventGreen } from "../../../resources/style-constants";
 import SecondaryButton from "../../Common/Buttons/SecondaryButton/index.js";
+import PrimaryButton from "../../Common/Buttons/PrimaryButton/index.js";
 import RSVPCard from "../RSVPCard/index.js"
+import styled from "styled-components";
 
-const theme = {
-  default: "white",
+const accentTheme = {
+  default: lightBlue,
   hover: theme1,
-  disabled: grey3
+  disabled: grey3,
+  borderRadius: 0
 };
 
-const RSVP = ({
+const FormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 0px;
+  margin: 5px;
+  |
+`;
+const AlightRight = styled.div`
+display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    width: 45%;
+    height: 100%;
+    position: absolute;
+    Right:0;
+    bottom:0;
+ `;
+const AlightLeft = styled.div`
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 40%;
+    height: 100%;
+    position: absolute;
+    Left:0;
+    bottom:0;
+ `;
+
+
+
+const RSVPFloating = ({
   onClick,
   align = "right",
   fullWidth,
@@ -27,18 +65,26 @@ const RSVP = ({
   return (
     <div >
         <RSVPCard>
-            Are you going?     
-                <SecondaryButton onClick={respondYes}>
-                    Yes
-                </SecondaryButton>
-                <SecondaryButton onClick={respondNo}>
-                    No
-                </SecondaryButton>
+            <AlightLeft>
+                Are you going? 
+            </AlightLeft>
+   
+                <AlightRight>
+                    <SecondaryButton onClick={respondNo}>
+                        No.
+                    </SecondaryButton>
+
+                    <PrimaryButton onClick={respondYes} theme={accentTheme} disabled={false}>
+                        Yes
+                    </PrimaryButton>
+
+                </AlightRight> 
+
         </RSVPCard>
     </div>
   );
 };
-export default RSVP;
+export default RSVPFloating;
 
 
 
