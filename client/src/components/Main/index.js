@@ -44,8 +44,9 @@ const DisplayStle = styled.div`
 const InviteeRow = styled.div`
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: space-around;
+  //align-items: center;
+  align-items:flex-start;
+  //justify-content: space-around;
 `;
 
 const Main = () => {
