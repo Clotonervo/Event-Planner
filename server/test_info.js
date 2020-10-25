@@ -94,22 +94,23 @@ createTestUserEvents = async function() {
         date: date.getDate() - 7
     })
     
-    var eventExists = Event.findOne({ eventID: "12345"})
+    var eventExists = await Event.findOne({ eventID: "12345"})
+    // console.log(eventExists);
     if(eventExists === null){
         await viewOnlyEvent.save()
     }
 
-    eventExists = Event.findOne({ eventID: "12346"})
+    eventExists = await Event.findOne({ eventID: "12346"})
     if(eventExists === null){
         await Event1.save()
     }
 
-    eventExists = Event.findOne({ eventID: "12347"})
+    eventExists = await Event.findOne({ eventID: "12347"})
     if(eventExists === null){
         await Event2.save()
     }
 
-    eventExists = Event.findOne({ eventID: "12348"})
+    eventExists = await Event.findOne({ eventID: "12348"})
     if(eventExists === null){
         await Event3.save()
     }
