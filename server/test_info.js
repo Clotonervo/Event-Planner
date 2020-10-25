@@ -46,9 +46,6 @@ createTestUser = async function() {
     const isTestUserThere = await User.findOne({username: "Test@gmail.com"});
 
     if(isTestUserThere === null){
-        console.log("got here")
-        var i = 0;
-        i += 1;
         await newUser.save();
     }
 }
