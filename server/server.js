@@ -111,7 +111,7 @@ app.post('/login', function(req, res) {
         User.findOne({username: req.body.username}, function(err, user) {
             // Check database for correct inputs
             if (user === null){
-                res.statusCode = 200;
+                res.statusCode = 404;
                 res.send({
                     success: false,
                     message: "User not found!"
@@ -147,7 +147,7 @@ app.post('/login', function(req, res) {
                     });
 
             } else {
-                res.statusCode = 200;
+                res.statusCode = 403;
                 res.send({
                     success: false,
                     message: "Invalid credentials!"
@@ -233,11 +233,15 @@ app.get('/event', async (req, res) => {
              }
 
              else {
-                 res.send(event);
+                res.send({
+                    success: true,
+                    event: event
+                });
+                return
              }
          }
          else {
-             res.statusCode = 200;
+             res.statusCode = 401;
              res.send({
                  success: false,
                  message: "Authtoken is invalid, please login again to renew!"
@@ -261,6 +265,7 @@ app.get('/events', async (req, res) => {
         const authentication = await util.isValidAuth(authHeader);
 
         if(authentication.timeout){
+            res.statusCode = 403;
             res.send({
                 success: false,
                 message: "Error: This authentication token does not exist"
@@ -268,6 +273,7 @@ app.get('/events', async (req, res) => {
             return;
         }
         else if(!authentication.isValid){
+            res.statusCode = 401;
             res.send({
                 success: false,
                 message: "Error: This authentication token is expired, please login again"
@@ -299,7 +305,11 @@ app.get('/events', async (req, res) => {
         result.forEach( element => { element["past"] = util.isPast(element["date"]) });   
 
 
-        res.send( result );
+        res.send({
+            success: true,
+            events: result
+        });
+
     } catch (err) {
         console.log(err);
         res.statusCode = 500;
@@ -317,12 +327,14 @@ app.post('/event', async (req, res) => {
 
     if (!authentication.isValid && !authentication.timeout) {
         //This authentication token does not exist
+        res.statusCode = 403
         res.send({
             success: false,
             message: "Error: This authentication token does not exist"
         });
     } else if (!authentication.isValid && authentication.timeout) {
         //This authentication token is expired, send back to login screen
+        res.statusCode = 401
         res.send({
             success: false,
             message: "Error: This authentication token is expired, please login again"
@@ -358,11 +370,12 @@ app.post('/event', async (req, res) => {
         }
 
         try {
-            newEvent.save();
+            await newEvent.save();
             res.statusCode = 200;
             res.send({
                 success: true,
-                message: "Successfully added event to database"
+                message: "Successfully added event to database",
+                event: newEvent,
             });
 
         } catch (error) {
@@ -382,12 +395,14 @@ app.put('/event', async (req, res) => {
     
     if (!authentication.isValid && !authentication.timeout) {
         //This authentication token does not exist
+        res.statusCode = 403;
         res.send({
             success: false,
             message: "Error: This authentication token does not exist"
         });
     } else if (!authentication.isValid && authentication.timeout) {
         //This authentication token is expired, send back to login screen
+        res.statusCode = 401;
         res.send({
             success: false,
             message: "Error: This authentication token is expired, please login again"
@@ -396,6 +411,7 @@ app.put('/event', async (req, res) => {
         //Authentication token is valid
         if (req.body.eventID == null) {
             //eventName is required error
+            res.statusCode = 200;
             res.send({
                 success: false,
                 message: "Error: An event name is required"
@@ -405,6 +421,7 @@ app.put('/event', async (req, res) => {
             eventID: req.body.eventID,
         });
         if (event == null) {
+            res.statusCode = 200;
             res.send({
                 success: false,
                 message: "Error: The provided eventID does not exist in the database."
@@ -489,7 +506,7 @@ app.delete('/event', async (req, res) => {
             }
         }
         else {
-            res.statusCode = 200;
+            res.statusCode = 403;
             res.send({
                 success: false,
                 message: "Authtoken is invalid, please login again to renew!"
