@@ -109,7 +109,7 @@ const LoginForm = ({ updateAuthToken, switchView, redirectToHome }) => {
       if (loginStatus.success) {
         updateAuthToken && updateAuthToken(loginStatus.authToken);
         redirectToHome();
-      } else if (loginStatus.success ?? false) {
+      } else if (!loginStatus.success ?? false) {
         setErrorMessage(loginStatus.message);
       }
     } catch (error) {
@@ -133,7 +133,7 @@ const LoginForm = ({ updateAuthToken, switchView, redirectToHome }) => {
               name="username"
               value={username}
               placeholder="something@gmail.com"
-              label="Email"
+              label="Username"
               required
               changeHandler={handleChange}
               validateInput={validateUsername}
