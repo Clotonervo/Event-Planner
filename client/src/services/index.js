@@ -5,6 +5,10 @@ var ServiceClient = {
     return this.postDataToApi("/login", data);
   },
 
+  register: async function (data) {
+    return this.postDataToApi("/register", data);
+  },
+
   test: async function () {
     return this.getDataFromApi("/express_backend");
   },
