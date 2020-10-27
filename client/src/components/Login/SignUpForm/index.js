@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
+import ClientService from "../../../services";
 import PrimaryButton from "../../Common/Buttons/PrimaryButton";
 import LinkButton from "../LinkButton";
 import H1 from "../../Common/Headings/Heading1";
 import Stack from "../../Common/Stack";
 import InputField from "../InputField";
+import Error from "../../Common/Error";
 import {
   spacing8,
   spacing16,
@@ -32,11 +34,28 @@ const ButtonWrapper = styled.div`
   padding: ${spacing8} 0;
 `;
 
-const SignUpForm = ({ switchView }) => {
+const SignUpForm = ({ updateAuthToken, switchView, redirectToHome }) => {
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
+  const [signUpError, setSignUpError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState();
+
+  const [validationState, setValidationState] = useState({
+    name: {
+      error: true,
+      message: ""
+    },
+    username: {
+      error: true,
+      message: ""
+    },
+    password: {
+      error: true,
+      message: ""
+    }
+  });
 
   const handleChange = (e) => {
     const input = e.target;
@@ -45,25 +64,90 @@ const SignUpForm = ({ switchView }) => {
 
     if (name === "name") {
       setName(value);
-    } else if (name === "email") {
-      setEmail(value);
+    } else if (name === "username") {
+      setUsername(value);
     } else {
       setPassword(value);
     }
+  };
 
-    if (email.includes("@") && password.length > 6) {
-      setIsDisabled(false);
-      //TODO: set up proper validation
-    } else {
-      setIsDisabled(true);
+  useEffect(() => {
+    setIsDisabled(
+      validationState.password.error ||
+        validationState.username.error ||
+        validationState.name.error
+    );
+  }, [validationState]);
+
+  const validateName = () => {
+    let nameState = {
+      error: false,
+      message: ""
+    };
+    if (!name) {
+      nameState.error = true;
+      nameState.message = "Name is required";
+    }
+    setValidationState({
+      ...validationState,
+      name: nameState
+    });
+  };
+
+  const validateUsername = () => {
+    let usernameState = {
+      error: false,
+      message: ""
+    };
+    if (!username) {
+      usernameState.error = true;
+      usernameState.message = "Email is required";
+    }
+    setValidationState({
+      ...validationState,
+      username: usernameState
+    });
+  };
+
+  const validatePassword = () => {
+    let passwordState = {
+      error: false,
+      message: ""
+    };
+    if (!password) {
+      passwordState.error = true;
+      passwordState.message = "Password is required.";
+    } else if (password.length < 8) {
+      passwordState.error = true;
+      passwordState.message = "Password must be at least 8 characters.";
+    }
+    setValidationState({
+      ...validationState,
+      password: passwordState
+    });
+  };
+
+  const signUp = async () => {
+    try {
+      const signUpStatus = await ClientService.register({
+        name,
+        username,
+        password
+      });
+      if (signUpStatus.success) {
+        updateAuthToken && updateAuthToken(signUpStatus.authToken);
+        redirectToHome(); // ?
+      } else if (!signUpStatus.success ?? false) {
+        setErrorMessage(signUpStatus.message);
+      }
+    } catch (error) {
+      setSignUpError(true);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("clicked sign in");
-    console.log(`email: ${email}`);
-    console.log(`password: ${password}`);
+    signUp();
   };
 
   return (
@@ -78,14 +162,19 @@ const SignUpForm = ({ switchView }) => {
               placeholder="John Doe"
               label="Name"
               changeHandler={handleChange}
+              validateInput={validateName}
+              validityState={validationState.name}
               fullWidth
             />
             <InputField
-              name="email"
-              value={email}
+              name="username"
+              value={username}
               placeholder="something@gmail.com"
-              label="Email"
+              label="Username"
+              required
+              validateInput={validateUsername}
               changeHandler={handleChange}
+              validityState={validationState.username}
               fullWidth
             />
             <InputField
@@ -94,7 +183,10 @@ const SignUpForm = ({ switchView }) => {
               placeholder="Enter your password"
               label="Password"
               type="password"
+              required
               changeHandler={handleChange}
+              validateInput={validatePassword}
+              validityState={validationState.password}
               fullWidth
             ></InputField>
             <div>
@@ -111,6 +203,10 @@ const SignUpForm = ({ switchView }) => {
                 Already have an account?
                 <PaddedLink onClick={switchView} text="Sign in" />
               </AdditionalLink>
+              {errorMessage && <Error>{errorMessage}</Error>}
+              {signUpError && (
+                <Error>Something went wrong. Please try again later.</Error>
+              )}
             </div>
           </Stack>
         </form>
