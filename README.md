@@ -17,8 +17,8 @@ I have left the default React readme below for more information.
 ## Populating the Database
 For testing I provided a database script that should populate the database with some test data. We should be updating this as features get added as well to keep up.
 to run it, all you need to do is navigate to the server folder and run `node test_info.js`. It will provide you various options, but for simplicity I'll state them here:
-`node test_info.js populate` - populate all test user information into database (Username: Test@gmail.com, password: password)
-`node test_info.js clear` - This will clear all test user information from database if you want to start fresh
+`node database_script.js populate` - populate all test user information into database (Username: Test@gmail.com, password: password)
+`node database_script.js clear` - This will clear all test user information from database if you want to start fresh
 
 # API Endpoints
 
