@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import Input from "../../Common/Input";
-import Error from "../../Common/Error";
+import Input from "../Input";
+import Error from "../Error";
 
 const PaddedLabel = styled.label`
   font-weight: bold;
@@ -12,7 +12,7 @@ const InputWrapper = styled.div`
   width: 100%;
 `;
 
-const InputField = ({
+const InputFormField = ({
   name,
   value,
   placeholder,
@@ -40,4 +40,4 @@ const InputField = ({
   );
 };
 
-export default InputField;
+export default InputFormField;

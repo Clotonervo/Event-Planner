@@ -7,7 +7,7 @@ import Link from "../../Common/Link";
 import H1 from "../../Common/Headings/Heading1";
 import Error from "../../Common/Error";
 import Stack from "../../Common/Stack";
-import InputField from "../InputField";
+import InputFormField from "../../Common/InputFormField";
 import LinkButton from "../LinkButton";
 import {
   spacing8,
@@ -129,7 +129,7 @@ const LoginForm = ({ updateAuthToken, switchView, redirectToHome }) => {
       <FormWrapper>
         <form onSubmit={handleSubmit}>
           <Stack gapSize={spacing32}>
-            <InputField
+            <InputFormField
               name="username"
               value={username}
               placeholder="something@gmail.com"
@@ -139,7 +139,7 @@ const LoginForm = ({ updateAuthToken, switchView, redirectToHome }) => {
               validateInput={validateUsername}
               validityState={validationState.username}
             />
-            <InputField
+            <InputFormField
               name="password"
               value={password}
               placeholder="Enter your password"
@@ -153,7 +153,7 @@ const LoginForm = ({ updateAuthToken, switchView, redirectToHome }) => {
               <AdditionalLink>
                 <Link url="/signup">Forgot Password?</Link>
               </AdditionalLink>
-            </InputField>
+            </InputFormField>
             <div>
               <ButtonWrapper>
                 <PrimaryButton
