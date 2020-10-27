@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 const InviteeContainer = styled.div`
-  height: 3vw;
+  height: 3.5vw;
   width: 100%;
   transition: transform 0.08s ease-in-out;
   transition: box-shadow 0.08s ease-in-out;
@@ -28,7 +28,7 @@ align-items: left;
 `;
 
 const TextBar = styled.div`
-padding: .18% 2%;
+padding: .4% 2%;
 font-size: 1.7vw;
 `;
 
