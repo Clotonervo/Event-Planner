@@ -42,11 +42,12 @@ const Main = () => {
     try {
       const results = await ClientService.events();
       //TODO: call endpoint for invites
-      if (results.success !== undefined && !results.success) {
-        newApiStatus.error = true;
-        newApiStatus.message = results.message;
+      if (results.success) {
+        prepareData(results.events);
       } else {
-        prepareData(results);
+        // default message just in case
+        newApiStatus.error = true;
+        newApiStatus.message = "An error occurred. Please try again later.";
       }
     } catch (error) {
       newApiStatus.error = true;
