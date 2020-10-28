@@ -15,10 +15,10 @@ To start the client, open a terminal in the client folder and run `npm start`. T
 I have left the default React readme below for more information.
 
 ## Populating the Database
-For testing I provided a database script that should populate the database with some test data. We should be updating this as features get added as well to keep up.
+For testing there is a database script that should populate the database with some test data. We should be updating this as features get added as well to keep up.
 to run it, all you need to do is navigate to the server folder and run `node test_info.js`. It will provide you various options, but for simplicity I'll state them here:
-`node database_script.js populate` - populate all test user information into database (Username: Test@gmail.com, password: password)
-`node database_script.js clear` - This will clear all test user information from database if you want to start fresh
+* `node database_script.js populate` - populate all test user information into database (Username: Test@gmail.com, password: password)
+* `node database_script.js clear` - This will clear all test user information from database if you want to start fresh
 
 # API Endpoints
 
@@ -26,8 +26,20 @@ to run it, all you need to do is navigate to the server folder and run `node tes
 ### POST
 Accepts: username, password\
 Returns: success, authToken\
-Note: Could this return the events and invitations for the user so the frontend doesn't need to request them separately? \
-(We wouldn't want to return the events and invitations because the login page is completely separate from the home page, and there's not a way to pass data between the two)
+Request:
+```
+{
+    "username": "Test@gmail.com",
+    "password": "password"
+}
+```
+Response: 
+```
+{
+    "success": true,
+    "authToken": "xxxxxxxx-xxxx-xxxxx-xxxxxx-xxxxxxxxxxxx"
+}
+```
 
 ## /register
 ### POST
