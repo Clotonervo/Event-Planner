@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import Geocode from "react-geocode";
 import styled from "styled-components";
 
 import { spacing32 } from "../../../resources/style-constants";
@@ -25,7 +26,49 @@ const OptionsContainer = styled.div`
   width: 40%;
 `;
 
-const MapEditor = () => {
+const validateUsername = () => {
+  let usernameState = {
+    error: false,
+    message: ""
+  };
+  if (!username) {
+    usernameState.error = true;
+    usernameState.message = "Username is required";
+  }
+  setValidationState({
+    ...validationState,
+    username: usernameState
+  });
+};
+
+const MapEditor = ({
+  label,
+  name,
+  value,
+  placeholder,
+  changeHandler,
+  validityState = {},
+  validateInput,
+  children,
+  required,
+}) => {
+  const [validationState, setValidationState] = useState({
+    address: {
+      error: true,
+      message: ""
+    },
+  });
+
+  Geocode.fromAddress("Eiffel Tower").then(
+    response => {
+      const { lat, lng } = response.results[0].geometry.location;
+      console.log(lat, lng);
+    },
+    error => {
+      console.error(error);
+    }
+  );
+
   return (
     <Container>
       <MapContainer>
@@ -33,14 +76,14 @@ const MapEditor = () => {
       </MapContainer>
       <OptionsContainer>
       <InputFormField
-          name="username"
-          value="temp_value"
-          placeholder="something@gmail.com"
-          label="Username"
+          label={label}
+          name={name}
+          value={value}
+          placeholder="123 Example Address"
           required
           changeHandler={() => {}}
-          validateInput={() => {}}
-          validityState={() => {}}
+          validateInput={validateUsername}
+          validityState={validationState.address}
         />
       </OptionsContainer>
     </Container>
