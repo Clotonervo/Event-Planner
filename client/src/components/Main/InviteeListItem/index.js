@@ -1,5 +1,9 @@
 import React from "react";
 import styled from "styled-components";
+import { FaTrash} from 'react-icons/fa';
+import { CgProfile } from 'react-icons/cg';
+import { IconContext } from "react-icons";
+import "./index.css";
 
 const InviteeContainer = styled.div`
   height: 3.5vw;
@@ -9,7 +13,7 @@ const InviteeContainer = styled.div`
   transform: scale(1.0, 1.0);
   cursor: pointer;
   border-bottom: 1px solid grey;
-  margin: 1%;
+  margin: .6%;
 //   :hover {
 //     opacity: .5;
 //   }
@@ -27,8 +31,16 @@ justify-content: left;
 align-items: left;
 `;
 
+const PicStyle = styled.div`
+display: flex;
+padding: 0% .5%;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+`;
+
 const TextBar = styled.div`
-padding: .4% 2%;
+padding: .8% 2%;
 font-size: 1.7vw;
 `;
 
@@ -36,10 +48,7 @@ const ImgFace = styled.img`
 height: 80%;
 `;
 
-const ImgTrash = styled.img`
-height: 80%;
-position: absolute;
-right:0;
+const ImgTrash = styled.div`
 :hover {
     opacity: .5;
 }
@@ -47,9 +56,9 @@ right:0;
 
 const InviteeListItem = ({pic,name,onDelete,...props}) => {
 return <InviteeContainer><CardStyle>
-        <ImgFace src = "face.svg"></ImgFace>
-        <TextBar>{name}</TextBar>
-        <ImgTrash src = "trash.svg" onClick = {onDelete}></ImgTrash></CardStyle>
+        <PicStyle><CgProfile></CgProfile></PicStyle>
+        <TextBar>{name}</TextBar><IconContext.Provider value={{ color: "gray", className: 'react-icons' }}><ImgTrash><FaTrash onClick = {onDelete}/></ImgTrash></IconContext.Provider>
+        </CardStyle>
     </InviteeContainer>
 };
 export default InviteeListItem;
