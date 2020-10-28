@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { FaTrash} from 'react-icons/fa';
 import { CgProfile } from 'react-icons/cg';
 import { IconContext } from "react-icons";
-import "./index.css";
 
 const InviteeContainer = styled.div`
   height: 3.5vw;
@@ -49,6 +48,9 @@ height: 80%;
 `;
 
 const ImgTrash = styled.div`
+position: absolute;
+right:0;
+padding: .9% 0%;
 :hover {
     opacity: .5;
 }
