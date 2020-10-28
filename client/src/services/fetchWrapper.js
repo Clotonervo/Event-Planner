@@ -23,13 +23,15 @@ const fetchWrapper = async (url, params, additionalHeaders = {}) => {
 
   try {
     let response = await fetch(url, fetchRequest);
-    const { status } = response;
     if (response.ok) {
       return response.headers.get("content-type").includes("json")
         ? response.json()
         : response;
     } else {
-      throw Error(`Response not OK, status: ${status}`);
+      let errorResponse = await response.json();
+      let message =
+        errorResponse.message ?? "An error occurred. Please try again later.";
+      throw Error(message);
     }
   } catch (err) {
     throw Error(err);

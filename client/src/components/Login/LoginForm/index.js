@@ -109,11 +109,12 @@ const LoginForm = ({ updateAuthToken, switchView, redirectToHome }) => {
       if (loginStatus.success) {
         updateAuthToken && updateAuthToken(loginStatus.authToken);
         redirectToHome();
-      } else if (!loginStatus.success ?? false) {
-        setErrorMessage(loginStatus.message);
+      } else {
+        //Default error message just in case.
+        setLoginError(true);
       }
     } catch (error) {
-      setLoginError(true);
+      setErrorMessage(error.message);
     }
   };
 

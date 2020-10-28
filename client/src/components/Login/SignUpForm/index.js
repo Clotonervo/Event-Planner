@@ -136,12 +136,15 @@ const SignUpForm = ({ updateAuthToken, switchView, redirectToHome }) => {
       });
       if (signUpStatus.success) {
         updateAuthToken && updateAuthToken(signUpStatus.authToken);
-        redirectToHome(); // ?
-      } else if (!signUpStatus.success ?? false) {
+        redirectToHome();
+      } else if (!signUpStatus.success) {
         setErrorMessage(signUpStatus.message);
+      } else {
+        // Default error just in case.
+        setSignUpError(true);
       }
     } catch (error) {
-      setSignUpError(true);
+      setErrorMessage(error.message);
     }
   };
 
