@@ -43,36 +43,162 @@ Response:
 
 ## /register
 ### POST
-Accepts: email, password, name\
+Accepts: username, password, name\
 Returns: success, authToken\
-Note: We need to change the name from email to username, frontend should send it as username so it's standardized. This could also return events and invitations like login.\
-(We wouldn't want to return the events and invitations because the login page is completely separate from the home page, and there's not a way to pass data between the two)
+Request:
+```
+{
+    "username": "Test@gmail.com",
+    "password": "password",
+    "name": "John Doe"
+}
+```  
+Response:
+```
+{
+    "success": true,
+    "authToken": "xxxxxxxx-xxxx-xxxxx-xxxxxx-xxxxxxxxxxxx"
+}
+```
 
 ## /event
 ### GET - returns event corresponding to requested eventID
 Accepts: authToken (in header), eventID\
 Returns: event
-Question: are you expecting event/{eventID} or is the eventID expected as the req body? 
+Request:
+```
+{
+    "eventID": "12345"
+}
+```  
+Response:
+```
+{
+    "success": true,
+    "event": {
+        "collaborators": [],
+        "viewers": [
+            "Test@gmail.com"
+        ],
+        "_id": "5f98b1e71487771bbeb14981",
+        "eventID": "12345",
+        "eventName": "View Only Event",
+        "date": "1970-01-01T00:00:00.034Z",
+        "__v": 0
+    }
+}
+```
 
 ### POST
 Accepts: authToken (in header), eventName (required), location, collaborators, viewers, past
 Returns: success, message\
-Note: We're going to have it return the eventID also\
-Question: will we also want an event description or time field? Where will the todos be saved? 
+Note: We're going to have it return the event object also\
+Request:
+```
+{
+    "eventName": "New Event"
+}
+```  
+Response:
+```
+{
+    "success": true,
+    "message": "Successfully added event to database"
+}
+```
 
 ### PUT
 Accepts: authToken (in header), eventID (required), eventName, location, collaborators, viewers, past\
 Returns: success, message\
 Note: Backend will update any values included in the request to the event with the corresponding eventID
+Request:
+```
+{
+    "eventID": "12346",
+    "eventName": "No longer a wedding"
+    ...
+}
+```  
+Response:
+```
+{
+    "success": true,
+    "message": "Successfully updated event"
+}
+```
 
 ### DELETE
 Accepts: authToken (in header), eventID\
 Returns: success, message
+Request:
+```
+{
+    "eventID": "cbc5d278"
+}
+```  
+Response:
+```
+{
+    "success": true,
+    "message": "Event successfully deleted!"
+}
+```
 
 ## /events
 ### GET - returns all events corresponding to logged in user
 Accepts: authToken (in header)\
 Returns: list of events
+Request:
+```
+{}
+```  
+Response:
+```
+{
+    "success": true,
+    "events": [
+        {
+            "_id": "5f98b1e71487771bbeb14982",
+            "collaborators": [
+                "Test@gmail.com"
+            ],
+            "viewers": [],
+            "eventID": "12346",
+            "eventName": "Wedding",
+            "date": "1970-01-01T00:00:00.034Z",
+            "__v": 0,
+            "isCollaborator": true,
+            "past": false
+        },
+        {
+            "_id": "5f98b1e71487771bbeb14984",
+            "collaborators": [
+                "Test@gmail.com"
+            ],
+            "viewers": [],
+            "eventID": "12348",
+            "eventName": "Funeral",
+            "date": "1970-01-01T00:00:00.020Z",
+            "__v": 0,
+            "isCollaborator": true,
+            "past": true
+        },
+        {
+            "_id": "5f98b1e71487771bbeb14981",
+            "collaborators": [],
+            "viewers": [
+                "Test@gmail.com"
+            ],
+            "eventID": "12345",
+            "eventName": "View Only Event",
+            "date": "1970-01-01T00:00:00.034Z",
+            "__v": 0,
+            "isCollaborator": false,
+            "past": false
+        }
+    ]
+}
+```
 
 ## /invitations
 I think the only endpoint we need is for GET because the invitations sent when the user creates/updates an event and sets the collaborators\
