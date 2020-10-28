@@ -8,7 +8,7 @@ import H1 from "../../Common/Headings/Heading1";
 import Error from "../../Common/Error";
 import Stack from "../../Common/Stack";
 import InputField from "../InputField";
-import LinkButton from "../LinkButton";
+import LinkButton from "../../Common/LinkButton";
 import {
   spacing8,
   spacing16,
