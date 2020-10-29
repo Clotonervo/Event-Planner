@@ -6,12 +6,6 @@ import PrimaryButton from "../../Common/Buttons/PrimaryButton/index.js";
 import RSVPCard from "../RSVPCard/index.js"
 import styled from "styled-components";
 
-const accentTheme = {
-  default: lightBlue,
-  hover: theme1,
-  disabled: grey3,
-  borderRadius: 0
-};
 
 const FormWrapper = styled.div`
   display: flex;
@@ -74,7 +68,7 @@ const RSVPFloating = ({
                         No.
                     </SecondaryButton>
 
-                    <PrimaryButton onClick={respondYes} theme={accentTheme} disabled={false}>
+                    <PrimaryButton onClick={respondYes} type="accent" disabled={false}>
                         Yes
                     </PrimaryButton>
 

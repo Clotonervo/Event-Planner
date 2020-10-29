@@ -1,13 +1,21 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { theme1, theme2 } from "../../../../resources/style-constants";
+import { theme1, theme2, lightBlue, grey3 } from "../../../../resources/style-constants";
 import Button from "../Button";
+
 
 const theme = {
   default: theme1,
   hover: theme2,
   disabled: theme1
 };
+
+const accent = {
+    default: lightBlue,
+    hover: theme1,
+    disabled: grey3,
+    borderRadius: 0
+  };
 
 const PrimaryButton = ({
   onClick,
