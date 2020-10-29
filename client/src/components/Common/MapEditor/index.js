@@ -26,24 +26,8 @@ const OptionsContainer = styled.div`
   width: 40%;
 `;
 
-const validateUsername = () => {
-  let usernameState = {
-    error: false,
-    message: ""
-  };
-  if (!username) {
-    usernameState.error = true;
-    usernameState.message = "Username is required";
-  }
-  setValidationState({
-    ...validationState,
-    username: usernameState
-  });
-};
-
 const MapEditor = ({
   label,
-  name,
   value,
   placeholder,
   changeHandler,
@@ -52,6 +36,8 @@ const MapEditor = ({
   children,
   required,
 }) => {
+  const [address, setAddress] = useState("");
+  const [location, setLocation] = useState(undefined);
   const [validationState, setValidationState] = useState({
     address: {
       error: true,
@@ -59,30 +45,66 @@ const MapEditor = ({
     },
   });
 
-  Geocode.fromAddress("Eiffel Tower").then(
-    response => {
+  const getLocationFromAddress = async function (value) {
+    try {
+      Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
+      Geocode.setLanguage("en");
+      const response = await Geocode.fromAddress(value);
       const { lat, lng } = response.results[0].geometry.location;
-      console.log(lat, lng);
-    },
-    error => {
-      console.error(error);
+      return { lat, lng };
+    } catch (e) {
+      console.error(e);
     }
-  );
+
+    return undefined;
+  };
+
+  const handleChange = (e) => {
+    const input = e.target;
+    if (input.name === "address") {
+      setAddress(input.value);
+    } else {
+      throw Error(input.name);
+    }
+  };
+
+  const validateAddress = async function () {
+    let addressState = {
+      error: false,
+      message: ""
+    };
+
+    const loc = await getLocationFromAddress(address);
+    if (!loc) {
+      addressState.error = true;
+      addressState.message = "Invalid address";
+    } else if (!address) {
+      addressState.error = true;
+      addressState.message = "Address is required";
+    }
+
+    setValidationState({
+      ...validationState,
+      address: addressState
+    });
+
+    setLocation(loc);
+  }
 
   return (
     <Container>
       <MapContainer>
-        <Map />
+        <Map location={location} />
       </MapContainer>
       <OptionsContainer>
-      <InputFormField
+        <InputFormField
           label={label}
-          name={name}
-          value={value}
+          name="address"
+          value={address}
           placeholder="123 Example Address"
           required
-          changeHandler={() => {}}
-          validateInput={validateUsername}
+          changeHandler={handleChange}
+          validateInput={validateAddress}
           validityState={validationState.address}
         />
       </OptionsContainer>
