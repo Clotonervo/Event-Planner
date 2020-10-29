@@ -31,12 +31,21 @@ const OptionsContainer = styled.div`
  * Displays a map with an edit field beside it. Use this
  * to provide a GUI to update a maps geolocation (lat, lng).
  * 
- * ---
- * 
- * **IMPORTANT**
- * 
+ * ### IMPORTANT
  * For this api to work, you'll have to enable the geocoding 
  * API for your API key.
+ * 
+ * ### Sample usage:
+ * 
+ * ```
+ * <MapEditor 
+ *    label={'My Label'} 
+ *    onLocationChanged={(location) => {
+ *      console.log(`latitude:  ${location.lat}`);
+ *      console.log(`longitude: ${location.lng}`)
+ *    }}
+ * />
+ * ```
  */
 const MapEditor = ({
   label,
@@ -114,16 +123,7 @@ MapEditor.propTypes = {
   /** The text which appears above the input field. */
   label: PropTypes.string,
 
-  /**
-   * A callback invoked whenever the location for the map changes.
-   * 
-   * ```
-   * onLocationChanged = (location) => {
-   *    console.log(`latitude:  ${location.lat}`);
-   *    console.log(`longitude: ${location.lng}`);
-   * }} 
-   * ```
-   */
+  /** A callback invoked whenever the location for the map changes. */
   onLocationChanged: PropTypes.func,
 };
 
