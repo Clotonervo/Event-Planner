@@ -8,7 +8,7 @@ const Main = () => {
     <div>
       <AppBar color={eventPink} />
       Page coming soon ...
-      <MapEditor />
+      <MapEditor label={"Address"}/>
     </div>
   );
 };
