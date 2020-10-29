@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import Geocode from "react-geocode";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 
-import { spacing32 } from "../../../resources/style-constants";
-import InputFormField from "../InputFormField";
-import Map from "../Map";
+import MapService from "../../../../services/MapService";
+import { spacing32 } from "../../../../resources/style-constants";
+import InputFormField from "../../../Common/InputFormField";
+import Map from "../../../Common/";
 
 const Container = styled.div`
   width: 100%;
@@ -30,25 +31,12 @@ const OptionsContainer = styled.div`
  * Displays a map with an edit field beside it. Use this
  * to provide a GUI to update a maps geolocation (lat, lng).
  * 
- * IMPORTANT: For this api to work, you'll have to enable
- * the geocoding API for your API key.
+ * ---
  * 
- * @label
- * The text which appears above the input field.
+ * **IMPORTANT**
  * 
- * @onLocationChanged
- * A callback invoked whenever the location for the map changes.
- * 
- * ```
- * <MapEditor 
- *    label={'My Label'} 
- *    onLocationChanged={(location) => {
- *      console.log(`latitude:  ${location.lat}`);
- *      console.log(`longitude: ${location.lng}`)
- *    }}
- * />
- * ```
- * 
+ * For this api to work, you'll have to enable the geocoding 
+ * API for your API key.
  */
 const MapEditor = ({
   label,
@@ -62,20 +50,6 @@ const MapEditor = ({
       message: ""
     },
   });
-
-  const getLocationFromAddress = async function (value) {
-    try {
-      Geocode.setApiKey(process.env.REACT_APP_GOOGLE_MAPS_API_KEY);
-      Geocode.setLanguage("en");
-      const response = await Geocode.fromAddress(value);
-      const { lat, lng } = response.results[0].geometry.location;
-      return { lat, lng };
-    } catch (e) {
-      console.error(`Unable to lookup address: ${e}`);
-    }
-
-    return undefined;
-  };
 
   const handleChange = (e) => {
     const input = e.target;
@@ -92,7 +66,7 @@ const MapEditor = ({
       message: ""
     };
 
-    const loc = await getLocationFromAddress(address);
+    const loc = await MapService.getLocationFromAddress(address);
     if (!loc) {
       addressState.error = true;
       addressState.message = "Invalid address";
@@ -107,10 +81,7 @@ const MapEditor = ({
     });
 
     setLocation(loc);
-
-    if (onLocationChanged) {
-      onLocationChanged(loc);
-    }
+    onLocationChanged && onLocationChanged(loc);
   }
 
   return (
@@ -133,5 +104,27 @@ const MapEditor = ({
     </Container>
   );
 }
+
+MapEditor.defaultProps = {
+  label: '',
+  onLocationChanged: undefined,
+}
+
+MapEditor.propTypes = {
+  /** The text which appears above the input field. */
+  label: PropTypes.string,
+
+  /**
+   * A callback invoked whenever the location for the map changes.
+   * 
+   * ```
+   * onLocationChanged = (location) => {
+   *    console.log(`latitude:  ${location.lat}`);
+   *    console.log(`longitude: ${location.lng}`);
+   * }} 
+   * ```
+   */
+  onLocationChanged: PropTypes.func,
+};
 
 export default MapEditor;

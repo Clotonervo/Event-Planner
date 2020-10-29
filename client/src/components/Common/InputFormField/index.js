@@ -26,8 +26,8 @@ const InputFormField = ({
   ...props
 }) => {
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter' && onPressEnter !== undefined) {
-      onPressEnter();
+    if (e.key === 'Enter') {
+      onPressEnter && onPressEnter();
     }
   }
 
