@@ -28,13 +28,7 @@ const OptionsContainer = styled.div`
 
 const MapEditor = ({
   label,
-  value,
-  placeholder,
-  changeHandler,
-  validityState = {},
-  validateInput,
-  children,
-  required,
+  onLocationChanged,
 }) => {
   const [address, setAddress] = useState("");
   const [location, setLocation] = useState(undefined);
@@ -53,7 +47,7 @@ const MapEditor = ({
       const { lat, lng } = response.results[0].geometry.location;
       return { lat, lng };
     } catch (e) {
-      console.error(e);
+      console.error(`Unable to lookup address: ${e}`);
     }
 
     return undefined;
@@ -68,7 +62,7 @@ const MapEditor = ({
     }
   };
 
-  const validateAddress = async function () {
+  const lookupAddress = async function () {
     let addressState = {
       error: false,
       message: ""
@@ -89,6 +83,10 @@ const MapEditor = ({
     });
 
     setLocation(loc);
+
+    if (onLocationChanged) {
+      onLocationChanged(loc);
+    }
   }
 
   return (
@@ -104,7 +102,7 @@ const MapEditor = ({
           placeholder="123 Example Address"
           required
           changeHandler={handleChange}
-          validateInput={validateAddress}
+          onPressEnter={lookupAddress}
           validityState={validationState.address}
         />
       </OptionsContainer>

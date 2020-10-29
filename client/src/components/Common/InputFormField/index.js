@@ -20,14 +20,22 @@ const InputFormField = ({
   changeHandler,
   validityState = {},
   validateInput,
+  onPressEnter,
   children,
   required,
   ...props
 }) => {
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && onPressEnter !== undefined) {
+      onPressEnter();
+    }
+  }
+
   return (
     <InputWrapper>
       <PaddedLabel>{label}</PaddedLabel>
       <Input
+        onKeyDown={handleKeyDown} 
         onChange={changeHandler}
         onBlur={validateInput}
         {...{ name, value, placeholder, required, ...props }}
