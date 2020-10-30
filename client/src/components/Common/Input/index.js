@@ -14,7 +14,6 @@ import {
 const StyledInput = styled.input`
   background-color: white;
   box-sizing: border-box;
-  margin: ${spacing8} 0;
   padding: ${spacing24};
   height: ${fontSize20};
   width: 100%;
