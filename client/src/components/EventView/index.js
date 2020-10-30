@@ -1,10 +1,10 @@
 import React from "react";
 import AppBar from "../Common/AppBar";
 import { eventPink } from "../../resources/style-constants";
-import Invitee from "../../components/Main/Invitee/index.js";
-import Map from "../../components/Common/Map/index.js"
+import Invitee from "./Invitee/index.js";
+import Map from "../Common/Map/index.js"
 import styled from "styled-components";
-import Button from "../../components/Common/Buttons/SecondaryButton/index.js"
+import Button from "../Common/Buttons/SecondaryButton/index.js"
 
 const CenterHeading = styled.p`
     font-size: calc(10px + 2vmin);
