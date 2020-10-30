@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import {
-  spacing8,
   spacing24,
   fontSize20,
   borderRadius,

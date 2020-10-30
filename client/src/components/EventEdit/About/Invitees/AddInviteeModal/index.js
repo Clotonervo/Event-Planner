@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { spacing8, spacing16 } from "../../../../../resources/style-constants";
+import {
+  spacing8,
+  spacing16,
+  spacing32
+} from "../../../../../resources/style-constants";
 import Input from "../../../../Common/Input";
 import Modal from "../../../../Common/Modal";
 import PrimaryButton from "../../../../Common/Buttons/PrimaryButton";
@@ -14,8 +18,6 @@ const FormRow = styled.div`
 
 const SearchWrapper = styled.div`
   padding-left: ${spacing16};
-  margin: ${spacing16} 0;
-  // padding: ${spacing8} 0 ${spacing8} ${spacing16};
 `;
 
 const ButtonRow = styled.div`
@@ -28,6 +30,10 @@ const PaddedButton = styled.div`
   padding-right: ${spacing8};
 `;
 
+const StyledInput = styled(Input)`
+  padding: 1.75rem;
+`;
+
 const AddInviteeModal = ({
   addPerson,
   addPersonMessage,
@@ -37,6 +43,11 @@ const AddInviteeModal = ({
 }) => {
   const [addedPerson, setAddedPerson] = useState("");
   const [personName, setPersonName] = useState("");
+  const [apiStatus, setApiStatus] = useState({
+    loading: false,
+    error: false,
+    message: ""
+  });
 
   const changeHandler = (event) => {
     let value = event.target.value;
@@ -45,6 +56,15 @@ const AddInviteeModal = ({
 
   const searchPerson = (event) => {
     event.preventDefault();
+    setApiStatus({ ...apiStatus, loading: true });
+    let newApiStatus = { ...apiStatus };
+    //TODO: call backend to get full name
+    //TODO: if successful, then update person name.
+
+    setPersonName("John Doe");
+    newApiStatus.loading = false;
+
+    setApiStatus(newApiStatus);
   };
 
   const closeModal = () => {
@@ -60,29 +80,35 @@ const AddInviteeModal = ({
 
   const handleAdd = () => {
     if (personName !== "") {
-      addPerson && addPerson(personName);
+      addPerson && addPerson({ name: personName, username: addedPerson });
     }
   };
 
   return (
     <Modal onClose={closeModal} open={modalOpened}>
-      <Stack>
-        <h3>{addTitle || "Add Person"}</h3>
+      <Stack gapSize={spacing32}>
+        <h2>{addTitle || "Add Person"}</h2>
 
         <div>{addPersonMessage || ""}</div>
         <form onSubmit={searchPerson}>
           <FormRow>
-            <Input
+            <StyledInput
               name="invitee"
               placeholder="Enter a username or email"
               value={addedPerson}
               onChange={changeHandler}
             />
             <SearchWrapper>
-              <PrimaryButton onClick={searchPerson}>Search</PrimaryButton>
+              <PrimaryButton
+                onClick={searchPerson}
+                disabled={apiStatus.loading}
+              >
+                Search
+              </PrimaryButton>
             </SearchWrapper>
           </FormRow>
         </form>
+        {personName && <div>{personName}</div>}
         <ButtonRow>
           <PaddedButton>
             <SecondaryButton onClick={handleCancel}>Cancel</SecondaryButton>
