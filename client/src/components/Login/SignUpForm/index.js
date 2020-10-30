@@ -6,7 +6,7 @@ import PrimaryButton from "../../Common/Buttons/PrimaryButton";
 import LinkButton from "../../Common/LinkButton";
 import H1 from "../../Common/Headings/Heading1";
 import Stack from "../../Common/Stack";
-import InputField from "../InputField";
+import InputFormField from "../../Common/InputFormField";
 import Error from "../../Common/Error";
 import {
   spacing8,
@@ -159,7 +159,7 @@ const SignUpForm = ({ updateAuthToken, switchView, redirectToHome }) => {
       <FormWrapper>
         <form onSubmit={handleSubmit}>
           <Stack gapSize={spacing32}>
-            <InputField
+            <InputFormField
               name="name"
               value={name}
               placeholder="John Doe"
@@ -169,7 +169,7 @@ const SignUpForm = ({ updateAuthToken, switchView, redirectToHome }) => {
               validityState={validationState.name}
               fullWidth
             />
-            <InputField
+            <InputFormField
               name="username"
               value={username}
               placeholder="something@gmail.com"
@@ -180,7 +180,7 @@ const SignUpForm = ({ updateAuthToken, switchView, redirectToHome }) => {
               validityState={validationState.username}
               fullWidth
             />
-            <InputField
+            <InputFormField
               name="password"
               value={password}
               placeholder="Enter your password"
@@ -191,7 +191,7 @@ const SignUpForm = ({ updateAuthToken, switchView, redirectToHome }) => {
               validateInput={validatePassword}
               validityState={validationState.password}
               fullWidth
-            ></InputField>
+            />
             <div>
               <ButtonWrapper>
                 <PrimaryButton

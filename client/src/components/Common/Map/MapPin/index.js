@@ -11,6 +11,7 @@ const MapPinContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  transform: translate(-64px, -64px);
 `;
 
 const MapPinIcon = styled.div`
