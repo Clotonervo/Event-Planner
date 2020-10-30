@@ -33,145 +33,143 @@ const port = process.env.PORT || 5000;
 // Server is up and running
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
-
 /* ----------------------------- API Endpoints -----------------------------*/
 // ----------------------------------------- Login api endpoint
-app.post('/login', async function(req, res) {
-    try {
-        const user = await User.findOne({username: req.body.username});
-        if (user === null){
-            res.statusCode = 404;
-            res.send({
-                success: false,
-                message: "User not found!"
-            });
-            return;
-        }
+app.post("/login", async function (req, res) {
+  try {
+    const user = await User.findOne({ username: req.body.username });
+    if (user === null) {
+      res.statusCode = 404;
+      res.send({
+        success: false,
+        message: "User not found!"
+      });
+      return;
+    }
 
-        if (user.validPassword(req.body.password)) {
-            //Create and store auth token into authentication database
-            let authToken = uuidv4();       //Uniquely generated auth token
-            let expirationTime = new Date().getTime() + 900000; //Should be 15 minutes after logging in
+    if (user.validPassword(req.body.password)) {
+      //Create and store auth token into authentication database
+      let authToken = uuidv4(); //Uniquely generated auth token
+      let expirationTime = new Date().getTime() + 900000; //Should be 15 minutes after logging in
 
-            const authentication = await Authentication.findOneAndUpdate({username: req.body.username},{authToken: authToken, expiration: expirationTime});
+      const authentication = await Authentication.findOneAndUpdate(
+        { username: req.body.username },
+        { authToken: authToken, expiration: expirationTime }
+      );
 
-            if (authentication == null){
-                res.statusCode = 500;
-                res.send({
-                    success: false,
-                    message: "Error: Could not update authToken!"
-                });
-            }
-            else {
-                res.statusCode = 200;
-                res.send({
-                    success: true,
-                    authToken: authToken
-                }); 
-            }
-        } else {
-            res.statusCode = 403;
-            res.send({
-                success: false,
-                message: "Invalid credentials!"
-            });
-        }
-    } catch (error) {
-        console.log(error);
+      if (authentication == null) {
         res.statusCode = 500;
         res.send({
-            success: false,
-            message: "Error: Something went wrong in the server!"
+          success: false,
+          message: "Error: Could not update authToken!"
         });
+      } else {
+        res.statusCode = 200;
+        res.send({
+          success: true,
+          authToken: authToken
+        });
+      }
+    } else {
+      res.statusCode = 403;
+      res.send({
+        success: false,
+        message: "Invalid credentials!"
+      });
     }
-}); 
+  } catch (error) {
+    console.log(error);
+    res.statusCode = 500;
+    res.send({
+      success: false,
+      message: "Error: Something went wrong in the server!"
+    });
+  }
+});
 
 // ----------------------------------------- Register endpoint
 app.post("/register", async (req, res) => {
-  const user = await User.findOne({username: req.body.username});
-    if (user != null) {
-        res.statusCode = 200;
-        res.send({
-          success: false,
-          message: "User already exists!"
-        });
-        return;
-    }
+  const user = await User.findOne({ username: req.body.username });
+  if (user != null) {
+    res.statusCode = 200;
+    res.send({
+      success: false,
+      message: "User already exists!"
+    });
+    return;
+  }
 
-    var newUser = new User({ username: req.body.username, name: req.body.name });
-    newUser.password = newUser.generateHash(req.body.password);
+  var newUser = new User({ username: req.body.username, name: req.body.name });
+  newUser.password = newUser.generateHash(req.body.password);
 
-    try {
-        newUser.save();
-        let authToken = uuidv4();
-        let expirationTime = new Date().getTime() + 15000;
+  try {
+    newUser.save();
+    let authToken = uuidv4();
+    let expirationTime = new Date().getTime() + 15000;
 
-        const testAuth = new Authentication({
-            username: req.body.username,
-            authToken: authToken,
-            expiration: expirationTime
-        });
+    const testAuth = new Authentication({
+      username: req.body.username,
+      authToken: authToken,
+      expiration: expirationTime
+    });
 
-        testAuth.save();
+    testAuth.save();
 
-        res.statusCode = 200;
-        res.send({
-            success: true,
-            authToken: authToken
-        });
-    } catch (error) {
-        console.log(error);
-        res.statusCode = 500;
-        res.send({
-            success: false,
-            message: "Error: Something went wrong in the server!"
-        });
-    }
+    res.statusCode = 200;
+    res.send({
+      success: true,
+      authToken: authToken
+    });
+  } catch (error) {
+    console.log(error);
+    res.statusCode = 500;
+    res.send({
+      success: false,
+      message: "Error: Something went wrong in the server!"
+    });
+  }
 });
 
 // ----------------------------------------- Get Events api
-app.get("/event", async (req, res) => {
+app.get("/event/:eventID", async (req, res) => {
   try {
-         var authHeader = req.headers['authorization'];
-         const authTokenResult = await util.isValidAuth(authHeader);
-         if(authTokenResult.isValid){
-             const event = await Event.findOne({
-                 eventID: req.body.eventID
-             })
+    var authHeader = req.headers["authorization"];
+    const authTokenResult = await util.isValidAuth(authHeader);
+    if (authTokenResult.isValid) {
+      const event = await Event.findOne({
+        eventID: req.params.eventID
+      });
 
-             if (event == null){
-                 res.statusCode = 200;
-                 res.send({
-                     success: false,
-                     message: "Event can't be found!"
-                 });
-                 return;
-             }
-
-             else {
-                res.send({
-                    success: true,
-                    event: event
-                });
-                return
-             }
-         }
-         else {
-             res.statusCode = 401;
-             res.send({
-                 success: false,
-                 message: "Authtoken is invalid, please login again to renew!"
-             })
-             return;
-         }
-     } catch (err) {
-         res.statusCode = 500;
-         res.send({
-             success: false,
-             message: "Error: Something went wrong in the server!"
-         });
-         return;
-     }
+      if (event == null) {
+        res.statusCode = 200;
+        res.send({
+          success: false,
+          message: "Event can't be found!"
+        });
+        return;
+      } else {
+        res.send({
+          success: true,
+          event: event
+        });
+        return;
+      }
+    } else {
+      res.statusCode = 401;
+      res.send({
+        success: false,
+        message: "Authtoken is invalid, please login again to renew!"
+      });
+      return;
+    }
+  } catch (err) {
+    res.statusCode = 500;
+    res.send({
+      success: false,
+      message: "Error: Something went wrong in the server!"
+    });
+    return;
+  }
 });
 
 // // ----------------------------------------- Get all events for a user
@@ -180,21 +178,21 @@ app.get("/events", async (req, res) => {
     const authHeader = req.headers["authorization"];
     const authentication = await util.isValidAuth(authHeader);
 
-    if(authentication.timeout){
-        res.statusCode = 403;
-        res.send({
-            success: false,
-            message: "Error: This authentication token does not exist"
-        });
-        return;
-    }
-    else if(!authentication.isValid){
-        res.statusCode = 401;
-        res.send({
-            success: false,
-            message: "Error: This authentication token is expired, please login again"
-        });
-        return;
+    if (authentication.timeout) {
+      res.statusCode = 403;
+      res.send({
+        success: false,
+        message: "Error: This authentication token does not exist"
+      });
+      return;
+    } else if (!authentication.isValid) {
+      res.statusCode = 401;
+      res.send({
+        success: false,
+        message:
+          "Error: This authentication token is expired, please login again"
+      });
+      return;
     }
 
     const currentUser = await util.getCurrentUser(authHeader);
@@ -227,10 +225,9 @@ app.get("/events", async (req, res) => {
     });
 
     res.send({
-        success: true,
-        events: result
+      success: true,
+      events: result
     });
-
   } catch (err) {
     console.log(err);
     res.statusCode = 500;
@@ -242,81 +239,80 @@ app.get("/events", async (req, res) => {
 });
 
 // ----------------------------------------- Update Events api
-app.put('/event', async (req, res) => {
-    var authHeader = req.headers['authorization'];
-    const authentication = await util.isValidAuth(authHeader);
-    
-    if (!authentication.isValid && !authentication.timeout) {
-        //This authentication token does not exist
-        res.statusCode = 403;
-        res.send({
-            success: false,
-            message: "Error: This authentication token does not exist"
-        });
-    } else if (!authentication.isValid && authentication.timeout) {
-        //This authentication token is expired, send back to login screen
-        res.statusCode = 401;
-        res.send({
-            success: false,
-            message: "Error: This authentication token is expired, please login again"
-        });
-    } 
-    else {
-        //Authentication token is valid
-        if (req.body.eventID == null) {
-            //eventName is required error
-            res.statusCode = 200;
-            res.send({
-                success: false,
-                message: "Error: An event ID is required"
-            });
-        }
-        const event = await Event.findOne({
-            eventID: req.body.eventID,
-        });
-        if (event == null) {
-            res.statusCode = 404;
-            res.send({
-                success: false,
-                message: "Error: The provided eventID does not exist in the database."
-            });
-            return;
-        }
-        if (req.body.eventName != null) {
-            event.eventName = req.body.eventName;
-        }
-        if (req.body.location != null) {
-            event.location = req.body.location;
-        }
-        if (req.body.collaborators != null) {
-            event.collaborators = req.body.collaborators;
-        }
-        if (req.body.viewers != null) {
-            event.viewers = req.body.viewers;
-        }
-        if(req.body.date != null) {
-            event.date = req.body.date;
-        }
-        if (req.body.past != null) {
-            event.past = req.body.past;
-        }
+app.put("/event", async (req, res) => {
+  var authHeader = req.headers["authorization"];
+  const authentication = await util.isValidAuth(authHeader);
 
-        try {
-            event.save();
-            res.statusCode = 200;
-            res.send({
-                success: true,
-                message: "Successfully updated event"
-            });
-        } catch (err) {
-            console.log(err)
-            res.statusCode = 500;
-            res.send({
-                success: false,
-                message: "Something went wrong updating event!"
-            });
-        }
+  if (!authentication.isValid && !authentication.timeout) {
+    //This authentication token does not exist
+    res.statusCode = 403;
+    res.send({
+      success: false,
+      message: "Error: This authentication token does not exist"
+    });
+  } else if (!authentication.isValid && authentication.timeout) {
+    //This authentication token is expired, send back to login screen
+    res.statusCode = 401;
+    res.send({
+      success: false,
+      message: "Error: This authentication token is expired, please login again"
+    });
+  } else {
+    //Authentication token is valid
+    if (req.body.eventID == null) {
+      //eventName is required error
+      res.statusCode = 200;
+      res.send({
+        success: false,
+        message: "Error: An event ID is required"
+      });
     }
+    const event = await Event.findOne({
+      eventID: req.body.eventID
+    });
+    if (event == null) {
+      res.statusCode = 404;
+      res.send({
+        success: false,
+        message: "Error: The provided eventID does not exist in the database."
+      });
+      return;
+    }
+    if (req.body.eventName != null) {
+      event.eventName = req.body.eventName;
+    }
+    if (req.body.location != null) {
+      event.location = req.body.location;
+    }
+    if (req.body.collaborators != null) {
+      event.collaborators = req.body.collaborators;
+    }
+    if (req.body.viewers != null) {
+      event.viewers = req.body.viewers;
+    }
+    if (req.body.date != null) {
+      event.date = req.body.date;
+    }
+    if (req.body.past != null) {
+      event.past = req.body.past;
+    }
+
+    try {
+      event.save();
+      res.statusCode = 200;
+      res.send({
+        success: true,
+        message: "Successfully updated event"
+      });
+    } catch (err) {
+      console.log(err);
+      res.statusCode = 500;
+      res.send({
+        success: false,
+        message: "Something went wrong updating event!"
+      });
+    }
+  }
 });
 
 // ----------------------------------------- Create Event api
@@ -342,7 +338,7 @@ app.post("/event", async (req, res) => {
     //Authentication token is valid
     if (req.body.eventName == null) {
       //eventName is required error
-      res.statusCode = 200
+      res.statusCode = 200;
       res.send({
         success: false,
         message: "Error: An eventname is required"
@@ -386,7 +382,6 @@ app.post("/event", async (req, res) => {
     }
   }
 });
-
 
 app.delete("/event", async (req, res) => {
   try {
