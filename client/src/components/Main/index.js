@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import ClientService from "../../services";
 import AppBar from "../Common/AppBar";
-<<<<<<< HEAD
 import { eventPink, eventYellow } from "../../resources/style-constants";
 import Invitee from "../../components/Main/Invitee/index.js";
-=======
 import CenteredLoadingSpinner from "../Common/CenteredLoadingSpinner";
 import Error from "../Common/Error";
 import EventsSection from "./EventsSection";
@@ -25,7 +23,6 @@ const testInvites = [
   { name: "event4", isUnopened: true, id: "8" },
   { name: "event4", isUnopened: true, id: "9" }
 ];
->>>>>>> origin/master
 
 import RSVPFloating from "../../components/Main/RSVPFloating/index.js";
 
@@ -110,11 +107,9 @@ const Main = () => {
 
   return (
     <div>
-<<<<<<< HEAD
 
         <RSVPFloating color={eventYellow} />
 
-=======
       <PageAccess />
       <AppBar color={theme1} />
       {apiStatus.loading ? (
@@ -147,7 +142,6 @@ const Main = () => {
           {apiStatus.message || "An error occurred. Please try again later."}
         </Error>
       )}
->>>>>>> origin/master
     </div>
   );
 };

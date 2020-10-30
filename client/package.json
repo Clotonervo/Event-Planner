@@ -16,10 +16,7 @@
     "react-icons": "^3.11.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^3.4.4",
-<<<<<<< HEAD
-=======
     "react-spinners": "^0.9.0",
->>>>>>> origin/master
     "react-spring": "^8.0.27",
     "resize-observer-polyfill": "^1.5.1",
     "styled-components": "^5.2.0"
