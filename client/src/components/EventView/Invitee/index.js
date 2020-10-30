@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import RsvpStatus from "./rsvpStatus";
 
+
 const InviteeContainer = styled.div`
   height: 9vw;
   width: 6vw;

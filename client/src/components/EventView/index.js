@@ -1,10 +1,14 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AppBar from "../Common/AppBar";
 import { eventPink } from "../../resources/style-constants";
 import Invitee from "./Invitee/index.js";
 import Map from "../Common/Map/index.js"
 import styled from "styled-components";
 import Button from "../Common/Buttons/SecondaryButton/index.js"
+import RSVPFloating from "../EventView/RSVPFloating/index.js"
+import ClientService from "../../services"
+//import PageAccess from "../Common/PageAccess";
+
 
 const CenterHeading = styled.p`
     font-size: calc(10px + 2vmin);
@@ -50,12 +54,49 @@ const InviteeRow = styled.div`
 `;
 
 const Main = () => {
+  const [apiStatus, setApiStatus] = useState({
+    loading: false,
+    error: false,
+    message: false
+  });
+
+    useEffect(() => {
+      loadPageData();
+      // eslint-disable-next-line
+    }, []);
+
+  const loadPageData = async () => {
+    setApiStatus({ ...apiStatus, loading: true, error: false });
+    const newApiStatus = { ...apiStatus };
+    try {
+        let eventId = "12346"
+      //const results = await ClientService.events();
+      results = await ClientService.events(eventId);
+      //TODO: call endpoint for invites
+      if (results.success) {
+        //prepareData(results.events);
+      } else {
+        // default message just in case
+        newApiStatus.error = true;
+        newApiStatus.message = "An error occurred. Please try again later.";
+      }
+    } catch (error) {
+      newApiStatus.error = true;
+      newApiStatus.message = error.message;
+    }
+    newApiStatus.loading = false;
+
+    setApiStatus(newApiStatus);
+  };
+
+//const Main = () => {
   return (
     <div>
       <AppBar color={eventPink} />
       <DisplayStle>
         <Heading>Description</Heading>
-        <p></p>
+        <p>{results.events.eventName}</p>
+        <RSVPFloating/>
         <Heading>Location</Heading>
         <Map></Map>
         <p></p>

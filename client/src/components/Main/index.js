@@ -11,7 +11,7 @@ import InvitesSection from "./InvitesSection";
 import PageAccess from "../Common/PageAccess";
 import Stack from "../Common/Stack";
 import { spacing64, fontSize24, theme1 } from "../../resources/style-constants";
-import RSVPFloating from "../../components/Main/RSVPFloating/index.js";
+import RSVPFloating from "../EventView/RSVPFloating/index.js";
 
 const testInvites = [
   { name: "event1", isUnopened: true, id: "1" },
