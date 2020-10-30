@@ -12,7 +12,7 @@ const theme = {
 const SecondaryButton = ({
   onClick,
   fullWidth,
-  disabled,
+  disabled = false,
   children,
   ...props
 }) => {
