@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 
-import Input from "../../Common/Input";
-import Error from "../../Common/Error";
+import Input from "../Input";
+import Error from "../Error";
 
 const PaddedLabel = styled.label`
   font-weight: bold;
@@ -12,7 +12,7 @@ const InputWrapper = styled.div`
   width: 100%;
 `;
 
-const InputField = ({
+const InputFormField = ({
   name,
   value,
   placeholder,
@@ -20,14 +20,22 @@ const InputField = ({
   changeHandler,
   validityState = {},
   validateInput,
+  onPressEnter,
   children,
   required,
   ...props
 }) => {
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      onPressEnter && onPressEnter();
+    }
+  }
+
   return (
     <InputWrapper>
       <PaddedLabel>{label}</PaddedLabel>
       <Input
+        onKeyDown={handleKeyDown} 
         onChange={changeHandler}
         onBlur={validateInput}
         {...{ name, value, placeholder, required, ...props }}
@@ -40,4 +48,4 @@ const InputField = ({
   );
 };
 
-export default InputField;
+export default InputFormField;
