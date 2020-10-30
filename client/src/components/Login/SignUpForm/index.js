@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 import ClientService from "../../../services";
 import PrimaryButton from "../../Common/Buttons/PrimaryButton";
-import LinkButton from "../LinkButton";
+import LinkButton from "../../Common/LinkButton";
 import H1 from "../../Common/Headings/Heading1";
 import Stack from "../../Common/Stack";
 import InputFormField from "../../Common/InputFormField";
@@ -136,12 +136,15 @@ const SignUpForm = ({ updateAuthToken, switchView, redirectToHome }) => {
       });
       if (signUpStatus.success) {
         updateAuthToken && updateAuthToken(signUpStatus.authToken);
-        redirectToHome(); // ?
-      } else if (!signUpStatus.success ?? false) {
+        redirectToHome();
+      } else if (!signUpStatus.success) {
         setErrorMessage(signUpStatus.message);
+      } else {
+        // Default error just in case.
+        setSignUpError(true);
       }
     } catch (error) {
-      setSignUpError(true);
+      setErrorMessage(error.message);
     }
   };
 

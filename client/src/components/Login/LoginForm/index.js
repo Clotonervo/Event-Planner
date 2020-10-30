@@ -8,7 +8,7 @@ import H1 from "../../Common/Headings/Heading1";
 import Error from "../../Common/Error";
 import Stack from "../../Common/Stack";
 import InputFormField from "../../Common/InputFormField";
-import LinkButton from "../LinkButton";
+import LinkButton from "../../Common/LinkButton";
 import {
   spacing8,
   spacing16,
@@ -109,11 +109,12 @@ const LoginForm = ({ updateAuthToken, switchView, redirectToHome }) => {
       if (loginStatus.success) {
         updateAuthToken && updateAuthToken(loginStatus.authToken);
         redirectToHome();
-      } else if (!loginStatus.success ?? false) {
-        setErrorMessage(loginStatus.message);
+      } else {
+        //Default error message just in case.
+        setLoginError(true);
       }
     } catch (error) {
-      setLoginError(true);
+      setErrorMessage(error.message);
     }
   };
 
