@@ -58,4 +58,11 @@ function getAuthToken() {
   return null;
 }
 
-export default fetchWrapper;
+function isLoggedIn() {
+  if (getAuthToken()) {
+    return true;
+  }
+  return false;
+}
+
+export { fetchWrapper as default, isLoggedIn };

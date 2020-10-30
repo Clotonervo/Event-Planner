@@ -6,6 +6,7 @@ import CenteredLoadingSpinner from "../Common/CenteredLoadingSpinner";
 import Error from "../Common/Error";
 import EventsSection from "./EventsSection";
 import InvitesSection from "./InvitesSection";
+import PageAccess from "../Common/PageAccess";
 import Stack from "../Common/Stack";
 import { spacing64, fontSize24, theme1 } from "../../resources/style-constants";
 
@@ -102,6 +103,7 @@ const Main = () => {
 
   return (
     <div>
+      <PageAccess />
       <AppBar color={theme1} />
       {apiStatus.loading ? (
         <CenteredLoadingSpinner
