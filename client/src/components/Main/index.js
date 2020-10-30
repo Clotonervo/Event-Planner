@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 import ClientService from "../../services";
 import AppBar from "../Common/AppBar";
 import { eventPink, eventYellow } from "../../resources/style-constants";
-import Invitee from "../../components/Main/Invitee/index.js";
+//import Invitee from "../../components/Main/Invitee/index.js";
 import CenteredLoadingSpinner from "../Common/CenteredLoadingSpinner";
 import Error from "../Common/Error";
 import EventsSection from "./EventsSection";
@@ -11,6 +11,7 @@ import InvitesSection from "./InvitesSection";
 import PageAccess from "../Common/PageAccess";
 import Stack from "../Common/Stack";
 import { spacing64, fontSize24, theme1 } from "../../resources/style-constants";
+import RSVPFloating from "../../components/Main/RSVPFloating/index.js";
 
 const testInvites = [
   { name: "event1", isUnopened: true, id: "1" },
@@ -24,7 +25,7 @@ const testInvites = [
   { name: "event4", isUnopened: true, id: "9" }
 ];
 
-import RSVPFloating from "../../components/Main/RSVPFloating/index.js";
+
 
 const Main = () => {
   const [invites, setInvites] = useState([]);
