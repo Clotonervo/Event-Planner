@@ -17,18 +17,9 @@ const accent = {
     borderRadius: 0
   };
 
-const PrimaryButton = ({
-  onClick,
-  fullWidth,
-  disabled = true,
-  children,
-  ...props
-}) => {
-  return (
-    <Button {...{ fullWidth, theme, disabled, onClick, ...props }}>
-      {children}
-    </Button>
-  );
+  const PrimaryButton = ({ onClick, fullWidth, disabled = true, type = "theme", children, ...props }) => {
+    return ( <Button theme={type === "theme" ? theme : accent }{...{ fullWidth, disabled, onClick, 
+        ...props }}> {children} </Button> );
 };
 export default PrimaryButton;
 
