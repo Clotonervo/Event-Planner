@@ -10,7 +10,7 @@ module.exports = {
             const authentication = await Authentication.findOne({
                 authToken: token,
             })
-            let expirationTime = new Date().getTime() + 15000;
+            let expirationTime = new Date().getTime() + 900000;
 
             if(authentication == null){
                 return { isValid: false, timeout: false };

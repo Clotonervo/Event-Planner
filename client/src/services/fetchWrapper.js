@@ -17,18 +17,21 @@ const fetchWrapper = async (url, params, additionalHeaders = {}) => {
 
   let token = getAuthToken();
   if (token) {
-    fetchRequest.headers.Authorization = `Bearer ${token}`;
+    fetchRequest.headers.Authorization = `${token}`;
+    // fetchRequest.headers.Authorization = `Bearer ${token}`;
   }
 
   try {
     let response = await fetch(url, fetchRequest);
-    const { status } = response;
     if (response.ok) {
       return response.headers.get("content-type").includes("json")
         ? response.json()
         : response;
     } else {
-      throw Error(`Response not OK, status: ${status}`);
+      let errorResponse = await response.json();
+      let message =
+        errorResponse.message ?? "An error occurred. Please try again later.";
+      throw Error(message);
     }
   } catch (err) {
     throw Error(err);
@@ -55,4 +58,11 @@ function getAuthToken() {
   return null;
 }
 
-export default fetchWrapper;
+function isLoggedIn() {
+  if (getAuthToken()) {
+    return true;
+  }
+  return false;
+}
+
+export { fetchWrapper as default, isLoggedIn };
