@@ -84,3 +84,9 @@ const Main = () => {
 };
 
 export default Main;
+
+const EventView = () => {
+  return <div>Event View</div>;
+};
+
+export default EventView;

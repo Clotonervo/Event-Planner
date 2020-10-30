@@ -1,10 +1,16 @@
 import React from "react";
 import styled from "styled-components";
-import { useSpring, animated } from 'react-spring'
+import { useSpring, animated } from "react-spring";
 
-import ActionCard from '../ActionCard';
+import ActionCard from "../../ActionCard";
 
-import { spacing8, spacing16, spacing24, fontSize16, link } from "../../../resources/style-constants";
+import {
+  spacing8,
+  spacing16,
+  spacing24,
+  fontSize16,
+  link
+} from "../../../../resources/style-constants";
 
 const StackContainer = styled.div`
   height: 100%;
@@ -42,8 +48,8 @@ const NotificationDot = styled.div`
 
 const TriangleFlap = styled.svg`
   fill: white;
-  -webkit-filter: drop-shadow( 3px 8px 4px rgba(0, 0, 0, .1));
-  filter: drop-shadow( 3px 8px 4px rgba(0, 0, 0, .1));
+  -webkit-filter: drop-shadow(3px 8px 4px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(3px 8px 4px rgba(0, 0, 0, 0.1));
 `;
 
 const ChildContainer = styled.div`
@@ -63,9 +69,9 @@ const getCSSFlapTransformation = (isRotated) => {
   const rotation = `rotateX(${isRotated ? -40 : 0}deg)`;
   const trfm = `perspective(400px) ${rotation}`;
   return trfm;
-}
+};
 
-const Invitation = ({ children, isUnopened, onClick }) => {
+const Invitation = ({ invite, invite: { isUnopened }, onClick, children }) => {
   const [springProps, setSpring] = useSpring(() => ({
     transform: getCSSFlapTransformation(false),
     transformOrigin: `50% 0%`,
@@ -73,9 +79,9 @@ const Invitation = ({ children, isUnopened, onClick }) => {
     config: {
       mass: 1,
       tension: 444,
-      friction: 26,
-    },
-  }))
+      friction: 26
+    }
+  }));
 
   const envelopeLayer = (
     <TriangleFlapContainer as={animated.div} style={springProps}>
@@ -85,30 +91,27 @@ const Invitation = ({ children, isUnopened, onClick }) => {
     </TriangleFlapContainer>
   );
 
-  const notifLayer = !!isUnopened ?
-    (
-      <NotifcationDotContainer>
-        <NotificationDot />
-      </NotifcationDotContainer>
-    ) : <div />;
-
-  const childLayer = (
-    <ChildContainer>
-      {children}
-    </ChildContainer>
+  const notifLayer = !!isUnopened ? (
+    <NotifcationDotContainer>
+      <NotificationDot />
+    </NotifcationDotContainer>
+  ) : (
+    <div />
   );
+
+  const childLayer = <ChildContainer>{children}</ChildContainer>;
 
   return (
     <ActionCard
-      onClick={onClick}
+      onClick={() => onClick(invite)}
       onMouseEnter={() => {
         setSpring({
-          transform: getCSSFlapTransformation(true),
+          transform: getCSSFlapTransformation(true)
         });
       }}
       onMouseLeave={() => {
         setSpring({
-          transform: getCSSFlapTransformation(false),
+          transform: getCSSFlapTransformation(false)
         });
       }}
     >
@@ -119,6 +122,6 @@ const Invitation = ({ children, isUnopened, onClick }) => {
       </StackContainer>
     </ActionCard>
   );
-}
+};
 
 export default Invitation;
