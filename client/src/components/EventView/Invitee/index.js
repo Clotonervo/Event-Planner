@@ -5,11 +5,11 @@ import RsvpStatus from "./rsvpStatus";
 const InviteeContainer = styled.div`
   height: 9vw;
   width: 6vw;
+  margin: 3vw;
   transition: transform 0.08s ease-in-out;
   transition: box-shadow 0.08s ease-in-out;
   transform: scale(1.0, 1.0);
   cursor: pointer;
-
   :hover {
     opacity: .5;
   }
