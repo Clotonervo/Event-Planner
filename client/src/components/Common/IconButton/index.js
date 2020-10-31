@@ -40,6 +40,20 @@ const Icon = styled.div`
   user-select: none;
 `;
 
+/**
+ * A material icon button. Consider using react-icons to render the child icon.
+ * 
+ * ### Sample usage
+ * ```
+ * import { FiDownload } from "react-icons/fi";
+ * 
+ * ...
+ * 
+ * <IconButton onPressed={() => {console.log('download button pressed')}}>
+ *  <FiDownload />
+ * </IconButton>
+ * ```
+ */
 const IconButton = ({
   children,
   onPressed,

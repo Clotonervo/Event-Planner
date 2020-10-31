@@ -44,7 +44,9 @@ const ButtonBarContainer = styled.div`
   align-items: center;
 `;
 
-
+/**
+ * The header which appears at the top of the event-edit page.
+ */
 const Header = ({
   title,
   startDate,
@@ -54,10 +56,11 @@ const Header = ({
   onPressDownload,
   onPressPrint,
   onPressSettings,
+  ...props
 }) => {
 
   return (
-    <Container>
+    <Container {...props}>
       <TitleContainer>{title}</TitleContainer>
       <Spacer />
       <DateContainer>
@@ -92,6 +95,23 @@ Header.defaultProps = {
 }
 
 Header.propTypes = {
+  /** The title of the event. */
+  title: PropTypes.string,
+
+  /** A date object for when the event starts. */
+  startDate: PropTypes.any,
+
+  /** The color of the container which appears behind the header content. */
+  backgroundColor: PropTypes.string,
+
+  /** A callback rasied when the download icon button is pressed. */
+  onPressDownload: PropTypes.func,
+
+  /** A callback rasied when the print icon button is pressed. */
+  onPressPrint: PropTypes.func,
+
+  /** A callback rasied when the settings icon button is pressed. */
+  onPressSettings: PropTypes.func,
 };
 
 export default Header;
