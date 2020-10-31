@@ -1,66 +1,74 @@
 import React from "react";
 import styled from "styled-components";
-import { FaTrash} from 'react-icons/fa';
-import { CgProfile } from 'react-icons/cg';
+import { FaTrash } from "react-icons/fa";
+import { CgProfile } from "react-icons/cg";
 import { IconContext } from "react-icons";
+import { spacing8, spacing16 } from "../../../../../resources/style-constants";
 
 const InviteeContainer = styled.div`
   height: 3.5vw;
-  width: 100%;
-  transition: transform 0.08s ease-in-out;
-  transition: box-shadow 0.08s ease-in-out;
-  transform: scale(1.0, 1.0);
-  cursor: pointer;
+  transform: scale(1, 1);
   border-bottom: 1px solid grey;
-  margin: .6%;
-//   :hover {
-//     opacity: .5;
-//   }
+  padding: ${spacing8};
   :active {
     box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.06), 0 6px 8px 0 rgba(0, 0, 0, 0.06);
   }
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
 
-const CardStyle = styled.div`
-display: flex;
-height: 100%;
-width: 100%;
-flex-direction: row;
-justify-content: left;
-align-items: left;
+const NameIconWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
 `;
 
 const PicStyle = styled.div`
-display: flex;
-padding: 0% .5%;
-flex-direction: row;
-justify-content: center;
-align-items: center;
+  display: flex;
+  padding-right: ${spacing16};
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 `;
 
 const TextBar = styled.div`
-padding: .8% 2%;
-font-size: 1.7vw;
-`;
-
-const ImgFace = styled.img`
-height: 80%;
+  font-size: 1.7vw;
 `;
 
 const ImgTrash = styled.div`
-position: absolute;
-right:0;
-padding: .9% 0%;
-:hover {
-    opacity: .5;
-}
+  position: absolute;
+  right: 0;
+  padding: 0 ${spacing16};
+  :hover {
+    opacity: 0.5;
+    cursor: pointer;
+  }
 `;
 
-const InviteeListItem = ({pic,name,onDelete,...props}) => {
-return <InviteeContainer><CardStyle>
-        <PicStyle><CgProfile></CgProfile></PicStyle>
-        <TextBar>{name}</TextBar><IconContext.Provider value={{ color: "gray", className: 'react-icons' }}><ImgTrash><FaTrash onClick = {onDelete}/></ImgTrash></IconContext.Provider>
-        </CardStyle>
+const InviteeListItem = ({
+  person,
+  person: { fullname },
+  onDelete,
+  ...props
+}) => {
+  return (
+    <InviteeContainer {...props}>
+      <NameIconWrapper>
+        <PicStyle>
+          <IconContext.Provider value={{ size: "2em" }}>
+            <CgProfile />
+          </IconContext.Provider>
+        </PicStyle>
+        <TextBar>{fullname}</TextBar>
+      </NameIconWrapper>
+      <IconContext.Provider value={{ color: "gray", size: "1.25em" }}>
+        <ImgTrash>
+          <FaTrash onClick={() => onDelete(person)} />
+        </ImgTrash>
+      </IconContext.Provider>
     </InviteeContainer>
+  );
 };
 export default InviteeListItem;
