@@ -1,32 +1,29 @@
-import React, { useState } from "react";
-import AddInviteeModal from "./Invitees/AddInviteeModal";
+import React from "react";
+import Invitees from "./Invitees";
 
-const inviteCollaborator =
-  "Enter someone's email or username to invite them to collaborate on your event.";
+const About = ({ event: { viewers, collaborators } }) => {
+  const addViewer = (person) => {};
 
-const About = () => {
-  const [modalOpened, setModalOpened] = useState(false);
+  const addCollaborator = (person) => {};
 
-  const openModal = () => {
-    setModalOpened(true);
-  };
+  const removeViewer = (person) => {};
 
-  const addInvitee = ({ name, username }) => {
-    //TODO: add the person to the event
-    setModalOpened(false);
-  };
-
+  const removeCollaborator = (person) => {};
   return (
     <div>
-      <div onClick={openModal}>Add Person</div>
-      <AddInviteeModal
+      <Invitees
         {...{
-          modalOpened,
-          setModalOpened,
-          addInvitee,
-          addPerson: addInvitee,
-          addPersonMessage: inviteCollaborator,
-          addTitle: "Add Collaborator"
+          addPerson: addViewer,
+          isCollaborators: false,
+          people: viewers,
+          removePerson: removeViewer
+        }}
+      />
+      <Invitees
+        {...{
+          addPerson: addCollaborator,
+          people: collaborators,
+          removePerson: removeCollaborator
         }}
       />
     </div>

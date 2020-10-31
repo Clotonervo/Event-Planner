@@ -80,7 +80,8 @@ const AddInviteeModal = ({
 
   const handleAdd = () => {
     if (personName !== "") {
-      addPerson && addPerson({ name: personName, username: addedPerson });
+      let person = { name: personName, username: addedPerson };
+      addPerson && addPerson(person);
     }
   };
 
