@@ -76,6 +76,37 @@ try {
 //--------------------------------------^ Test User ^
 
 /* ----------------------------- API Endpoints -----------------------------*/
+
+
+app.get('/user', async (req, res) => {
+  try {
+      User.findOne({username: req.body.username}, function(err, user) {
+          // Check database for correct inputs
+          if (user === null){
+              res.statusCode = 200;
+              res.send({
+                  success: false,
+                  message: "User not found!"
+              });
+              return;
+          }
+
+           else {
+
+              res.statusCode = 200;
+
+             res.send({name: req.body.name});
+          }
+  });
+  } catch (error){
+      console.log(error);
+      res.statusCode = 500;
+      res.send({
+          success: false,
+          message: "Error: Something went wrong in the server!"
+      });
+  }
+});
 // Login api endpoint
 app.post('/login', function(req, res) {
     try {
@@ -329,7 +360,7 @@ app.post('/event', async (req, res) => {
 app.put('/event', async (req, res) => {
     var authHeader = req.headers['authorization'];
     const authentication = await util.isValidAuth(authHeader);
-    
+
     if (!authentication.isValid && !authentication.timeout) {
         //This authentication token does not exist
         res.send({
@@ -415,7 +446,7 @@ app.delete('/event', async (req, res) => {
                 return;
             }
             const currentUser = await util.getCurrentUser(authHeader);
-            
+
             if(event.collaborators.includes(currentUser)) {
                 //Loop through each user to event and remove that event
                 util.removeEventFromUsers(req.body.eventID);
@@ -453,5 +484,52 @@ app.delete('/event', async (req, res) => {
     }
 });
 
+app.post('/rsvp', async (req, res) => {
+    var authHeader = req.headers['authorization'];
+    const authentication = await util.isValidAuth(authHeader);
 
+    if (!authentication.isValid && !authentication.timeout) {
+        //This authentication token does not exist
+        res.send({
+            success: false,
+            message: "Error: This authentication token does not exist"
+        });
+    } else if (!authentication.isValid && authentication.timeout) {
+        //This authentication token is expired, send back to login screen
+        res.send({
+            success: false,
+            message: "Error: This authentication token is expired, please login again"
+        });
+    } else {
+        //Authentication token is valid
+        if (req.body.eventID == null || req.body.attending) {
+            //eventName is required error
+            res.send({
+                success: false,
+                message: "Error: An eventID and attending response is required"
+            });
+        }
+		var rsvp = new RSVP({
+            eventID : req.body.eventID,
+            attending : util.getCurrentUser(authentication),
+            username : req.body.eventName,
+		})
 
+        try {
+            rsvp.save();
+            res.statusCode = 200;
+            res.send({
+                success: true,
+                message: "Successfully added RSVP to database"
+            });
+
+        } catch (error) {
+            console.log(error);
+            res.statusCode = 500;
+            res.send({
+                success: false,
+                message: "Error: Failed to save RSVP to database"
+            });
+        }
+    }
+});
