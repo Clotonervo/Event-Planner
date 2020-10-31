@@ -5,6 +5,7 @@ import { FiPrinter, FiSettings, FiDownload } from "react-icons/fi";
 import styled from "styled-components";
 
 import IconButton from "../../Common/IconButton";
+import Stack from "../../Common/Stack";
 import {
   theme1,
   fontSize64,
@@ -13,11 +14,6 @@ import {
 } from "../../../resources/style-constants";
 
 const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: flex-start;
   background-color: ${props => props.bgcolor || theme1};
 `;
 
@@ -49,38 +45,38 @@ const ButtonBarContainer = styled.div`
  */
 const Header = ({
   title,
-  startDate,
-  // endDate, TODO: do we even need an end date? Leaving it out
-  // for now because it just adds complexity.
+  date,
+  dateDisplay,
   backgroundColor,
   onPressDownload,
   onPressPrint,
   onPressSettings,
   ...props
 }) => {
+  const effectiveDate = dateDisplay ?
+    (<>dateDisplay</>) :
+    (<Moment format="MM/DD/YYYY">{date}</Moment>);
 
   return (
     <Container {...props}>
-      <TitleContainer>{title}</TitleContainer>
-      <Spacer />
-      <DateContainer>
-        <Moment format="MM/DD/YYYY">
-          {startDate}
-        </Moment>
-      </DateContainer>
-      <Spacer />
-      <ButtonBarContainer bgcolor={backgroundColor}>
-        <IconButton onPressed={onPressDownload}>
-          <FiDownload />
-        </IconButton>
-        <IconButton onPressed={onPressPrint}>
-          <FiPrinter />
-        </IconButton>
-        <IconButton onPressed={onPressSettings}>
-          <FiSettings />
-        </IconButton>
-      </ButtonBarContainer>
-      <Spacer />
+      <Stack>
+        <TitleContainer>{title}</TitleContainer>
+        <Spacer />
+        <DateContainer>{effectiveDate}</DateContainer>
+        <Spacer />
+        <ButtonBarContainer bgcolor={backgroundColor}>
+          <IconButton onPressed={onPressDownload}>
+            <FiDownload />
+          </IconButton>
+          <IconButton onPressed={onPressPrint}>
+            <FiPrinter />
+          </IconButton>
+          <IconButton onPressed={onPressSettings}>
+            <FiSettings />
+          </IconButton>
+        </ButtonBarContainer>
+        <Spacer />
+      </Stack>
     </Container >
   );
 }
@@ -98,8 +94,11 @@ Header.propTypes = {
   /** The title of the event. */
   title: PropTypes.string,
 
-  /** A date object for when the event starts. */
-  startDate: PropTypes.any,
+  /** A date object for when the event starts (javascript Date object). */
+  date: PropTypes.any,
+
+  /** A custom date to display, formatted however the user wants it to be. */
+  dateDisplay: PropTypes.string,
 
   /** The color of the container which appears behind the header content. */
   backgroundColor: PropTypes.string,
