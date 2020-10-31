@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { FiPrinter } from "react-icons/fi";
 import styled from "styled-components";
 
+import IconButton from "../../Common/IconButton";
 import {
   theme1,
   fontSize64,
@@ -56,9 +58,13 @@ const Header = ({
       <Spacer />
       <DateContainer>{startDate}, {endDate}</DateContainer>
       <Spacer />
-      <ButtonBarContainer bgcolor={backgroundColor}></ButtonBarContainer>
-      <Spacer/>
-    </Container>
+      <ButtonBarContainer bgcolor={backgroundColor}>
+        <IconButton>
+          <FiPrinter />
+        </IconButton>
+      </ButtonBarContainer>
+      <Spacer />
+    </Container >
   );
 }
 
