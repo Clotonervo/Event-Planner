@@ -12,7 +12,10 @@ const inviteAttendee =
   "Enter someone's email or username to invite them to your event.";
 
 const AddButtonWrapper = styled.div`
-  padding: ${spacing16};
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: ${spacing16} 0;
 `;
 
 const Invitees = ({
