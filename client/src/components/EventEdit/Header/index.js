@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
+import Moment from 'react-moment';
 import PropTypes from "prop-types";
-import { FiPrinter } from "react-icons/fi";
+import { FiPrinter, FiSettings, FiDownload } from "react-icons/fi";
 import styled from "styled-components";
 
 import IconButton from "../../Common/IconButton";
@@ -43,24 +44,37 @@ const ButtonBarContainer = styled.div`
   align-items: center;
 `;
 
+
 const Header = ({
   title,
   startDate,
-  endDate,
+  // endDate, TODO: do we even need an end date? Leaving it out
+  // for now because it just adds complexity.
   backgroundColor,
   onPressDownload,
   onPressPrint,
   onPressSettings,
 }) => {
+
   return (
     <Container>
       <TitleContainer>{title}</TitleContainer>
       <Spacer />
-      <DateContainer>{startDate}, {endDate}</DateContainer>
+      <DateContainer>
+        <Moment format="MM/DD/YYYY">
+          {startDate}
+        </Moment>
+      </DateContainer>
       <Spacer />
       <ButtonBarContainer bgcolor={backgroundColor}>
-        <IconButton>
+        <IconButton onPressed={onPressDownload}>
+          <FiDownload />
+        </IconButton>
+        <IconButton onPressed={onPressPrint}>
           <FiPrinter />
+        </IconButton>
+        <IconButton onPressed={onPressSettings}>
+          <FiSettings />
         </IconButton>
       </ButtonBarContainer>
       <Spacer />
@@ -71,7 +85,6 @@ const Header = ({
 Header.defaultProps = {
   title: 'Anne\'s Birthday Party',
   startDate: `${new Date('05 October 2020 14:48 UTC').toISOString()}`,
-  endDate: `${new Date('05 October 2020 15:28 UTC').toISOString()}`,
   backgroundColor: undefined,
   onPressDownload: undefined,
   onPressPrint: undefined,

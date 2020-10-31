@@ -13,6 +13,7 @@ import {
 const Container = styled.div`
   height: ${spacing48};
   width: ${spacing48};
+  margin: ${spacing8};
   border-radius: 50%;
   background-color: white;
   transition: box-shadow 0.08s ease-in-out;
@@ -22,7 +23,7 @@ const Container = styled.div`
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.06), 0 6px 8px 0 rgba(0, 0, 0, 0.06);
   
   :hover {
-    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.08), 0 6px 20px 0 rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.08), 0 6px 12px 0 rgba(0, 0, 0, 0.08);
   }
 
   :active {
