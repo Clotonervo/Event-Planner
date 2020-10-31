@@ -86,7 +86,7 @@ app.get('/user', async (req, res) => {
               res.statusCode = 200;
               res.send({
                   success: false,
-                  message: "User not found!"
+                  message: "User does not exist!"
               });
               return;
           }
@@ -107,6 +107,7 @@ app.get('/user', async (req, res) => {
       });
   }
 });
+
 // Login api endpoint
 app.post('/login', function(req, res) {
     try {
