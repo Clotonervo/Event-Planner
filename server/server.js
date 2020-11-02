@@ -132,7 +132,6 @@ app.post("/register", async (req, res) => {
 // ----------------------------------------- Get Events api
 app.get("/event", async (req, res) => {
   try {
-         console.log("received ID: "+req.body.eventID)
          var authHeader = req.headers['authorization'];
          const authTokenResult = await util.isValidAuth(authHeader);
          if(authTokenResult.isValid){
@@ -197,18 +196,32 @@ app.get("/events", async (req, res) => {
         });
         return;
     }
-
     const currentUser = await util.getCurrentUser(authHeader);
-
+    console.log(currentUser)
     //Get all collaborating events
     const collaborating = await Event.find({
-      collaborators: { $in: [currentUser] }
-    }).lean();
+      collaborators: {
+        $elemMatch: {
+            username: currentUser
+        }
+      }
+    });
 
+    console.log("collaborators: ");
+    console.log(collaborating);
+    
     // Get all view only events
     const viewing = await Event.find({
-      viewers: { $in: [currentUser] }
-    }).lean();
+      viewers: { 
+          $elemMatch: {
+              username: currentUser
+          }
+      }
+    });
+
+
+    console.log("viewing: ");
+    console.log(viewing)
 
     collaborating.forEach((element) => {
       element["isCollaborator"] = true;
@@ -362,7 +375,8 @@ app.post("/event", async (req, res) => {
     if (req.body.collaborators != null) {
       newEvent.collaborators = req.body.collaborators;
     }
-    const currentUser = await util.getCurrentUser(authHeader);
+    const currentUserUsername = await util.getCurrentUser(authHeader);
+    const currentUser = await util.getCurrentUserInfo(currentUserUsername);
     newEvent.collaborators.push(currentUser);
     if (req.body.viewers != null) {
       newEvent.viewers = req.body.viewers;

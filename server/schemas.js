@@ -35,8 +35,8 @@ const Authentication = mongoose.model('Authentication', authenticationSchema);
 
 const eventSchema = new mongoose.Schema({
     eventID: { type: String, required: true, unique: true},
-    eventName: { type: String, required: true},
-    location: { { address: String } },
+    title: { type: String, required: true},
+    location: [ { address: String } ],
     collaborators: [{ username: String, name: String }],
     viewers: [{ username: String, name: String }],
     date: { type: Date},
