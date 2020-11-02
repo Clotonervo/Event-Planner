@@ -132,6 +132,7 @@ app.post("/register", async (req, res) => {
 // ----------------------------------------- Get Events api
 app.get("/event", async (req, res) => {
   try {
+         console.log("received ID: "+req.body.eventID)
          var authHeader = req.headers['authorization'];
          const authTokenResult = await util.isValidAuth(authHeader);
          if(authTokenResult.isValid){
@@ -184,7 +185,7 @@ app.get("/events", async (req, res) => {
         res.statusCode = 403;
         res.send({
             success: false,
-            message: "Error: This authentication token does not exist"
+            message: "This authentication token does not exist"
         });
         return;
     }
@@ -192,7 +193,7 @@ app.get("/events", async (req, res) => {
         res.statusCode = 401;
         res.send({
             success: false,
-            message: "Error: This authentication token is expired, please login again"
+            message: "This authentication token is expired, please login again"
         });
         return;
     }
@@ -354,9 +355,9 @@ app.post("/event", async (req, res) => {
       eventID: uuidv4().substring(0, 8),
       title: req.body.title
     });
-    console.log("address: "+req.body.location.address)
+    console.log("address: "+req.body.location)
     if (req.body.location.address != null) {
-      newEvent.location.address = req.body.location.address;
+      newEvent.location = req.body.location;
     }
     if (req.body.collaborators != null) {
       newEvent.collaborators = req.body.collaborators;
@@ -381,8 +382,9 @@ app.post("/event", async (req, res) => {
       res.statusCode = 200;
       res.send({
         success: true,
-        message: "Successfully added event to database"
+        message: "Successfully added event to database with eventID: " + newEvent.eventID
       });
+
     } catch (error) {
       console.log(error);
       res.statusCode = 500;
