@@ -1,5 +1,6 @@
 import React from "react";
 import About from "./About";
+import Header from "./Header";
 
 const EventEdit = () => {
   const testEvent = {
@@ -17,9 +18,11 @@ const EventEdit = () => {
   //TODO: will need to get the eventId from the url
   // If there isn't an id, then it's a new event
   return (
-    <div>
+    <>
+      <div>Event Edit</div>
+      <Header></Header>
       <About event={testEvent} />
-    </div>
+    </>
   );
 };
 
