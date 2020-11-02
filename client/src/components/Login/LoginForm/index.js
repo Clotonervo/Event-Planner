@@ -161,6 +161,7 @@ const LoginForm = ({ updateAuthToken, switchView, redirectToHome }) => {
                   fullWidth
                   onClick={handleSubmit}
                   disabled={isDisabled}
+                  type="theme"
                 >
                   Sign In
                 </PrimaryButton>

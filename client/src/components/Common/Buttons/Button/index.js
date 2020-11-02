@@ -2,8 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import {
-  theme1,
-  theme2,
   grey2,
   spacing16,
   fontSize20,
@@ -11,30 +9,29 @@ import {
 } from "../../../../resources/style-constants";
 
 const StyledButton = styled.button`
-  background-color: ${({ theme }) => theme.default};
+  background-color: ${({ theme }) => theme.backgroundColor};
   transition: ease background-color 250ms;
   padding: ${spacing16};
-  border: 3px solid ${theme1};
+  border: 3px solid ${({ theme }) => theme.border};
   border-radius: ${borderRadius};
   width: ${({ fullWidth }) => (fullWidth ? "100%" : "auto")};
   cursor: pointer;
   font-weight: bold;
   font-size: ${fontSize20};
-  color: black;
+  color: ${({ theme }) => theme.textColor};
 
   &:hover {
-    border: 3px solid ${({ theme }) => theme.hover};
+    border: 3px solid
+      ${({ theme }) => (theme.hoverBorder ? theme.hoverBorder : theme.hover)};
     background-color: ${({ theme }) => theme.hover};
-    box-shadow: 0 0 0 1px ${theme2};
   }
 
   &[disabled],
   &[disabled]:hover {
     cursor: not-allowed;
     background-color: ${({ theme }) => theme.disabled};
-    color: ${grey2};
     box-shadow: none;
-    border: 3px solid ${theme1};
+    border: 3px solid ${({ theme }) => (theme.border ? theme.border : "")};
     opacity: 0.7;
   }
 `;
