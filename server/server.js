@@ -264,7 +264,7 @@ app.put('/event', async (req, res) => {
     else {
         //Authentication token is valid
         if (req.body.eventID == null) {
-            //eventName is required error
+            //title is required error
             res.statusCode = 200;
             res.send({
                 success: false,
@@ -282,8 +282,8 @@ app.put('/event', async (req, res) => {
             });
             return;
         }
-        if (req.body.eventName != null) {
-            event.eventName = req.body.eventName;
+        if (req.body.title != null) {
+            event.title = req.body.title;
         }
         if (req.body.location != null) {
             event.location = req.body.location;
@@ -336,28 +336,30 @@ app.post("/event", async (req, res) => {
     res.statusCode = 403;
     res.send({
       success: false,
-      message: "Error: This authentication token is expired, please login again"
+      message: "This authentication token is expired, please login again"
     });
   } else {
     //Authentication token is valid
-    if (req.body.eventName == null) {
-      //eventName is required error
+    if (req.body.title == null) {
+      //title is required error
       res.statusCode = 200
       res.send({
         success: false,
-        message: "Error: An eventname is required"
+        message: "An eventname is required"
       });
     }
     var newEvent = new Event({
       eventID: uuidv4().substring(0, 8),
-      eventName: req.body.eventName
+      title: req.body.title
     });
-    if (req.body.location != null) {
-      newEvent.location = req.body.location;
+    console.log("address: "+req.body.location.address)
+    if (req.body.location.address != null) {
+      newEvent.location.address = req.body.location.address;
     }
-    if (req.body.collaborators == null) {
-      const currentUser = await util.getCurrentUser(authHeader);
-      newEvent.collaborators.push(currentUser);
+    const currentUser = await util.getCurrentUser(authHeader);
+    newEvent.collaborators.push(currentUser);
+    if (req.body.collaborators != null) {
+      newEvent.collaborators = req.body.collaborators;
     }
     if (req.body.viewers != null) {
       newEvent.viewers = req.body.viewers;
@@ -367,6 +369,9 @@ app.post("/event", async (req, res) => {
     }
     if (req.body.past != null) {
       newEvent.past = req.body.past;
+    }
+    if (req.body.color != null) {
+      newEvent.color = req.body.color;
     }
 
     try {
@@ -381,7 +386,7 @@ app.post("/event", async (req, res) => {
       res.statusCode = 500;
       res.send({
         success: false,
-        message: "Error: Failed to save event to database"
+        message: "Failed to save event to database"
       });
     }
   }
