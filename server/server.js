@@ -369,7 +369,7 @@ app.post("/event", async (req, res) => {
       title: req.body.title
     });
     console.log("address: "+req.body.location)
-    if (req.body.location.address != null) {
+    if (req.body.location != null) {
       newEvent.location = req.body.location;
     }
     if (req.body.collaborators != null) {
