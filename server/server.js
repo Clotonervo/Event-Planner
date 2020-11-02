@@ -251,14 +251,14 @@ app.put('/event', async (req, res) => {
         res.statusCode = 403;
         res.send({
             success: false,
-            message: "Error: This authentication token does not exist"
+            message: "This authentication token does not exist"
         });
     } else if (!authentication.isValid && authentication.timeout) {
         //This authentication token is expired, send back to login screen
         res.statusCode = 401;
         res.send({
             success: false,
-            message: "Error: This authentication token is expired, please login again"
+            message: "This authentication token is expired, please login again"
         });
     } 
     else {
@@ -268,7 +268,7 @@ app.put('/event', async (req, res) => {
             res.statusCode = 200;
             res.send({
                 success: false,
-                message: "Error: An event ID is required"
+                message: "An event ID is required"
             });
         }
         const event = await Event.findOne({
@@ -278,15 +278,15 @@ app.put('/event', async (req, res) => {
             res.statusCode = 404;
             res.send({
                 success: false,
-                message: "Error: The provided eventID does not exist in the database."
+                message: "The provided eventID does not exist in the database."
             });
             return;
         }
         if (req.body.title != null) {
             event.title = req.body.title;
         }
-        if (req.body.location != null) {
-            event.location = req.body.location;
+        if (req.body.location.address != null) {
+            event.location.address = req.body.location.address;
         }
         if (req.body.collaborators != null) {
             event.collaborators = req.body.collaborators;
@@ -300,7 +300,9 @@ app.put('/event', async (req, res) => {
         if (req.body.past != null) {
             event.past = req.body.past;
         }
-
+        if (req.body.color != null) {
+            event.color = req.body.color;
+        }
         try {
             event.save();
             res.statusCode = 200;
@@ -313,7 +315,7 @@ app.put('/event', async (req, res) => {
             res.statusCode = 500;
             res.send({
                 success: false,
-                message: "Something went wrong updating event!"
+                message: "Something went wrong saving event!"
             });
         }
     }
@@ -329,7 +331,7 @@ app.post("/event", async (req, res) => {
     res.statusCode = 401;
     res.send({
       success: false,
-      message: "Error: This authentication token does not exist"
+      message: "This authentication token does not exist"
     });
   } else if (!authentication.isValid && authentication.timeout) {
     //This authentication token is expired, send back to login screen
@@ -356,11 +358,11 @@ app.post("/event", async (req, res) => {
     if (req.body.location.address != null) {
       newEvent.location.address = req.body.location.address;
     }
-    const currentUser = await util.getCurrentUser(authHeader);
-    newEvent.collaborators.push(currentUser);
     if (req.body.collaborators != null) {
       newEvent.collaborators = req.body.collaborators;
     }
+    const currentUser = await util.getCurrentUser(authHeader);
+    newEvent.collaborators.push(currentUser);
     if (req.body.viewers != null) {
       newEvent.viewers = req.body.viewers;
     }
