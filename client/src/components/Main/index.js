@@ -6,6 +6,7 @@ import CenteredLoadingSpinner from "../Common/CenteredLoadingSpinner";
 import Error from "../Common/Error";
 import EventsSection from "./EventsSection";
 import InvitesSection from "./InvitesSection";
+import Layout from "../Layout";
 import PageAccess from "../Common/PageAccess";
 import Stack from "../Common/Stack";
 import { spacing64, fontSize24, theme1 } from "../../resources/style-constants";
@@ -105,36 +106,38 @@ const Main = () => {
     <div>
       <PageAccess />
       <AppBar color={theme1} />
-      {apiStatus.loading ? (
-        <CenteredLoadingSpinner
-          size={150}
-          color={theme1}
-          loading={apiStatus.loading}
-        />
-      ) : (
-        <Stack gapSize={spacing64}>
-          {invites.length > 0 && (
-            <InvitesSection {...{ invites, setInvites }} />
-          )}
-          <EventsSection
-            isUpcoming={true}
-            events={upcomingEvents}
-            {...{ redirectToEventView, redirectToEventEdit, leaveEvent }}
+      <Layout>
+        {apiStatus.loading ? (
+          <CenteredLoadingSpinner
+            size={150}
+            color={theme1}
+            loading={apiStatus.loading}
           />
-          {pastEvents.length > 0 && (
+        ) : (
+          <Stack gapSize={spacing64}>
+            {invites.length > 0 && (
+              <InvitesSection {...{ invites, setInvites }} />
+            )}
             <EventsSection
-              isUpcoming={false}
-              events={pastEvents}
+              isUpcoming={true}
+              events={upcomingEvents}
               {...{ redirectToEventView, redirectToEventEdit, leaveEvent }}
             />
-          )}
-        </Stack>
-      )}
-      {apiStatus.error && (
-        <Error fontSize={fontSize24}>
-          {apiStatus.message || "An error occurred. Please try again later."}
-        </Error>
-      )}
+            {pastEvents.length > 0 && (
+              <EventsSection
+                isUpcoming={false}
+                events={pastEvents}
+                {...{ redirectToEventView, redirectToEventEdit, leaveEvent }}
+              />
+            )}
+          </Stack>
+        )}
+        {apiStatus.error && (
+          <Error fontSize={fontSize24}>
+            {apiStatus.message || "An error occurred. Please try again later."}
+          </Error>
+        )}
+      </Layout>
     </div>
   );
 };

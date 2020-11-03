@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { spacing64, sideMargins } from "../../resources/style-constants";
+import { sideMargins } from "../../resources/style-constants";
 
 const Wrapper = styled.div`
-  padding: ${spacing64} ${sideMargins};
+  padding: 0 ${sideMargins};
 `;
 
 const Layout = ({ children }) => {

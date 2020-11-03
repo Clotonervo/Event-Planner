@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import createDefaultEvent from "./defaultEvent";
 import ServiceClient from "../../services";
 import About from "./About";
 import AppBar from "../Common/AppBar";
 import CenteredLoadingSpinner from "../Common/CenteredLoadingSpinner";
 import Error from "../Common/Error";
 import Header from "./Header";
+import Layout from "../Layout";
 import PageAccess from "../Common/PageAccess";
 import Tabs from "./Tabs";
 import TodoList from "./Todo";
@@ -44,7 +46,7 @@ const EventEdit = () => {
     if (eventId) {
       loadPageData(eventId);
     } else {
-      createDefaultEvent();
+      prepareData(createDefaultEvent());
     }
   }, []);
 
@@ -54,7 +56,7 @@ const EventEdit = () => {
     try {
       const results = await ServiceClient.event(eventId);
       if (results.success) {
-        prepareData(results.events);
+        prepareData(results.event);
       } else {
         // default message just in case
         newApiStatus.error = true;
@@ -69,7 +71,7 @@ const EventEdit = () => {
     setApiStatus(newApiStatus);
   };
 
-  const prepareData = (pageData) => {};
+  const prepareData = (event) => {};
 
   const createDefaultEvent = () => {};
 
@@ -85,19 +87,23 @@ const EventEdit = () => {
         />
       ) : (
         <>
-          <Header></Header>
-          <Tabs {...{ currentView, pageViews, setCurrentView }} />
-          {currentView === pageViews.about ? (
-            <About event={testEvent} />
-          ) : (
-            <TodoList />
-          )}
+          <Header />
+          <Layout>
+            <Tabs {...{ currentView, pageViews, setCurrentView }} />
+            {currentView === pageViews.about ? (
+              <About event={testEvent} />
+            ) : (
+              <TodoList />
+            )}
+          </Layout>
         </>
       )}
       {apiStatus.error && (
-        <Error fontSize={fontSize24}>
-          {apiStatus.message || "An error occurred. Please try again later."}
-        </Error>
+        <Layout>
+          <Error fontSize={fontSize24}>
+            {apiStatus.message || "An error occurred. Please try again later."}
+          </Error>
+        </Layout>
       )}
     </div>
   );
