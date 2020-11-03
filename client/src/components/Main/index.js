@@ -73,13 +73,13 @@ const Main = () => {
 
   const redirectToEventView = (event) => {
     let eventID = event.eventID;
-    history.push(`/event/${eventID}`);
+    history.push(`/event?id=${eventID}`);
   };
 
   const redirectToEventEdit = (event) => {
     let eventID = event?.eventID;
     if (eventID) {
-      history.push(`/event-edit/${eventID}`);
+      history.push(`/event-edit?id=${eventID}`);
     } else {
       history.push(`/event-edit`);
     }
