@@ -18,7 +18,7 @@ var ServiceClient = {
   },
 
   event: async function (eventId) {
-    return this.getDataFromApi(`/events/${eventId}`);
+    return this.getDataFromApi(`/event/${eventId}`);
   },
 
   getDataFromApi: async function (url) {
