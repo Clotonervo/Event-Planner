@@ -16,10 +16,12 @@ const About = ({
   const removeViewer = (person) => {};
 
   const removeCollaborator = (person) => {};
+
+  const updateLocation = (location) => {};
   return (
     <Stack gapSize={spacing32}>
       <Description {...{ description, updateEvent }} />
-      <MapEditor />
+      <MapEditor label="Event Location" onLocationChanged={updateLocation} />
       <Invitees
         {...{
           addPerson: addViewer,
