@@ -41,7 +41,11 @@ const EventEdit = () => {
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     let eventId = params.get("id");
-    loadPageData(eventId);
+    if (eventId) {
+      loadPageData(eventId);
+    } else {
+      createDefaultEvent();
+    }
   }, []);
 
   const loadPageData = async (eventId) => {
@@ -67,8 +71,8 @@ const EventEdit = () => {
 
   const prepareData = (pageData) => {};
 
-  //TODO: will need to get the eventId from the url
-  // If there isn't an id, then it's a new event
+  const createDefaultEvent = () => {};
+
   return (
     <div>
       {/* <PageAccess /> */}
