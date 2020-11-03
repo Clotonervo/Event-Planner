@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import createDefaultEvent from "./defaultEvent";
+import { createDefaultEvent } from "./defaultEvent";
 import ServiceClient from "../../services";
 import About from "./About";
 import AppBar from "../Common/AppBar";
@@ -9,17 +9,21 @@ import Error from "../Common/Error";
 import Header from "./Header";
 import Layout from "../Layout";
 import PageAccess from "../Common/PageAccess";
+import Stack from "../Common/Stack";
 import Tabs from "./Tabs";
 import TodoList from "./Todo";
-import { fontSize24, theme1 } from "../../resources/style-constants";
+import { fontSize24, spacing32, theme1 } from "../../resources/style-constants";
 
 const pageViews = {
   about: "About",
   todo: "To-do Lists"
 };
 
+const defaultEvent = createDefaultEvent();
+
 const EventEdit = () => {
   const [currentView, setCurrentView] = useState("About");
+  const [event, setEvent] = useState(defaultEvent);
   const [apiStatus, setApiStatus] = useState({
     loading: false,
     error: false,
@@ -45,10 +49,9 @@ const EventEdit = () => {
     let eventId = params.get("id");
     if (eventId) {
       loadPageData(eventId);
-    } else {
-      prepareData(createDefaultEvent());
     }
-  }, []);
+    // eslint-disable-next-line
+  }, [location.search]);
 
   const loadPageData = async (eventId) => {
     setApiStatus({ ...apiStatus, loading: true, error: false });
@@ -56,7 +59,7 @@ const EventEdit = () => {
     try {
       const results = await ServiceClient.event(eventId);
       if (results.success) {
-        prepareData(results.event);
+        setEvent(results.event);
       } else {
         // default message just in case
         newApiStatus.error = true;
@@ -71,13 +74,15 @@ const EventEdit = () => {
     setApiStatus(newApiStatus);
   };
 
-  const prepareData = (event) => {};
-
-  const createDefaultEvent = () => {};
+  const updateEvent = (name, value) => {
+    const updated = { ...event };
+    updated[name] = value;
+    setEvent(updated);
+  };
 
   return (
     <div>
-      {/* <PageAccess /> */}
+      <PageAccess />
       <AppBar color={theme1} />
       {apiStatus.loading ? (
         <CenteredLoadingSpinner
@@ -87,23 +92,29 @@ const EventEdit = () => {
         />
       ) : (
         <>
-          <Header />
-          <Layout>
-            <Tabs {...{ currentView, pageViews, setCurrentView }} />
-            {currentView === pageViews.about ? (
-              <About event={testEvent} />
-            ) : (
-              <TodoList />
-            )}
-          </Layout>
+          {apiStatus.error ? (
+            <Layout>
+              <Error fontSize={fontSize24}>
+                {apiStatus.message ||
+                  "An error occurred. Please try again later."}
+              </Error>
+            </Layout>
+          ) : (
+            <>
+              <Header />
+              <Layout>
+                <Stack gapSize={spacing32}>
+                  <Tabs {...{ currentView, pageViews, setCurrentView }} />
+                  {currentView === pageViews.about ? (
+                    <About event={testEvent} {...{ updateEvent }} />
+                  ) : (
+                    <TodoList />
+                  )}
+                </Stack>
+              </Layout>
+            </>
+          )}
         </>
-      )}
-      {apiStatus.error && (
-        <Layout>
-          <Error fontSize={fontSize24}>
-            {apiStatus.message || "An error occurred. Please try again later."}
-          </Error>
-        </Layout>
       )}
     </div>
   );

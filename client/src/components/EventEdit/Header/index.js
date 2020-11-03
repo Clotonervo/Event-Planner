@@ -72,6 +72,7 @@ const Header = ({
             <FiSettings />
           </IconButton>
         </ButtonBarContainer>
+        <div></div>
       </Stack>
     </Container>
   );
