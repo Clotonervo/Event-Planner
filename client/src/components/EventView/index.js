@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
 import AppBar from "../Common/AppBar";
-import { eventPink } from "../../resources/style-constants";
+import { eventPink, theme1, spacing64, fontSize24 } from "../../resources/style-constants";
 import Invitee from "./Invitee/index.js";
 import Map from "../Common/Map/index.js"
 import styled from "styled-components";
-import Button from "../Common/Buttons/SecondaryButton/index.js"
-import RSVPFloating from "../EventView/RSVPFloating/index.js"
-import ClientService from "../../services"
+import Button from "../Common/Buttons/SecondaryButton/index.js";
+import RSVPFloating from "../EventView/RSVPFloating/index.js";
+import ClientService from "../../services";
+import CenteredLoadingSpinner from "../Common/CenteredLoadingSpinner";
+import Stack from "../Common/Stack";
+import Error from "../Common/Error";
 //import PageAccess from "../Common/PageAccess";
 
+// const testEvent = {
+//     eventID: "testID",
+
+// }
 
 const CenterHeading = styled.p`
     font-size: calc(10px + 2vmin);
@@ -60,6 +67,10 @@ const Main = () => {
     message: false
   });
 
+    const [event, setEvent] = useState({
+        eventName: "testName"
+
+    });
     useEffect(() => {
       loadPageData();
       // eslint-disable-next-line
@@ -71,14 +82,17 @@ const Main = () => {
     try {
         let eventId = "12346"
       //const results = await ClientService.events();
-      results = await ClientService.events(eventId);
+      const results = await ClientService.event(eventId);
       //TODO: call endpoint for invites
       if (results.success) {
         //prepareData(results.events);
+        
+        setEvent(results.event);
       } else {
         // default message just in case
+        
         newApiStatus.error = true;
-        newApiStatus.message = "An error occurred. Please try again later.";
+        newApiStatus.message = results.message;
       }
     } catch (error) {
       newApiStatus.error = true;
@@ -93,9 +107,18 @@ const Main = () => {
   return (
     <div>
       <AppBar color={eventPink} />
-      <DisplayStle>
+      <div>
+      {apiStatus.loading ? (
+        <CenteredLoadingSpinner
+          size={150}
+          color={theme1}
+          loading={apiStatus.loading}
+        />
+      ) : (
+        <Stack gapSize={spacing64}>
+          <DisplayStle>
         <Heading>Description</Heading>
-        <p>{results.events.eventName}</p>
+        <p>{event.eventName}</p>
         <RSVPFloating/>
         <Heading>Location</Heading>
         <Map></Map>
@@ -120,6 +143,15 @@ const Main = () => {
         <p></p>
         <Button>No</Button>
       </DisplayStle>
+        </Stack>
+      )}
+      {apiStatus.error && (
+        <Error fontSize={fontSize24}>
+          {apiStatus.message || "An error occurred. Please try again later."}
+        </Error>
+      )}
+      </div>
+      
     </div>
   );
 };

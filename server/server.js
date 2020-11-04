@@ -130,13 +130,14 @@ app.post("/register", async (req, res) => {
 });
 
 // ----------------------------------------- Get Events api
-app.get("/event", async (req, res) => {
+app.get("/event/:eventID", async (req, res) => {
   try {
          var authHeader = req.headers['authorization'];
          const authTokenResult = await util.isValidAuth(authHeader);
          if(authTokenResult.isValid){
+             console.log(req.params);
              const event = await Event.findOne({
-                 eventID: req.body.eventID
+                 eventID: req.params.eventID
              })
 
              if (event == null){
