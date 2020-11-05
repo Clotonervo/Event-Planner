@@ -14,15 +14,36 @@ const About = ({
     location: { address },
     viewers
   },
-  setEvent
+  setEvent,
+  sortList
 }) => {
-  const addViewer = (person) => {};
+  const addViewer = (person) => {
+    let updatedViewers = [...viewers].concat(person);
+    updatedViewers = sortList(updatedViewers);
+    setEvent({ ...event, viewers: updatedViewers });
+  };
 
-  const addCollaborator = (person) => {};
+  const addCollaborator = (person) => {
+    let updatedCollabs = [...collaborators].concat(person);
+    updatedCollabs = sortList(updatedCollabs);
+    setEvent({ ...event, collaborators: updatedCollabs });
+  };
 
-  const removeViewer = (person) => {};
+  const removeViewer = (person) => {
+    let updatedViewers = [...viewers];
+    updatedViewers = updatedViewers.filter(
+      (p) => p.username !== person.username
+    );
+    setEvent({ ...event, viewers: updatedViewers });
+  };
 
-  const removeCollaborator = (person) => {};
+  const removeCollaborator = (person) => {
+    let updatedCollabs = [...collaborators];
+    updatedCollabs = updatedCollabs.filter(
+      (p) => p.username !== person.username
+    );
+    setEvent({ ...event, collaborators: updatedCollabs });
+  };
 
   const updateAddress = (updatedAddress) => {
     const updated = { ...location } || { address: "" };
@@ -45,19 +66,15 @@ const About = ({
         address={address}
       />
       <Invitees
-        {...{
-          addPerson: addViewer,
-          isCollaborators: false,
-          people: viewers,
-          removePerson: removeViewer
-        }}
+        addPerson={addViewer}
+        isCollaborators={false}
+        people={viewers}
+        removePerson={removeViewer}
       />
       <Invitees
-        {...{
-          addPerson: addCollaborator,
-          people: collaborators,
-          removePerson: removeCollaborator
-        }}
+        addPerson={addCollaborator}
+        people={collaborators}
+        removePerson={removeCollaborator}
       />
     </Stack>
   );

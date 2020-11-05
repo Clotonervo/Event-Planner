@@ -31,7 +31,7 @@ const EventEdit = () => {
   });
 
   const testEvent = {
-    description: "",
+    description: "Description of the event",
     location: {
       address: "Provo, UT 84602"
     },
@@ -63,7 +63,7 @@ const EventEdit = () => {
     try {
       const results = await ServiceClient.event(eventId);
       if (results.success) {
-        setEvent(results.event);
+        prepareData(results.event);
       } else {
         // default message just in case
         newApiStatus.error = true;
@@ -78,11 +78,24 @@ const EventEdit = () => {
     setApiStatus(newApiStatus);
   };
 
-  const updateEvent = (name, value) => {
-    const updated = { ...event };
-    updated[name] = value;
-    setEvent(updated);
+  const prepareData = (event) => {
+    let updatedEvent = { ...event };
+    /** Sort viewers and collaborators alphabetically */
+    updatedEvent.viewers = sortList(updatedEvent.viewers);
+    updatedEvent.collaborators = sortList(updatedEvent.collaborators);
+    setEvent(updatedEvent);
   };
+
+  const sortList = (people) => {
+    return people.sort((a, b) =>
+      a.fullname < b.fullname ? -1 : a.fullname > b.fullname ? 1 : 0
+    );
+  };
+
+  useEffect(() => {
+    console.log("event changed");
+    console.log(event);
+  }, [event]);
 
   return (
     <div>
