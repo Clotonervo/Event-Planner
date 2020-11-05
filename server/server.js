@@ -299,8 +299,8 @@ app.put('/event', async (req, res) => {
         if (req.body.title != null) {
             event.title = req.body.title;
         }
-        if (req.body.location.address != null) {
-            event.location.address = req.body.location.address;
+        if (req.body.location != null) {
+            event.location = req.body.location;
         }
         if (req.body.collaborators != null) {
             event.collaborators = req.body.collaborators;
@@ -313,6 +313,9 @@ app.put('/event', async (req, res) => {
         }
         if (req.body.past != null) {
             event.past = req.body.past;
+        }
+        if (req.body.description != null) {
+            event.description = req.body.description;
         }
         if (req.body.color != null) {
             event.color = req.body.color;
