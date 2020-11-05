@@ -6,8 +6,15 @@ import Stack from "../../Common/Stack";
 import { spacing32 } from "../../../resources/style-constants";
 
 const About = ({
-  event: { collaborators, description, viewers },
-  updateEvent
+  event,
+  event: {
+    collaborators,
+    description,
+    location = { address: "Provo, UT 84602" },
+    location: { address },
+    viewers
+  },
+  setEvent
 }) => {
   const addViewer = (person) => {};
 
@@ -17,11 +24,26 @@ const About = ({
 
   const removeCollaborator = (person) => {};
 
-  const updateLocation = (location) => {};
+  const updateAddress = (updatedAddress) => {
+    const updated = { ...location } || { address: "" };
+    updated.address = updatedAddress;
+    setEvent({ ...event, location: updated });
+  };
+
+  const updateEvent = (name, value) => {
+    const updated = { ...event };
+    updated[name] = value;
+    setEvent(updated);
+  };
+
   return (
     <Stack gapSize={spacing32}>
       <Description {...{ description, updateEvent }} />
-      <MapEditor label="Event Location" onLocationChanged={updateLocation} />
+      <MapEditor
+        label="Event Location"
+        onAddressChanged={updateAddress}
+        address={address}
+      />
       <Invitees
         {...{
           addPerson: addViewer,

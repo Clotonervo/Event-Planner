@@ -31,6 +31,10 @@ const EventEdit = () => {
   });
 
   const testEvent = {
+    description: "",
+    location: {
+      address: "Provo, UT 84602"
+    },
     collaborators: [
       { fullname: "Jane Doe", username: "test1" },
       { fullname: "John Smith", username: "test2" },
@@ -106,7 +110,7 @@ const EventEdit = () => {
                 <Stack gapSize={spacing32}>
                   <Tabs {...{ currentView, pageViews, setCurrentView }} />
                   {currentView === pageViews.about ? (
-                    <About event={testEvent} {...{ updateEvent }} />
+                    <About event={testEvent} {...{ setEvent }} />
                   ) : (
                     <TodoList />
                   )}
