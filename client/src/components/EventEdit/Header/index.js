@@ -1,5 +1,5 @@
 import React from "react";
-import Moment from 'react-moment';
+import Moment from "react-moment";
 import PropTypes from "prop-types";
 import { FiPrinter, FiSettings, FiDownload } from "react-icons/fi";
 import styled from "styled-components";
@@ -10,15 +10,12 @@ import {
   theme1,
   fontSize64,
   fontSize24,
-  spacing24,
+  sideMargins
 } from "../../../resources/style-constants";
 
 const Container = styled.div`
-  background-color: ${props => props.bgcolor || theme1};
-`;
-
-const Spacer = styled.div`
-  height: ${spacing24};
+  background-color: ${(props) => props.bgcolor || theme1};
+  padding: 0 ${sideMargins};
 `;
 
 const TitleContainer = styled.h1`
@@ -53,17 +50,17 @@ const Header = ({
   onPressSettings,
   ...props
 }) => {
-  const effectiveDate = dateDisplay ?
-    (<>dateDisplay</>) :
-    (<Moment format="MM/DD/YYYY">{date}</Moment>);
+  const effectiveDate = dateDisplay ? (
+    <>dateDisplay</>
+  ) : (
+    <Moment format="MM/DD/YYYY">{date}</Moment>
+  );
 
   return (
     <Container {...props}>
       <Stack>
         <TitleContainer>{title}</TitleContainer>
-        <Spacer />
         <DateContainer>{effectiveDate}</DateContainer>
-        <Spacer />
         <ButtonBarContainer bgcolor={backgroundColor}>
           <IconButton onPressed={onPressDownload}>
             <FiDownload />
@@ -75,20 +72,20 @@ const Header = ({
             <FiSettings />
           </IconButton>
         </ButtonBarContainer>
-        <Spacer />
+        <div></div>
       </Stack>
-    </Container >
+    </Container>
   );
-}
+};
 
 Header.defaultProps = {
-  title: 'Anne\'s Birthday Party',
-  startDate: `${new Date('05 October 2020 14:48 UTC').toISOString()}`,
+  title: "Anne's Birthday Party",
+  startDate: `${new Date("05 October 2020 14:48 UTC").toISOString()}`,
   backgroundColor: undefined,
   onPressDownload: undefined,
   onPressPrint: undefined,
-  onPressSettings: undefined,
-}
+  onPressSettings: undefined
+};
 
 Header.propTypes = {
   /** The title of the event. */
@@ -110,7 +107,7 @@ Header.propTypes = {
   onPressPrint: PropTypes.func,
 
   /** A callback rasied when the settings icon button is pressed. */
-  onPressSettings: PropTypes.func,
+  onPressSettings: PropTypes.func
 };
 
 export default Header;

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
-import ClientService from "../../../services";
+import ServiceClient from "../../../services";
 import PrimaryButton from "../../Common/Buttons/PrimaryButton";
 import Link from "../../Common/Link";
 import H1 from "../../Common/Headings/Heading1";
@@ -105,7 +105,7 @@ const LoginForm = ({ updateAuthToken, switchView, redirectToHome }) => {
 
   const login = async () => {
     try {
-      const loginStatus = await ClientService.login({ username, password });
+      const loginStatus = await ServiceClient.login({ username, password });
       if (loginStatus.success) {
         updateAuthToken && updateAuthToken(loginStatus.authToken);
         redirectToHome();
