@@ -66,10 +66,38 @@ createTestUserAuthentication = async function() {
 createTestUserEvents = async function() {
     var date = new Date()
 
+    const invitees =[
+        {
+            name: "John Doe",
+            photoUrl: ""
+        },
+        {
+            name: "John Cena",
+            photoUrl: ""
+        },
+        {
+            name: "Joe DiMaggio",
+            photoUrl: ""
+        },
+        {
+            name: "Jerek Deter",
+            photoUrl: ""
+        },
+        {
+            name: "Baseball Guy",
+            photoUrl: ""
+        },
+        {
+            name: "FootBall Fred",
+            photoUrl: ""
+        },
+    ]
+
     const viewOnlyEvent = new Event({
         eventID: "12345",
         eventName: "View Only Event",
         viewers: ["Test@gmail.com"],
+        invitees: invitees,
         date: date.getDate() + 7
     })
     
@@ -77,6 +105,7 @@ createTestUserEvents = async function() {
         eventID: "12346",
         eventName: "Wedding",
         collaborators: ["Test@gmail.com"],
+        invitees: invitees,
         date: date.getDate() + 7
     })
     
@@ -84,6 +113,7 @@ createTestUserEvents = async function() {
         eventID: "12347",
         eventName: "Burfday",
         collaborators: ["Test@gmail.com"],
+        invitees: invitees,
         date: date.getDate() + 4
     })
     
@@ -91,6 +121,7 @@ createTestUserEvents = async function() {
         eventID: "12348",
         eventName: "Funeral",
         collaborators: ["Test@gmail.com"],
+        invitees: invitees,
         date: date.getDate() - 7
     })
     

@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import {
-  spacing8,
   spacing24,
   fontSize20,
   borderRadius,
@@ -14,7 +13,6 @@ import {
 const StyledInput = styled.input`
   background-color: white;
   box-sizing: border-box;
-  margin: ${spacing8} 0;
   padding: ${spacing24};
   height: ${fontSize20};
   width: 100%;
