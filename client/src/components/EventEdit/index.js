@@ -23,12 +23,19 @@ const defaultEvent = createDefaultEvent();
 
 const EventEdit = () => {
   const [currentView, setCurrentView] = useState("About");
+  const [originalEvent, setOriginalEvent] = useState();
   const [event, setEvent] = useState(defaultEvent);
   const [apiStatus, setApiStatus] = useState({
     loading: false,
     error: false,
     message: false
   });
+  const [saveStatus, setSaveStatus] = useState({
+    loading: false,
+    error: false,
+    message: false
+  });
+  const [editing, setEditing] = useState(false);
 
   const testEvent = {
     description: "Description of the event",
@@ -84,6 +91,7 @@ const EventEdit = () => {
     updatedEvent.viewers = sortList(updatedEvent.viewers);
     updatedEvent.collaborators = sortList(updatedEvent.collaborators);
     setEvent(updatedEvent);
+    setOriginalEvent(updatedEvent);
   };
 
   const sortList = (people) => {
@@ -92,7 +100,18 @@ const EventEdit = () => {
     );
   };
 
+  const saveEvent = async () => {
+    //TODO: implement this
+  };
+
   useEffect(() => {
+    if (
+      originalEvent &&
+      JSON.stringify(originalEvent) !== JSON.stringify(event)
+    ) {
+      //TODO: verify that this works
+      setEditing(true);
+    }
     console.log("event changed");
     console.log(event);
   }, [event]);
@@ -121,6 +140,13 @@ const EventEdit = () => {
               <Header />
               <Layout>
                 <Stack gapSize={spacing32}>
+                  {editing && <div>Saving button placeholder</div>}
+                  {saveStatus.error && (
+                    <Error fontSize={fontSize24}>
+                      {saveStatus.message ||
+                        "Error trying to save. Please try again later."}
+                    </Error>
+                  )}
                   <Tabs {...{ currentView, pageViews, setCurrentView }} />
                   {currentView === pageViews.about ? (
                     <About event={testEvent} {...{ setEvent }} />
