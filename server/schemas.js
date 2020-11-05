@@ -40,6 +40,10 @@ const eventSchema = new mongoose.Schema({
     collaborators: [{ type: String }],
     viewers: [{ type: String }],
     date: { type: Date},
+    invitees: [{ 
+        name: { type: String },
+        photoUrl: { type: String }
+    }],
     past: { type: Boolean }
 });
 

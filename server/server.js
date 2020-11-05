@@ -297,6 +297,9 @@ app.put('/event', async (req, res) => {
         if(req.body.date != null) {
             event.date = req.body.date;
         }
+        if(req.body.invitees != null) {
+            event.invitees = req.body.invitees;
+        }
         if (req.body.past != null) {
             event.past = req.body.past;
         }
@@ -364,6 +367,9 @@ app.post("/event", async (req, res) => {
     }
     if (req.body.date != null) {
       newEvent.date = req.body.date;
+    }
+    if(req.body.invitees != null) {
+      newEvent.invitees = req.body.invitees;
     }
     if (req.body.past != null) {
       newEvent.past = req.body.past;
