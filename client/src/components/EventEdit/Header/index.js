@@ -1,11 +1,11 @@
 import React from "react";
-import Moment from "react-moment";
 import PropTypes from "prop-types";
 import { FiPrinter, FiSettings, FiDownload } from "react-icons/fi";
 import styled from "styled-components";
 
 import IconButton from "../../Common/IconButton";
 import InputEditable from "../../Common/InputEditable";
+import DateEditable from "../../Common/DateEditable";
 import Stack from "../../Common/Stack";
 import {
   theme1,
@@ -56,21 +56,15 @@ const Header = ({
   onEditTitle,
   ...props
 }) => {
-  const effectiveDate = dateDisplay ? (
-    <>{dateDisplay}</>
-  ) : (
-    <Moment format="MM/DD/YYYY">{date}</Moment>
-  );
-
   return (
     <Container {...props}>
       <Stack>
         <TitleInputContainer>
           <TitleInput as={InputEditable} value={title} onSaveValue={onEditTitle}/>
         </TitleInputContainer>
-        {/* <TitleContainer>{title}</TitleContainer> */}
-        {/* <InputEditable></InputEditable> */}
-        <DateContainer>{effectiveDate}</DateContainer>
+        <DateContainer>
+          <DateEditable>{date}</DateEditable>
+        </DateContainer>
         <ButtonBarContainer bgcolor={backgroundColor}>
           <IconButton onPressed={onPressDownload}>
             <FiDownload />
@@ -105,7 +99,8 @@ Header.propTypes = {
   date: PropTypes.any,
 
   /** A custom date to display, formatted however the user wants it to be. */
-  dateDisplay: PropTypes.string,
+  // TODO: add this in later, if we need it
+  // dateDisplay: PropTypes.string,
 
   /** The color of the container which appears behind the header content. */
   backgroundColor: PropTypes.string,
