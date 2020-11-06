@@ -239,83 +239,50 @@ app.get("/events", async (req, res) => {
 });
 
 // ----------------------------------------- Update Events api
-app.put('/event', async (req, res) => {
-    var authHeader = req.headers['authorization'];
-    const authentication = await util.isValidAuth(authHeader);
-    
-    if (!authentication.isValid && !authentication.timeout) {
-        //This authentication token does not exist
-        res.statusCode = 403;
-        res.send({
-            success: false,
-            message: "Error: This authentication token does not exist"
-        });
-    } else if (!authentication.isValid && authentication.timeout) {
-        //This authentication token is expired, send back to login screen
-        res.statusCode = 401;
-        res.send({
-            success: false,
-            message: "Error: This authentication token is expired, please login again"
-        });
-    } 
-    else {
-        //Authentication token is valid
-        if (req.body.eventID == null) {
-            //eventName is required error
-            res.statusCode = 200;
-            res.send({
-                success: false,
-                message: "Error: An event ID is required"
-            });
-        }
-        const event = await Event.findOne({
-            eventID: req.body.eventID,
-        });
-        if (event == null) {
-            res.statusCode = 404;
-            res.send({
-                success: false,
-                message: "Error: The provided eventID does not exist in the database."
-            });
-            return;
-        }
-        if (req.body.eventName != null) {
-            event.eventName = req.body.eventName;
-        }
-        if (req.body.location != null) {
-            event.location = req.body.location;
-        }
-        if (req.body.collaborators != null) {
-            event.collaborators = req.body.collaborators;
-        }
-        if (req.body.viewers != null) {
-            event.viewers = req.body.viewers;
-        }
-        if(req.body.date != null) {
-            event.date = req.body.date;
-        }
-        if(req.body.invitees != null) {
-            event.invitees = req.body.invitees;
-        }
-        if (req.body.past != null) {
-            event.past = req.body.past;
-        }
+app.put("/event", async (req, res) => {
+  var authHeader = req.headers["authorization"];
+  const authentication = await util.isValidAuth(authHeader);
 
-        try {
-            event.save();
-            res.statusCode = 200;
-            res.send({
-                success: true,
-                message: "Successfully updated event"
-            });
-        } catch (err) {
-            console.log(err)
-            res.statusCode = 500;
-            res.send({
-                success: false,
-                message: "Something went wrong updating event!"
-            });
-        }
+  if (!authentication.isValid && !authentication.timeout) {
+    //This authentication token does not exist
+    res.statusCode = 403;
+    res.send({
+      success: false,
+      message: "Error: This authentication token does not exist"
+    });
+  } else if (!authentication.isValid && authentication.timeout) {
+    //This authentication token is expired, send back to login screen
+    res.statusCode = 401;
+    res.send({
+      success: false,
+      message: "Error: This authentication token is expired, please login again"
+    });
+  } else {
+    //Authentication token is valid
+    if (req.body.eventID == null) {
+      //eventName is required error
+      res.statusCode = 200;
+      res.send({
+        success: false,
+        message: "Error: An event ID is required"
+      });
+    }
+    const event = await Event.findOne({
+      eventID: req.body.eventID
+    });
+    if (event == null) {
+      res.statusCode = 404;
+      res.send({
+        success: false,
+        message: "Error: The provided eventID does not exist in the database."
+      });
+      return;
+    }
+    if (req.body.eventName != null) {
+      event.eventName = req.body.eventName;
+    }
+    if (req.body.location != null) {
+      event.location = req.body.location;
     }
     if (req.body.collaborators != null) {
       event.collaborators = req.body.collaborators;
@@ -325,6 +292,9 @@ app.put('/event', async (req, res) => {
     }
     if (req.body.date != null) {
       event.date = req.body.date;
+    }
+    if (req.body.invitees != null) {
+      event.invitees = req.body.invitees;
     }
     if (req.body.past != null) {
       event.past = req.body.past;
@@ -345,6 +315,34 @@ app.put('/event', async (req, res) => {
         message: "Something went wrong updating event!"
       });
     }
+  }
+  if (req.body.collaborators != null) {
+    event.collaborators = req.body.collaborators;
+  }
+  if (req.body.viewers != null) {
+    event.viewers = req.body.viewers;
+  }
+  if (req.body.date != null) {
+    event.date = req.body.date;
+  }
+  if (req.body.past != null) {
+    event.past = req.body.past;
+  }
+
+  try {
+    event.save();
+    res.statusCode = 200;
+    res.send({
+      success: true,
+      message: "Successfully updated event"
+    });
+  } catch (err) {
+    console.log(err);
+    res.statusCode = 500;
+    res.send({
+      success: false,
+      message: "Something went wrong updating event!"
+    });
   }
 });
 
@@ -394,7 +392,7 @@ app.post("/event", async (req, res) => {
     if (req.body.date != null) {
       newEvent.date = req.body.date;
     }
-    if(req.body.invitees != null) {
+    if (req.body.invitees != null) {
       newEvent.invitees = req.body.invitees;
     }
     if (req.body.past != null) {

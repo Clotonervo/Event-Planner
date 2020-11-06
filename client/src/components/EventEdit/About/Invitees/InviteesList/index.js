@@ -10,8 +10,13 @@ const List = styled.div`
 const InviteesList = ({ removePerson, people = [] }) => {
   return (
     <List>
-      {people.map((person) => {
-        return <InviteeListItem {...{ onDelete: { removePerson }, person }} />;
+      {people.map((person, index) => {
+        return (
+          <InviteeListItem
+            key={index}
+            {...{ onDelete: { removePerson }, person }}
+          />
+        );
       })}
     </List>
   );
