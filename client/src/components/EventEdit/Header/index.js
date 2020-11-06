@@ -22,6 +22,7 @@ const Container = styled.div`
 const TitleInput = styled.h1`
   font-size: ${fontSize64};
   margin: 0;
+  width: 50%;
 `;
 
 const DateContainer = styled.h5`
@@ -49,6 +50,7 @@ const Header = ({
   onPressDownload,
   onPressPrint,
   onPressSettings,
+  onEditTitle,
   ...props
 }) => {
   const effectiveDate = dateDisplay ? (
@@ -60,7 +62,7 @@ const Header = ({
   return (
     <Container {...props}>
       <Stack>
-        <TitleInput as={InputEditable} />
+        <TitleInput as={InputEditable} onSaveValue={onEditTitle} />
         {/* <TitleContainer>{title}</TitleContainer> */}
         {/* <InputEditable></InputEditable> */}
         <DateContainer>{effectiveDate}</DateContainer>
@@ -110,7 +112,10 @@ Header.propTypes = {
   onPressPrint: PropTypes.func,
 
   /** A callback rasied when the settings icon button is pressed. */
-  onPressSettings: PropTypes.func
+  onPressSettings: PropTypes.func,
+
+  /** A callback rasied when the title is edited. */
+  onEditTitle: PropTypes.func,
 };
 
 export default Header;

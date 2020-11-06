@@ -1,15 +1,15 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import { FiEdit2 } from "react-icons/fi";
+import { FiEdit2, FiCheck } from "react-icons/fi";
+import { VscClose } from "react-icons/vsc";
 
-import Input from "../Input";
-import PrimaryButton from "../Buttons/PrimaryButton";
 import { spacing32, spacing16 } from "../../../resources/style-constants";
 
 const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  align-items: center;
   height: 100%;
   width: 100%;
 `;
@@ -25,7 +25,7 @@ const IconContainer = styled.div`
   }
 `;
 
-const InputContainer = styled.div`
+const TextContainer = styled.div`
   height: 100%;
   width: calc(100% - ${spacing16});
   margin-right: ${spacing32};
@@ -34,34 +34,56 @@ const InputContainer = styled.div`
 const InputField = styled.input`
   height: 100%;
   width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+
+  :focus {
+    border: none;
+    outline: none;
+  }
 `;
 
 const InputEditable = ({
   name,
   value,
   placeholder,
-  onChange,
   type = "text",
   required = false,
-  onPressEdit,
-  onPressSave,
+  onSaveValue,
   ...props
 }) => {
-  const [isEditMode, setIsEditMode] = useState(true);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [editValue, setEditValue] = useState(value);
 
   const child = isEditMode ?
     <>
-      <InputContainer>
-        <InputField as={Input} {...{ name, value, placeholder, onChange, type, required, ...props }} />
-      </InputContainer>
-      <PrimaryButton onClick={onPressSave}>
-        Save
-      </PrimaryButton>
+      <TextContainer>
+        <InputField 
+          onChange={(e) => {
+            setEditValue(e.target.value);
+          }}
+          autoFocus
+          {...{ name, editValue, placeholder, type, required, ...props }}
+        />
+      </TextContainer>
+      <IconContainer onClick={() => {
+        setIsEditMode(false);
+      }}>
+        <VscClose />
+      </IconContainer>
+      <IconContainer onClick={() => {
+        onSaveValue && onSaveValue(editValue);
+        setIsEditMode(false);
+      }}>
+        <FiCheck />
+      </IconContainer>
     </> :
     <>
-      {value}
-      <IconContainer onClick={onPressEdit}>
+      <TextContainer>
+        {value}
+      </TextContainer>
+      <IconContainer onClick={() => setIsEditMode(true)}>
         <FiEdit2 />
       </IconContainer>
     </>
@@ -69,7 +91,6 @@ const InputEditable = ({
   return (
     <Container {...props}>
       {child}
-      {/* <Input {...{ name, value, placeholder, onChange, type, required, ...props }} /> */}
     </Container>
   );
 }
