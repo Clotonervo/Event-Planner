@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import Input from "../Input";
@@ -54,3 +55,13 @@ const InputFormField = ({
 };
 
 export default InputFormField;
+
+InputFormField.propTypes = {
+  label: PropTypes.string,
+  changeHandler: PropTypes.func,
+  validityState: PropTypes.any,
+  validateInput: PropTypes.func,
+  onPressEnter: PropTypes.func,
+  children: PropTypes.any,
+  ...Input.propTypes,
+};

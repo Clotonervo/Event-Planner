@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import styled from "styled-components";
 import { FiEdit2, FiCheck } from "react-icons/fi";
 import { VscClose } from "react-icons/vsc";
 
+import Input from "../Input";
 import { spacing16, spacing8 } from "../../../resources/style-constants";
 
 const Container = styled.div`
@@ -44,6 +46,23 @@ const InputField = styled.input`
   }
 `;
 
+/**
+ * An editable text field. 
+ * 
+ * Sample usage:
+ * 
+ * ```
+ * const [currentValue, setCurrentValue] = useState("Initial value");
+ * ...
+ * <InputEditable 
+ *    value={currentValue}
+ *    onSaveValue={(value) => {
+ *      console.log(`User wants to update this text field to ${value}`);
+ *      setCurrentValue(value)
+ *    }} 
+ * />
+ * ```
+ */
 const InputEditable = ({
   name,
   value,
@@ -100,3 +119,13 @@ const InputEditable = ({
 }
 
 export default InputEditable;
+
+InputEditable.propTypes = {
+  /**
+   * A callback raised when the user presses the "check-mark" icon to indicate
+   * a save value action.
+   */
+  onSaveValue: PropTypes.func,
+
+  ...Input.propTypes,
+};
