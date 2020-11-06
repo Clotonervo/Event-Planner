@@ -5,6 +5,7 @@ import { FiPrinter, FiSettings, FiDownload } from "react-icons/fi";
 import styled from "styled-components";
 
 import IconButton from "../../Common/IconButton";
+import InputEditable from "../../Common/InputEditable";
 import Stack from "../../Common/Stack";
 import {
   theme1,
@@ -18,7 +19,7 @@ const Container = styled.div`
   padding: 0 ${sideMargins};
 `;
 
-const TitleContainer = styled.h1`
+const TitleInput = styled.h1`
   font-size: ${fontSize64};
   margin: 0;
 `;
@@ -59,7 +60,9 @@ const Header = ({
   return (
     <Container {...props}>
       <Stack>
-        <TitleContainer>{title}</TitleContainer>
+        <TitleInput as={InputEditable} />
+        {/* <TitleContainer>{title}</TitleContainer> */}
+        {/* <InputEditable></InputEditable> */}
         <DateContainer>{effectiveDate}</DateContainer>
         <ButtonBarContainer bgcolor={backgroundColor}>
           <IconButton onPressed={onPressDownload}>
