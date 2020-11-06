@@ -293,6 +293,9 @@ app.put("/event", async (req, res) => {
     if (req.body.date != null) {
       event.date = req.body.date;
     }
+    if (req.body.invitees != null) {
+      event.invitees = req.body.invitees;
+    }
     if (req.body.past != null) {
       event.past = req.body.past;
     }
@@ -312,6 +315,34 @@ app.put("/event", async (req, res) => {
         message: "Something went wrong updating event!"
       });
     }
+  }
+  if (req.body.collaborators != null) {
+    event.collaborators = req.body.collaborators;
+  }
+  if (req.body.viewers != null) {
+    event.viewers = req.body.viewers;
+  }
+  if (req.body.date != null) {
+    event.date = req.body.date;
+  }
+  if (req.body.past != null) {
+    event.past = req.body.past;
+  }
+
+  try {
+    event.save();
+    res.statusCode = 200;
+    res.send({
+      success: true,
+      message: "Successfully updated event"
+    });
+  } catch (err) {
+    console.log(err);
+    res.statusCode = 500;
+    res.send({
+      success: false,
+      message: "Something went wrong updating event!"
+    });
   }
 });
 
@@ -360,6 +391,9 @@ app.post("/event", async (req, res) => {
     }
     if (req.body.date != null) {
       newEvent.date = req.body.date;
+    }
+    if (req.body.invitees != null) {
+      newEvent.invitees = req.body.invitees;
     }
     if (req.body.past != null) {
       newEvent.past = req.body.past;
