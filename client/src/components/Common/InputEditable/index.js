@@ -118,8 +118,6 @@ const InputEditable = ({
   );
 }
 
-export default InputEditable;
-
 InputEditable.propTypes = {
   /**
    * A callback raised when the user presses the "check-mark" icon to indicate
@@ -129,3 +127,5 @@ InputEditable.propTypes = {
 
   ...Input.propTypes,
 };
+
+export default InputEditable;

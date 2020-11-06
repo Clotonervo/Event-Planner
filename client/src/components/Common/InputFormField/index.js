@@ -54,8 +54,6 @@ const InputFormField = ({
   );
 };
 
-export default InputFormField;
-
 InputFormField.propTypes = {
   label: PropTypes.string,
   changeHandler: PropTypes.func,
@@ -65,3 +63,5 @@ InputFormField.propTypes = {
   children: PropTypes.any,
   ...Input.propTypes,
 };
+
+export default InputFormField;

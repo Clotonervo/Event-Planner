@@ -57,7 +57,7 @@ const Header = ({
   ...props
 }) => {
   const effectiveDate = dateDisplay ? (
-    <>dateDisplay</>
+    <>{dateDisplay}</>
   ) : (
     <Moment format="MM/DD/YYYY">{date}</Moment>
   );
