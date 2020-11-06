@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { FiEdit2, FiCheck } from "react-icons/fi";
 import { VscClose } from "react-icons/vsc";
 
-import { spacing32, spacing16 } from "../../../resources/style-constants";
+import { spacing16, spacing8 } from "../../../resources/style-constants";
 
 const Container = styled.div`
   display: flex;
@@ -18,7 +18,7 @@ const IconContainer = styled.div`
   opacity: 0.5;
   transition: opacity 0.08s ease-in-out;
   cursor: pointer;
-  transform: scale(0.75);
+  transform: scale(0.75) translateY(25%);
 
   :hover {
     opacity: 0.7;
@@ -27,8 +27,8 @@ const IconContainer = styled.div`
 
 const TextContainer = styled.div`
   height: 100%;
-  width: calc(100% - ${spacing16});
-  margin-right: ${spacing32};
+  width: calc(100% - ${spacing8});
+  margin-right: ${spacing16};
 `;
 
 const InputField = styled.input`
@@ -54,7 +54,7 @@ const InputEditable = ({
   ...props
 }) => {
   const [isEditMode, setIsEditMode] = useState(false);
-  const [editValue, setEditValue] = useState(value);
+  const [editValue, setEditValue] = useState("");
 
   const child = isEditMode ?
     <>
@@ -64,7 +64,8 @@ const InputEditable = ({
             setEditValue(e.target.value);
           }}
           autoFocus
-          {...{ name, editValue, placeholder, type, required, ...props }}
+          value={editValue}
+          {...{ name, placeholder, type, required, ...props }}
         />
       </TextContainer>
       <IconContainer onClick={() => {
@@ -83,7 +84,10 @@ const InputEditable = ({
       <TextContainer>
         {value}
       </TextContainer>
-      <IconContainer onClick={() => setIsEditMode(true)}>
+      <IconContainer onClick={() => {
+        setIsEditMode(true);
+        setEditValue(value);
+      }}>
         <FiEdit2 />
       </IconContainer>
     </>

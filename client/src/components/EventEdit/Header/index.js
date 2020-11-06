@@ -19,10 +19,13 @@ const Container = styled.div`
   padding: 0 ${sideMargins};
 `;
 
+const TitleInputContainer = styled.div`
+  width: 60%;
+`;
+
 const TitleInput = styled.h1`
   font-size: ${fontSize64};
   margin: 0;
-  width: 50%;
 `;
 
 const DateContainer = styled.h5`
@@ -62,7 +65,9 @@ const Header = ({
   return (
     <Container {...props}>
       <Stack>
-        <TitleInput as={InputEditable} onSaveValue={onEditTitle} />
+        <TitleInputContainer>
+          <TitleInput as={InputEditable} value={title} onSaveValue={onEditTitle}/>
+        </TitleInputContainer>
         {/* <TitleContainer>{title}</TitleContainer> */}
         {/* <InputEditable></InputEditable> */}
         <DateContainer>{effectiveDate}</DateContainer>
