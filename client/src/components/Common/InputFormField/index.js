@@ -61,7 +61,6 @@ InputFormField.propTypes = {
   validateInput: PropTypes.func,
   onPressEnter: PropTypes.func,
   children: PropTypes.any,
-  ...Input.propTypes,
 };
 
 export default InputFormField;

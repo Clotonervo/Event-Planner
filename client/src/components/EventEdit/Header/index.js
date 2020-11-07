@@ -28,8 +28,11 @@ const TitleInput = styled.h1`
   margin: 0;
 `;
 
-const DateContainer = styled.h5`
+const DateContainer = styled.div`
   font-size: ${fontSize24};
+`;
+
+const DateInput = styled.div`
   opacity: 0.5;
   margin: 0;
 `;
@@ -48,12 +51,13 @@ const ButtonBarContainer = styled.div`
 const Header = ({
   title,
   date,
-  dateDisplay,
+  // dateDisplay, TODO, add this in after the first demo
   backgroundColor,
   onPressDownload,
   onPressPrint,
   onPressSettings,
   onEditTitle,
+  onEditDate,
   ...props
 }) => {
   return (
@@ -63,7 +67,7 @@ const Header = ({
           <TitleInput as={InputEditable} value={title} onSaveValue={onEditTitle}/>
         </TitleInputContainer>
         <DateContainer>
-          <DateEditable>{date}</DateEditable>
+          <DateInput as={DateEditable} onEditValue={onEditDate} value={date} />
         </DateContainer>
         <ButtonBarContainer bgcolor={backgroundColor}>
           <IconButton onPressed={onPressDownload}>
@@ -84,7 +88,7 @@ const Header = ({
 
 Header.defaultProps = {
   title: "Anne's Birthday Party",
-  startDate: `${new Date("05 October 2020 14:48 UTC").toISOString()}`,
+  date: new Date("05 October 2020 14:48 UTC"),
   backgroundColor: undefined,
   onPressDownload: undefined,
   onPressPrint: undefined,

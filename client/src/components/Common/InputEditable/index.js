@@ -124,8 +124,6 @@ InputEditable.propTypes = {
    * a save value action.
    */
   onSaveValue: PropTypes.func,
-
-  ...Input.propTypes,
 };
 
 export default InputEditable;

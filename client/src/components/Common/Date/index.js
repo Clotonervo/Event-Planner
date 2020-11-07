@@ -8,19 +8,19 @@ const DateFormats = {
 
 const Date = ({
   format = "short",
-  children,
+  value,
   ...props
 }) => {
   return (
     <Moment format={DateFormats[format]} {...props}>
-      {children}
+      {value}
     </Moment>
   );
 }
 
 Date.propTypes = {
   format: PropTypes.oneOf(["short"]),
-  children: PropTypes.any,
+  value: PropTypes.any,
 };
 
 export default Date;
