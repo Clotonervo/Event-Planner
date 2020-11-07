@@ -6,6 +6,7 @@ const DateFormats = {
   "short": "MM/DD/YYYY",
 };
 
+/** Displays a formatted date. */
 const Date = ({
   format = "short",
   value,
@@ -19,7 +20,10 @@ const Date = ({
 }
 
 Date.propTypes = {
+  /** The format of date to display. */
   format: PropTypes.oneOf(["short"]),
+
+  /** The date to display. Must be a date object. */
   value: PropTypes.any,
 };
 

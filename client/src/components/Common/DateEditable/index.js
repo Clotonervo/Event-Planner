@@ -22,6 +22,7 @@ const IconContainer = styled.div`
   padding-left: ${spacing8};
 `;
 
+/** An editable date widget. Use this to allow users to edit a date. */
 const DateEditable = ({
   format = "short",
   value,
@@ -45,9 +46,10 @@ const DateEditable = ({
 }
 
 DateEditable.propTypes = {
-  format: PropTypes.oneOf(["short"]),
+  /** A callback raised when the date value is edited */
   onEditValue: PropTypes.func,
-  value: PropTypes.any,
+
+  ...Date.propTypes,
 };
 
 export default DateEditable;
