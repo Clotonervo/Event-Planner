@@ -37,12 +37,12 @@ const eventSchema = new mongoose.Schema({
     eventID: { type: String, required: true, unique: true},
     title: { type: String, required: true},
     location: [ { address: String } ],
-    collaborators: [{ username: String, name: String }],
-    viewers: [{ username: String, name: String }],
+    collaborators: [{ username: String, name: String, photoURL: String }],
+    viewers: [{ username: String, name: String, photoURL: String }],
     date: { type: Date},
     past: { type: Boolean },
     description: { type: String },
-    color: { type: String, default: '#FFFFFF' }
+    color: { type: String, default: '#8be4d2' }
 });
 
 eventSchema.methods.createEventID = function() {
