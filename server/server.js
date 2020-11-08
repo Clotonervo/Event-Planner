@@ -197,7 +197,7 @@ app.get("/events", async (req, res) => {
         return;
     }
     const currentUser = await util.getCurrentUser(authHeader);
-    console.log(currentUser)
+    //console.log(currentUser)
     //Get all collaborating events
     const collaborating = await Event.find({
       collaborators: {
@@ -207,8 +207,8 @@ app.get("/events", async (req, res) => {
       }
     });
 
-    console.log("collaborators: ");
-    console.log(collaborating);
+    //console.log("collaborators: ");
+    //console.log(collaborating);
     
     // Get all view only events
     const viewing = await Event.find({
@@ -220,8 +220,8 @@ app.get("/events", async (req, res) => {
     });
 
 
-    console.log("viewing: ");
-    console.log(viewing)
+    //console.log("viewing: ");
+    //console.log(viewing)
 
     collaborating.forEach((element) => {
       element["isCollaborator"] = true;
@@ -371,7 +371,7 @@ app.post("/event", async (req, res) => {
       eventID: uuidv4().substring(0, 8),
       title: req.body.title
     });
-    console.log("address: "+req.body.location)
+    //console.log("address: "+req.body.location)
     if (req.body.location != null) {
       newEvent.location = req.body.location;
     }

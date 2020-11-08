@@ -64,36 +64,64 @@ createTestUserAuthentication = async function() {
 }
 
 createTestUserEvents = async function() {
-    var date = new Date()
+    var date = new Date();
 
     const viewOnlyEvent = new Event({
         eventID: "12345",
-        eventName: "View Only Event",
-        viewers: ["Test@gmail.com"],
-        date: date.getDate() + 7
-    })
+        title: "View Only Event",
+        viewers: {
+            username: "Test@gmail.com",
+            name: "testName",
+            photoURL: "testurl.com"
+        },
+        date: {
+            startDate: date.getDate() + 7,
+            displayDate: "displayDate test1"
+        }
+    });
     
     const Event1 = new Event({
         eventID: "12346",
-        eventName: "Wedding",
-        collaborators: ["Test@gmail.com"],
-        date: date.getDate() + 7
+        title: "Wedding",
+        viewers: {
+            username: "Test@gmail.com",
+            name: "testName",
+            photoURL: "testurl.com"
+        },
+        date: {
+            startDate: date.getDate() + 7,
+            displayDate: "displayDate test1"
+        }
     })
     
     const Event2 = new Event({
         eventID: "12347",
-        eventName: "Burfday",
-        collaborators: ["Test@gmail.com"],
-        date: date.getDate() + 4
+        title: "Burfday",
+        viewers: {
+            username: "Test@gmail.com",
+            name: "testName",
+            photoURL: "testurl.com"
+        },
+        date: {
+            startDate: date.getDate() + 7,
+            displayDate: "displayDate test1"
+        }
     })
     
     const Event3 = new Event({
         eventID: "12348",
-        eventName: "Funeral",
-        collaborators: ["Test@gmail.com"],
-        date: date.getDate() - 7
+        title: "Funeral",
+        viewers: {
+            username: "Test@gmail.com",
+            name: "testName",
+            photoURL: "testurl.com"
+        },
+        date: {
+            startDate: date.getDate() + 7,
+            displayDate: "displayDate test1"
+        }
     })
-    
+
     var eventExists = await Event.findOne({ eventID: "12345"})
     // console.log(eventExists);
     if(eventExists === null){
@@ -114,6 +142,7 @@ createTestUserEvents = async function() {
     if(eventExists === null){
         await Event3.save()
     }
+    
 }
 
 async function clearTestUser() {
