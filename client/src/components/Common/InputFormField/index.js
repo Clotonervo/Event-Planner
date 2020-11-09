@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import Input from "../Input";
 import Error from "../Error";
+import { spacing8 } from "../../../resources/style-constants";
 
 const PaddedLabel = styled.label`
   font-weight: bold;
@@ -10,6 +11,10 @@ const PaddedLabel = styled.label`
 
 const InputWrapper = styled.div`
   width: 100%;
+`;
+
+const StyledInput = styled(Input)`
+  margin: ${spacing8} 0;
 `;
 
 const InputFormField = ({
@@ -26,16 +31,16 @@ const InputFormField = ({
   ...props
 }) => {
   const handleKeyDown = (e) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       onPressEnter && onPressEnter();
     }
-  }
+  };
 
   return (
     <InputWrapper>
       <PaddedLabel>{label}</PaddedLabel>
-      <Input
-        onKeyDown={handleKeyDown} 
+      <StyledInput
+        onKeyDown={handleKeyDown}
         onChange={changeHandler}
         onBlur={validateInput}
         {...{ name, value, placeholder, required, ...props }}

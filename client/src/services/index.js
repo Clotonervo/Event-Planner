@@ -17,6 +17,10 @@ var ServiceClient = {
     return this.getDataFromApi("/events");
   },
 
+  event: async function (eventId) {
+    return this.getDataFromApi(`/event/${eventId}`);
+  },
+
   getDataFromApi: async function (url) {
     let headers = {
       Accept: "application/json"

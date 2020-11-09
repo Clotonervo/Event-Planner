@@ -66,6 +66,33 @@ createTestUserAuthentication = async function() {
 createTestUserEvents = async function() {
     var date = new Date();
 
+    const invitees =[
+        {
+            name: "John Doe",
+            photoUrl: ""
+        },
+        {
+            name: "John Cena",
+            photoUrl: ""
+        },
+        {
+            name: "Joe DiMaggio",
+            photoUrl: ""
+        },
+        {
+            name: "Jerek Deter",
+            photoUrl: ""
+        },
+        {
+            name: "Baseball Guy",
+            photoUrl: ""
+        },
+        {
+            name: "FootBall Fred",
+            photoUrl: ""
+        },
+    ]
+
     const viewOnlyEvent = new Event({
         eventID: "12345",
         title: "View Only Event",
@@ -77,7 +104,8 @@ createTestUserEvents = async function() {
         date: {
             startDate: date.getDate() + 7,
             displayDate: "displayDate test1"
-        }
+        },
+        invitees: invitees
     });
     
     const Event1 = new Event({
@@ -91,7 +119,8 @@ createTestUserEvents = async function() {
         date: {
             startDate: date.getDate() + 7,
             displayDate: "displayDate test1"
-        }
+        },
+        invitees: invitees
     })
     
     const Event2 = new Event({
@@ -105,7 +134,8 @@ createTestUserEvents = async function() {
         date: {
             startDate: date.getDate() + 7,
             displayDate: "displayDate test1"
-        }
+        },
+        invitees: invitees
     })
     
     const Event3 = new Event({
@@ -119,7 +149,8 @@ createTestUserEvents = async function() {
         date: {
             startDate: date.getDate() + 7,
             displayDate: "displayDate test1"
-        }
+        },
+        invitees: invitees
     })
 
     var eventExists = await Event.findOne({ eventID: "12345"})

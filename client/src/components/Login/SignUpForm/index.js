@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
-import ClientService from "../../../services";
+import ServiceClient from "../../../services";
 import PrimaryButton from "../../Common/Buttons/PrimaryButton";
 import LinkButton from "../../Common/LinkButton";
 import H1 from "../../Common/Headings/Heading1";
@@ -129,7 +129,7 @@ const SignUpForm = ({ updateAuthToken, switchView, redirectToHome }) => {
 
   const signUp = async () => {
     try {
-      const signUpStatus = await ClientService.register({
+      const signUpStatus = await ServiceClient.register({
         name,
         username,
         password
@@ -198,6 +198,7 @@ const SignUpForm = ({ updateAuthToken, switchView, redirectToHome }) => {
                   fullWidth
                   onClick={handleSubmit}
                   disabled={isDisabled}
+                  type="theme"
                 >
                   Sign Up
                 </PrimaryButton>

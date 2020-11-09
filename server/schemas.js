@@ -42,6 +42,10 @@ const eventSchema = new mongoose.Schema({
     date: [ { startDate: Date, displayDate: String } ],
     past: { type: Boolean },
     description: { type: String },
+    invitees: [{ 
+        name: { type: String },
+        photoUrl: { type: String }
+    }],
     color: { type: String, default: '#8be4d2' }
 });
 

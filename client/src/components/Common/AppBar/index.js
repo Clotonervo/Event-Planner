@@ -5,14 +5,13 @@ import {
   theme1,
   spacing8,
   spacing24,
-  spacing32,
   spacing128,
   appBarHeight
 } from "../../../resources/style-constants";
 import Logo from "../Logo";
 
 const Wrapper = styled.div`
-  height: ${spacing32};
+  height: ${appBarHeight};
   /*This property adjusts the layout, 
   so the next component rendered will be just below the app bar.*/
 `;
