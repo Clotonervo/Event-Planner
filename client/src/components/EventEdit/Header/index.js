@@ -1,10 +1,11 @@
 import React from "react";
-import Moment from "react-moment";
 import PropTypes from "prop-types";
 import { FiPrinter, FiSettings, FiDownload } from "react-icons/fi";
 import styled from "styled-components";
 
 import IconButton from "../../Common/IconButton";
+import InputEditable from "../../Common/InputEditable";
+import DateEditable from "../../Common/DateEditable";
 import Stack from "../../Common/Stack";
 import {
   theme1,
@@ -18,13 +19,20 @@ const Container = styled.div`
   padding: 0 ${sideMargins};
 `;
 
-const TitleContainer = styled.h1`
+const TitleInputContainer = styled.div`
+  width: 60%;
+`;
+
+const TitleInput = styled.h1`
   font-size: ${fontSize64};
   margin: 0;
 `;
 
-const DateContainer = styled.h5`
+const DateContainer = styled.div`
   font-size: ${fontSize24};
+`;
+
+const DateInput = styled.div`
   opacity: 0.5;
   margin: 0;
 `;
@@ -43,24 +51,24 @@ const ButtonBarContainer = styled.div`
 const Header = ({
   title,
   date,
-  dateDisplay,
+  // dateDisplay, TODO, add this in after the first demo
   backgroundColor,
   onPressDownload,
   onPressPrint,
   onPressSettings,
+  onEditTitle,
+  onEditDate,
   ...props
 }) => {
-  const effectiveDate = dateDisplay ? (
-    <>dateDisplay</>
-  ) : (
-    <Moment format="MM/DD/YYYY">{date}</Moment>
-  );
-
   return (
     <Container {...props}>
       <Stack>
-        <TitleContainer>{title}</TitleContainer>
-        <DateContainer>{effectiveDate}</DateContainer>
+        <TitleInputContainer>
+          <TitleInput as={InputEditable} value={title} onSaveValue={onEditTitle}/>
+        </TitleInputContainer>
+        <DateContainer>
+          <DateInput as={DateEditable} onEditValue={onEditDate} value={date} />
+        </DateContainer>
         <ButtonBarContainer bgcolor={backgroundColor}>
           <IconButton onPressed={onPressDownload}>
             <FiDownload />
@@ -80,7 +88,7 @@ const Header = ({
 
 Header.defaultProps = {
   title: "Anne's Birthday Party",
-  startDate: `${new Date("05 October 2020 14:48 UTC").toISOString()}`,
+  date: new Date("05 October 2020 14:48 UTC"),
   backgroundColor: undefined,
   onPressDownload: undefined,
   onPressPrint: undefined,
@@ -95,7 +103,8 @@ Header.propTypes = {
   date: PropTypes.any,
 
   /** A custom date to display, formatted however the user wants it to be. */
-  dateDisplay: PropTypes.string,
+  // TODO: add this in later, if we need it
+  // dateDisplay: PropTypes.string,
 
   /** The color of the container which appears behind the header content. */
   backgroundColor: PropTypes.string,
@@ -107,7 +116,10 @@ Header.propTypes = {
   onPressPrint: PropTypes.func,
 
   /** A callback rasied when the settings icon button is pressed. */
-  onPressSettings: PropTypes.func
+  onPressSettings: PropTypes.func,
+
+  /** A callback rasied when the title is edited. */
+  onEditTitle: PropTypes.func,
 };
 
 export default Header;
