@@ -43,14 +43,14 @@ const EventEdit = () => {
       address: "Provo, UT 84602"
     },
     collaborators: [
-      { fullname: "Jane Doe", username: "test1" },
-      { fullname: "John Smith", username: "test2" },
-      { fullname: "Donald Duck ", username: "test3" }
+      { name: "Jane Doe", username: "test1" },
+      { name: "John Smith", username: "test2" },
+      { name: "Donald Duck ", username: "test3" }
     ],
     viewers: [
-      { fullname: "Mickey Mouse", username: "test4" },
-      { fullname: "Minnie Mouse", username: "test5" },
-      { fullname: "Daisy Duck", username: "test6" }
+      { name: "Mickey Mouse", username: "test4" },
+      { name: "Minnie Mouse", username: "test5" },
+      { name: "Daisy Duck", username: "test6" }
     ]
   };
   const location = useLocation();
@@ -96,7 +96,7 @@ const EventEdit = () => {
 
   const sortList = (people) => {
     return people.sort((a, b) =>
-      a.fullname < b.fullname ? -1 : a.fullname > b.fullname ? 1 : 0
+      a.name < b.name ? -1 : a.name > b.name ? 1 : 0
     );
   };
 

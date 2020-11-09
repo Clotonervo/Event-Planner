@@ -1,7 +1,7 @@
 export const createDefaultEvent = () => {
   let event = {
     eventID: "",
-    eventName: "",
+    title: "",
     location: "",
     collaborators: [],
     viewers: [],
