@@ -178,34 +178,48 @@ app.get("/events", async (req, res) => {
     const authHeader = req.headers["authorization"];
     const authentication = await util.isValidAuth(authHeader);
 
-    if (authentication.timeout) {
-      res.statusCode = 403;
-      res.send({
-        success: false,
-        message: "Error: This authentication token does not exist"
-      });
-      return;
-    } else if (!authentication.isValid) {
-      res.statusCode = 401;
-      res.send({
-        success: false,
-        message:
-          "Error: This authentication token is expired, please login again"
-      });
-      return;
+    if(authentication.timeout){
+        res.statusCode = 403;
+        res.send({
+            success: false,
+            message: "This authentication token does not exist"
+        });
+        return;
     }
-
+    else if(!authentication.isValid){
+        res.statusCode = 401;
+        res.send({
+            success: false,
+            message: "This authentication token is expired, please login again"
+        });
+        return;
+    }
     const currentUser = await util.getCurrentUser(authHeader);
-
+    //console.log(currentUser)
     //Get all collaborating events
     const collaborating = await Event.find({
-      collaborators: { $in: [currentUser] }
-    }).lean();
+      collaborators: {
+        $elemMatch: {
+            username: currentUser
+        }
+      }
+    });
 
+    //console.log("collaborators: ");
+    //console.log(collaborating);
+    
     // Get all view only events
     const viewing = await Event.find({
-      viewers: { $in: [currentUser] }
-    }).lean();
+      viewers: { 
+          $elemMatch: {
+              username: currentUser
+          }
+      }
+    });
+
+
+    //console.log("viewing: ");
+    //console.log(viewing)
 
     collaborating.forEach((element) => {
       element["isCollaborator"] = true;
@@ -239,112 +253,91 @@ app.get("/events", async (req, res) => {
 });
 
 // ----------------------------------------- Update Events api
-app.put("/event", async (req, res) => {
-  var authHeader = req.headers["authorization"];
-  const authentication = await util.isValidAuth(authHeader);
-
-  if (!authentication.isValid && !authentication.timeout) {
-    //This authentication token does not exist
-    res.statusCode = 403;
-    res.send({
-      success: false,
-      message: "Error: This authentication token does not exist"
-    });
-  } else if (!authentication.isValid && authentication.timeout) {
-    //This authentication token is expired, send back to login screen
-    res.statusCode = 401;
-    res.send({
-      success: false,
-      message: "Error: This authentication token is expired, please login again"
-    });
-  } else {
-    //Authentication token is valid
-    if (req.body.eventID == null) {
-      //eventName is required error
-      res.statusCode = 200;
-      res.send({
-        success: false,
-        message: "Error: An event ID is required"
-      });
+app.put('/event', async (req, res) => {
+    var authHeader = req.headers['authorization'];
+    const authentication = await util.isValidAuth(authHeader);
+    
+    if (!authentication.isValid && !authentication.timeout) {
+        //This authentication token does not exist
+        res.statusCode = 403;
+        res.send({
+            success: false,
+            message: "This authentication token does not exist"
+        });
+    } else if (!authentication.isValid && authentication.timeout) {
+        //This authentication token is expired, send back to login screen
+        res.statusCode = 401;
+        res.send({
+            success: false,
+            message: "This authentication token is expired, please login again"
+        });
+    } 
+    else {
+        //Authentication token is valid
+        if (req.body.eventID == null) {
+            //title is required error
+            res.statusCode = 200;
+            res.send({
+                success: false,
+                message: "An event ID is required"
+            });
+        }
+        const event = await Event.findOne({
+            eventID: req.body.eventID,
+        });
+        if (event == null) {
+            res.statusCode = 404;
+            res.send({
+                success: false,
+                message: "The provided eventID does not exist in the database."
+            });
+            return;
+        }
+        if (req.body.title != null) {
+            event.title = req.body.title;
+        }
+        if (req.body.location != null) {
+            event.location = req.body.location;
+        }
+        if (req.body.collaborators != null) {
+            event.collaborators = req.body.collaborators;
+        }
+        if (req.body.viewers != null) {
+            event.viewers = req.body.viewers;
+        }
+        if(req.body.date != null) {
+            event.date = req.body.date;
+        }
+        if (req.body.past != null) {
+            event.past = req.body.past;
+        }
+        if (req.body.description != null) {
+            event.description = req.body.description;
+        }
+        if (req.body.invitees != null) {
+          event.invitees = req.body.invitees;
+        }
+        if (req.body.color != null) {
+            event.color = req.body.color;
+        }
+        try {
+            event.save();
+            res.statusCode = 200;
+            res.send({
+                success: true,
+                message: "Successfully updated event"
+            });
+        } catch (err) {
+            console.log(err)
+            res.statusCode = 500;
+            res.send({
+                success: false,
+                message: "Something went wrong saving event!"
+            });
+          }
     }
-    const event = await Event.findOne({
-      eventID: req.body.eventID
-    });
-    if (event == null) {
-      res.statusCode = 404;
-      res.send({
-        success: false,
-        message: "Error: The provided eventID does not exist in the database."
-      });
-      return;
-    }
-    if (req.body.eventName != null) {
-      event.eventName = req.body.eventName;
-    }
-    if (req.body.location != null) {
-      event.location = req.body.location;
-    }
-    if (req.body.collaborators != null) {
-      event.collaborators = req.body.collaborators;
-    }
-    if (req.body.viewers != null) {
-      event.viewers = req.body.viewers;
-    }
-    if (req.body.date != null) {
-      event.date = req.body.date;
-    }
-    if (req.body.invitees != null) {
-      event.invitees = req.body.invitees;
-    }
-    if (req.body.past != null) {
-      event.past = req.body.past;
-    }
-
-    try {
-      event.save();
-      res.statusCode = 200;
-      res.send({
-        success: true,
-        message: "Successfully updated event"
-      });
-    } catch (err) {
-      console.log(err);
-      res.statusCode = 500;
-      res.send({
-        success: false,
-        message: "Something went wrong updating event!"
-      });
-    }
-  }
-  if (req.body.collaborators != null) {
-    event.collaborators = req.body.collaborators;
-  }
-  if (req.body.viewers != null) {
-    event.viewers = req.body.viewers;
-  }
-  if (req.body.date != null) {
-    event.date = req.body.date;
-  }
-  if (req.body.past != null) {
-    event.past = req.body.past;
-  }
-
-  try {
-    event.save();
-    res.statusCode = 200;
-    res.send({
-      success: true,
-      message: "Successfully updated event"
-    });
-  } catch (err) {
-    console.log(err);
-    res.statusCode = 500;
-    res.send({
-      success: false,
-      message: "Something went wrong updating event!"
-    });
-  }
 });
+
 
 // ----------------------------------------- Create Event api
 app.post("/event", async (req, res) => {
@@ -356,36 +349,39 @@ app.post("/event", async (req, res) => {
     res.statusCode = 401;
     res.send({
       success: false,
-      message: "Error: This authentication token does not exist"
+      message: "This authentication token does not exist"
     });
   } else if (!authentication.isValid && authentication.timeout) {
     //This authentication token is expired, send back to login screen
     res.statusCode = 403;
     res.send({
       success: false,
-      message: "Error: This authentication token is expired, please login again"
+      message: "This authentication token is expired, please login again"
     });
   } else {
     //Authentication token is valid
-    if (req.body.eventName == null) {
-      //eventName is required error
-      res.statusCode = 200;
+    if (req.body.title == null) {
+      //title is required error
+      res.statusCode = 200
       res.send({
         success: false,
-        message: "Error: An eventname is required"
+        message: "A title is required"
       });
     }
     var newEvent = new Event({
       eventID: uuidv4().substring(0, 8),
-      eventName: req.body.eventName
+      title: req.body.title
     });
+    //console.log("address: "+req.body.location)
     if (req.body.location != null) {
       newEvent.location = req.body.location;
     }
-    if (req.body.collaborators == null) {
-      const currentUser = await util.getCurrentUser(authHeader);
-      newEvent.collaborators.push(currentUser);
+    if (req.body.collaborators != null) {
+      newEvent.collaborators = req.body.collaborators;
     }
+    const currentUserUsername = await util.getCurrentUser(authHeader);
+    const currentUser = await util.getCurrentUserInfo(currentUserUsername);
+    newEvent.collaborators.push(currentUser);
     if (req.body.viewers != null) {
       newEvent.viewers = req.body.viewers;
     }
@@ -398,20 +394,24 @@ app.post("/event", async (req, res) => {
     if (req.body.past != null) {
       newEvent.past = req.body.past;
     }
+    if (req.body.color != null) {
+      newEvent.color = req.body.color;
+    }
 
     try {
       newEvent.save();
       res.statusCode = 200;
       res.send({
         success: true,
-        message: "Successfully added event to database"
+        message: "Successfully added event to database with eventID: " + newEvent.eventID
       });
+
     } catch (error) {
       console.log(error);
       res.statusCode = 500;
       res.send({
         success: false,
-        message: "Error: Failed to save event to database"
+        message: "Failed to save event to database"
       });
     }
   }
