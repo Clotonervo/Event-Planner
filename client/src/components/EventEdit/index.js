@@ -137,7 +137,15 @@ const EventEdit = () => {
             </Layout>
           ) : (
             <>
-              <Header />
+              <Header 
+                date={new Date("05 October 2020 14:48 UTC")}
+                onEditDate={(value) => {
+                  console.log(`Edited date: ${value}`);
+                }}
+                onEditTitle={(value) => {
+                  console.log(`Edited title: ${value}`);
+                }}
+              />
               <Layout>
                 <Stack gapSize={spacing32}>
                   {editing && <div>Saving button placeholder</div>}

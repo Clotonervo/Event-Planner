@@ -35,16 +35,18 @@ const Authentication = mongoose.model('Authentication', authenticationSchema);
 
 const eventSchema = new mongoose.Schema({
     eventID: { type: String, required: true, unique: true},
-    eventName: { type: String, required: true},
-    location: { type: String },
-    collaborators: [{ type: String }],
-    viewers: [{ type: String }],
-    date: { type: Date},
+    title: { type: String, required: true},
+    location: [ { address: String } ],
+    collaborators: [{ username: String, name: String, photoURL: String }],
+    viewers: [{ username: String, name: String, photoURL: String }],
+    date: [ { startDate: Date, displayDate: String } ],
+    past: { type: Boolean },
+    description: { type: String },
     invitees: [{ 
         name: { type: String },
         photoUrl: { type: String }
     }],
-    past: { type: Boolean }
+    color: { type: String, default: '#8be4d2' }
 });
 
 eventSchema.methods.createEventID = function() {

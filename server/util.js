@@ -48,6 +48,23 @@ module.exports = {
             console.log(error);
         }
     },
+    getCurrentUserInfo: async (username) => {
+        try {
+            const user = await User.findOne({
+                username: username,
+            })
+
+            if(user == null){
+                return null;
+            }
+            else {
+                return user;
+            }
+
+        } catch (error){
+            console.log(error);
+        }
+    },
     removeEventFromUsers: async (eventID) => {
         try {
             const event = await Event.findOneAndDelete({
