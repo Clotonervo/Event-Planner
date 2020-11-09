@@ -112,7 +112,7 @@ createTestUserEvents = async function () {
       startDate: date.getDate() + 7,
       displayDate: "displayDate test1"
     },
-    invitees: invitees,
+    collaborators: invitees,
     location: {
       address: "Provo, UT 84606"
     }
@@ -132,7 +132,7 @@ createTestUserEvents = async function () {
       startDate: date.getDate() + 7,
       displayDate: "displayDate test1"
     },
-    invitees: invitees,
+    collaborators: invitees,
     location: {
       address: "50 N West Temple, Salt Lake City, UT 84150"
     }
@@ -152,7 +152,7 @@ createTestUserEvents = async function () {
       startDate: date.getDate() + 7,
       displayDate: "displayDate test1"
     },
-    invitees: invitees,
+    collaborators: invitees,
     location: {
       address: "Provo, UT 84606"
     }
@@ -172,7 +172,7 @@ createTestUserEvents = async function () {
       startDate: date.getDate() + 7,
       displayDate: "displayDate test1"
     },
-    invitees: invitees,
+    collaborators: invitees,
     location: {
       address: "Provo, UT 84606"
     }
