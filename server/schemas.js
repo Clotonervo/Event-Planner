@@ -39,7 +39,7 @@ const eventSchema = new mongoose.Schema({
   location: { address: String },
   collaborators: [{ username: String, name: String, photoURL: String }],
   viewers: [{ username: String, name: String, photoURL: String }],
-  date: [{ startDate: Date, displayDate: String }],
+  date: { startDate: { type: Date }, displayDate: { type: String } },
   past: { type: Boolean },
   description: { type: String },
   invitees: [
