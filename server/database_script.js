@@ -25,7 +25,7 @@ mongoose.connection.on("connected", () => {
   } else if (option === "clear") {
     clearDatabase();
   } else {
-    console.log("Usage: node test_info.js <option>");
+    console.log("Usage: node database_schema.js <option>");
     console.log("   Options: populate - Populates database with test data");
     console.log("   Options: clear - Clears the database of all data");
     process.exit();
@@ -65,26 +65,26 @@ createTestUserAuthentication = async function () {
 createTestUserEvents = async function () {
   var date = new Date();
 
-  const invitees = [
+  const collaborators = [
     {
       name: "John Doe",
       username: "TestUser1",
-      photoUrl: ""
+      photoURL: ""
     },
     {
       name: "John Cena",
       username: "TestUser2",
-      photoUrl: ""
+      photoURL: ""
     },
     {
       name: "Joe DiMaggio",
       username: "TestUser3",
-      photoUrl: ""
+      photoURL: ""
     },
     {
       name: "Jerek Deter",
       username: "TestUser4",
-      photoUrl: ""
+      photoURL: ""
     },
     {
       name: "Baseball Guy",
@@ -94,45 +94,59 @@ createTestUserEvents = async function () {
     {
       name: "FootBall Fred",
       username: "TestUser6",
-      photoUrl: ""
+      photoURL: ""
+    },
+    {
+      username: "Test@gmail.com",
+      name: "testName",
+      photoURL: "testurl.com"
     }
   ];
 
-  const viewOnlyEvent = new Event({
-    eventID: "12345",
-    title: "View Only Event",
-    viewers: [
-      {
-        username: "Test@gmail.com",
-        name: "testName",
-        photoURL: "testurl.com"
-      }
-    ],
-    date: {
-      startDate: date.getDate() + 7,
-      displayDate: "displayDate test1"
+  const viewers = [
+    {
+      name: "Minny Mouse",
+      username: "MM",
+      photoURL: ""
     },
-    collaborators: invitees,
-    location: {
-      address: "Provo, UT 84606"
+    {
+      name: "Mickey Mouse",
+      username: "MM2",
+      photoURL: ""
+    },
+    {
+      name: "Momma Odie",
+      username: "MO",
+      photoURL: ""
+    },
+    {
+      name: "Rick Astley",
+      username: "RA",
+      photoURL: ""
+    },
+    {
+      name: "BYU Guy",
+      username: "BYUG",
+      photoUrl: ""
+    },
+    {
+      name: "Chandler Bing",
+      username: "chandlerbing@bing.com",
+      photoURL: ""
     }
-  });
+  ];
+
+
 
   const Event1 = new Event({
     eventID: "12346",
     title: "Wedding",
-    viewers: [
-      {
-        username: "Test@gmail.com",
-        name: "testName",
-        photoURL: "testurl.com"
-      }
-    ],
+    viewers: viewers,
     date: {
       startDate: date.getDate() + 7,
       displayDate: "displayDate test1"
     },
-    collaborators: invitees,
+    collaborators: collaborators,
     location: {
       address: "50 N West Temple, Salt Lake City, UT 84150"
     }
@@ -141,18 +155,12 @@ createTestUserEvents = async function () {
   const Event2 = new Event({
     eventID: "12347",
     title: "Burfday",
-    viewers: [
-      {
-        username: "Test@gmail.com",
-        name: "testName",
-        photoURL: "testurl.com"
-      }
-    ],
+    viewers: viewers,
     date: {
       startDate: date.getDate() + 7,
       displayDate: "displayDate test1"
     },
-    collaborators: invitees,
+    collaborators: collaborators,
     location: {
       address: "Provo, UT 84606"
     }
@@ -161,18 +169,32 @@ createTestUserEvents = async function () {
   const Event3 = new Event({
     eventID: "12348",
     title: "Funeral",
-    viewers: [
-      {
-        username: "Test@gmail.com",
-        name: "testName",
-        photoURL: "testurl.com"
-      }
-    ],
+    viewers: viewers,
     date: {
       startDate: date.getDate() + 7,
       displayDate: "displayDate test1"
     },
-    collaborators: invitees,
+    collaborators: collaborators,
+    location: {
+      address: "Provo, UT 84606"
+    }
+  });
+
+  viewers.push({   //This is gross I know
+    username: "Test@gmail.com",
+    name: "testName",
+    photoURL: "testurl.com"
+  });
+
+  const viewOnlyEvent = new Event({
+    eventID: "12345",
+    title: "View Only Event",
+    viewers: viewers,
+    date: {
+      startDate: date.getDate() + 7,
+      displayDate: "displayDate test1"
+    },
+    collaborators: collaborators.filter(element => element.username !== "Test@gmail.com"),
     location: {
       address: "Provo, UT 84606"
     }

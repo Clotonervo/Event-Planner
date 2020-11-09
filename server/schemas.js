@@ -42,13 +42,6 @@ const eventSchema = new mongoose.Schema({
   date: { startDate: { type: Date }, displayDate: { type: String } },
   past: { type: Boolean },
   description: { type: String },
-  invitees: [
-    {
-      username: { type: String },
-      name: { type: String },
-      photoUrl: { type: String }
-    }
-  ],
   color: { type: String, default: "#8be4d2" }
 });
 
@@ -57,10 +50,3 @@ eventSchema.methods.createEventID = function () {
 };
 
 const Event = mongoose.model("Event", eventSchema);
-
-const userToEvents = new mongoose.Schema({
-  username: { type: String, required: true, unique: true },
-  events: [{ type: String }]
-});
-
-const UserToEvents = mongoose.model("UserToEvents", userToEvents);
