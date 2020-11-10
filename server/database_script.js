@@ -149,7 +149,8 @@ createTestUserEvents = async function () {
     collaborators: collaborators,
     location: {
       address: "50 N West Temple, Salt Lake City, UT 84150"
-    }
+    },
+    color: "#FFA089"
   });
 
   const Event2 = new Event({
@@ -163,7 +164,8 @@ createTestUserEvents = async function () {
     collaborators: collaborators,
     location: {
       address: "Provo, UT 84606"
-    }
+    },
+    color: "#FFD958",
   });
 
   const Event3 = new Event({
@@ -177,7 +179,8 @@ createTestUserEvents = async function () {
     collaborators: collaborators,
     location: {
       address: "Provo, UT 84606"
-    }
+    },
+    color: "#E7FF89"
   });
 
   viewers.push({   //This is gross I know
@@ -197,7 +200,8 @@ createTestUserEvents = async function () {
     collaborators: collaborators.filter(element => element.username !== "Test@gmail.com"),
     location: {
       address: "Provo, UT 84606"
-    }
+    },
+    color: "#FF8989"
   });
 
   var eventExists = await Event.findOne({ eventID: "12345" });
