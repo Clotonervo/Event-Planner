@@ -76,6 +76,19 @@ const Main = () => {
       // eslint-disable-next-line
     }, []);
 
+    //not sure how to implement this
+    // useEffect(() => {
+    //     const params = new URLSearchParams(event.location.search);
+    //     let eventId = params.get("id");
+    //     if (eventId) {
+    //     loadPageData(eventId);
+    //     } else {
+    //     //redirect to home page since there isn't an eventId
+    //     }
+    //     // eslint-disable-next-line
+    //     }, [location.search]);
+    //please help Morgan!!
+
   const loadPageData = async () => {
     setApiStatus({ ...apiStatus, loading: true, error: false });
     const newApiStatus = { ...apiStatus };
@@ -106,7 +119,8 @@ const Main = () => {
 //const Main = () => {
   return (
     <div>
-      <AppBar color={eventPink} />
+      <AppBar color={eventPink} name = {event.eventName} date = {event.date}>
+      </AppBar>
       <div>
       {apiStatus.loading ? (
         <CenteredLoadingSpinner
@@ -121,20 +135,15 @@ const Main = () => {
         <p>{event.eventName}</p>
         <RSVPFloating/>
         <Heading>Location</Heading>
-        <Map></Map>
+        <Map>{event.location}</Map>
         <p></p>
         <Heading>Who's invited?</Heading>
         <InviteeRow>
-            <Invitee name = "Cody" rsvpStatus = "accepted"></Invitee>
-            <Invitee name = "Mookie" rsvpStatus = "pending"></Invitee>
-            <Invitee name = "Clayton" rsvpStatus = "declined"></Invitee>
-            <Invitee name = "Corey" rsvpStatus = "accepted"></Invitee>
-            <Invitee name = "Kike" rsvpStatus = "declined"></Invitee>
-        </InviteeRow>
-        <InviteeRow>
-            <Invitee name = "Dustin" rsvpStatus = "accepted"></Invitee>
-            <Invitee name = "Blake" rsvpStatus = "pending"></Invitee>
-            <Invitee name = "Will" rsvpStatus = "declined"></Invitee>
+            <Invitee name = {event.viewers} rsvpStatus = "accepted"></Invitee>
+            <Invitee name = {event.viewers} rsvpStatus = "pending"></Invitee>
+            <Invitee name = {event.viewers} rsvpStatus = "declined"></Invitee>
+            <Invitee name = {event.viewers} rsvpStatus = "accepted"></Invitee>
+            <Invitee name = {event.viewers} rsvpStatus = "declined"></Invitee>
         </InviteeRow>
         <p></p><p></p>
         <CenterHeading>You're Invited Too!</CenterHeading>

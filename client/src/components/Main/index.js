@@ -109,8 +109,6 @@ const Main = () => {
   return (
     <div>
 
-        <RSVPFloating color={eventYellow} />
-
       <PageAccess />
       <AppBar color={theme1} />
       {apiStatus.loading ? (

@@ -61,7 +61,24 @@ const Username = styled.h3`
   margin: 0;
 `;
 
-const AppBar = ({ username = "Username", color = theme1 }) => {
+const CenterHeading = styled.p`
+    font-size: calc(10px + 2vmin);
+    color: black;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`;
+
+const LittleGuy = styled.p`
+    font-size: calc(6px + 1vmin);
+    color: black;
+    margins: 0;
+`;
+
+
+const AppBar = ({ username = "Username", color = theme1, name, date = "default date"}) => {
   const history = useHistory();
   const redirectToHome = () => {
     history.push("/");
@@ -72,6 +89,11 @@ const AppBar = ({ username = "Username", color = theme1 }) => {
         <LogoWrapper onClick={redirectToHome}>
           <Logo type={"mark-with-text"} />
         </LogoWrapper>
+        <CenterHeading>
+        <div>{name}</div>
+        <LittleGuy>{date}</LittleGuy>
+        </CenterHeading>
+        
         <UserWrapper>
           <Username> {username}</Username>
           <PaddedIcon>
