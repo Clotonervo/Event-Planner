@@ -203,11 +203,11 @@ app.get("/events", async (req, res) => {
             username: currentUser
         }
       }
-    });
+    }).lean();
 
     //console.log("collaborators: ");
     //console.log(collaborating);
-    
+  
     // Get all view only events
     const viewing = await Event.find({
       viewers: { 
@@ -215,11 +215,7 @@ app.get("/events", async (req, res) => {
               username: currentUser
           }
       }
-    });
-
-
-    //console.log("viewing: ");
-    //console.log(viewing)
+    }).lean();
 
     collaborating.forEach((element) => {
       element["isCollaborator"] = true;
@@ -314,9 +310,6 @@ app.put('/event', async (req, res) => {
         if (req.body.description != null) {
             event.description = req.body.description;
         }
-        if (req.body.invitees != null) {
-          event.invitees = req.body.invitees;
-        }
         if (req.body.color != null) {
             event.color = req.body.color;
         }
@@ -387,9 +380,6 @@ app.post("/event", async (req, res) => {
     }
     if (req.body.date != null) {
       newEvent.date = req.body.date;
-    }
-    if (req.body.invitees != null) {
-      newEvent.invitees = req.body.invitees;
     }
     if (req.body.past != null) {
       newEvent.past = req.body.past;
