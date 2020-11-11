@@ -96,6 +96,7 @@ const MapEditor = ({ address = "", label, onAddressChanged }) => {
 
   useEffect(() => {
     lookupAddress(tempAddress);
+    // eslint-disable-next-line
   }, []);
 
   return (

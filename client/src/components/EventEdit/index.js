@@ -37,22 +37,6 @@ const EventEdit = () => {
   });
   const [editing, setEditing] = useState(false);
 
-  const testEvent = {
-    description: "Description of the event",
-    location: {
-      address: "Provo, UT 84602"
-    },
-    collaborators: [
-      { name: "Jane Doe", username: "test1" },
-      { name: "John Smith", username: "test2" },
-      { name: "Donald Duck ", username: "test3" }
-    ],
-    viewers: [
-      { name: "Mickey Mouse", username: "test4" },
-      { name: "Minnie Mouse", username: "test5" },
-      { name: "Daisy Duck", username: "test6" }
-    ]
-  };
   const location = useLocation();
 
   useEffect(() => {
@@ -110,6 +94,12 @@ const EventEdit = () => {
     setEvent(updated);
   };
 
+  const updateDate = (newDate) => {
+    let updated = { ...event };
+    updated.date.startDate = newDate;
+    setEvent(updated);
+  };
+
   useEffect(() => {
     if (
       originalEvent &&
@@ -145,9 +135,7 @@ const EventEdit = () => {
             <>
               <Header
                 event={event}
-                onEditDate={(value) => {
-                  console.log(`Edited date: ${value}`);
-                }}
+                onEditDate={updateDate}
                 onEditTitle={updateTitle}
               />
               <Layout>
