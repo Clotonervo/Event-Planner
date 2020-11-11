@@ -104,6 +104,12 @@ const EventEdit = () => {
     //TODO: implement this
   };
 
+  const updateTitle = (newTitle) => {
+    let updated = { ...event };
+    updated.title = newTitle;
+    setEvent(updated);
+  };
+
   useEffect(() => {
     if (
       originalEvent &&
@@ -137,14 +143,12 @@ const EventEdit = () => {
             </Layout>
           ) : (
             <>
-              <Header 
-                date={new Date("05 October 2020 14:48 UTC")}
+              <Header
+                event={event}
                 onEditDate={(value) => {
                   console.log(`Edited date: ${value}`);
                 }}
-                onEditTitle={(value) => {
-                  console.log(`Edited title: ${value}`);
-                }}
+                onEditTitle={updateTitle}
               />
               <Layout>
                 <Stack gapSize={spacing32}>
@@ -157,7 +161,7 @@ const EventEdit = () => {
                   )}
                   <Tabs {...{ currentView, pageViews, setCurrentView }} />
                   {currentView === pageViews.about ? (
-                    <About event={testEvent} {...{ setEvent }} />
+                    <About event={event} {...{ setEvent }} />
                   ) : (
                     <TodoList />
                   )}

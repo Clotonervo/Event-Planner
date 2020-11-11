@@ -49,8 +49,7 @@ const ButtonBarContainer = styled.div`
  * The header which appears at the top of the event-edit page.
  */
 const Header = ({
-  title,
-  date,
+  event: { title, date },
   // dateDisplay, TODO, add this in after the first demo
   backgroundColor,
   onPressDownload,

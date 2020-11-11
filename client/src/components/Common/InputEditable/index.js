@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { FiEdit2, FiCheck } from "react-icons/fi";
 import { VscClose } from "react-icons/vsc";
-
-import Input from "../Input";
 import { spacing16, spacing8 } from "../../../resources/style-constants";
 
 const Container = styled.div`
@@ -47,19 +45,19 @@ const InputField = styled.input`
 `;
 
 /**
- * An editable text field. 
- * 
+ * An editable text field.
+ *
  * Sample usage:
- * 
+ *
  * ```
  * const [currentValue, setCurrentValue] = useState("Initial value");
  * ...
- * <InputEditable 
+ * <InputEditable
  *    value={currentValue}
  *    onSaveValue={(value) => {
  *      console.log(`User wants to update this text field to ${value}`);
  *      setCurrentValue(value)
- *    }} 
+ *    }}
  * />
  * ```
  */
@@ -75,10 +73,10 @@ const InputEditable = ({
   const [isEditMode, setIsEditMode] = useState(false);
   const [editValue, setEditValue] = useState("");
 
-  const child = isEditMode ?
+  const child = isEditMode ? (
     <>
       <TextContainer>
-        <InputField 
+        <InputField
           onChange={(e) => {
             setEditValue(e.target.value);
           }}
@@ -87,43 +85,45 @@ const InputEditable = ({
           {...{ name, placeholder, type, required, ...props }}
         />
       </TextContainer>
-      <IconContainer onClick={() => {
-        setIsEditMode(false);
-      }}>
+      <IconContainer
+        onClick={() => {
+          setIsEditMode(false);
+        }}
+      >
         <VscClose />
       </IconContainer>
-      <IconContainer onClick={() => {
-        onSaveValue && onSaveValue(editValue);
-        setIsEditMode(false);
-      }}>
+      <IconContainer
+        onClick={() => {
+          onSaveValue && onSaveValue(editValue);
+          setIsEditMode(false);
+        }}
+      >
         <FiCheck />
       </IconContainer>
-    </> :
+    </>
+  ) : (
     <>
-      <TextContainer>
-        {value}
-      </TextContainer>
-      <IconContainer onClick={() => {
-        setIsEditMode(true);
-        setEditValue(value);
-      }}>
+      <TextContainer>{value}</TextContainer>
+      <IconContainer
+        onClick={() => {
+          setIsEditMode(true);
+          setEditValue(value);
+        }}
+      >
         <FiEdit2 />
       </IconContainer>
     </>
-
-  return (
-    <Container {...props}>
-      {child}
-    </Container>
   );
-}
+
+  return <Container {...props}>{child}</Container>;
+};
 
 InputEditable.propTypes = {
   /**
    * A callback raised when the user presses the "check-mark" icon to indicate
    * a save value action.
    */
-  onSaveValue: PropTypes.func,
+  onSaveValue: PropTypes.func
 };
 
 export default InputEditable;
