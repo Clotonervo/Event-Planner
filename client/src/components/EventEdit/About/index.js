@@ -14,14 +14,14 @@ const About = ({
     location: { address },
     viewers
   },
-  setEvent,
+  updateEvent,
   sortList
 }) => {
   const addViewer = (person) => {
     if (!userAlreadyExists(viewers, person)) {
       let updatedViewers = [...viewers].concat(person);
       updatedViewers = sortList(updatedViewers);
-      setEvent({ ...event, viewers: updatedViewers });
+      updateEvent({ ...event, viewers: updatedViewers });
     }
   };
 
@@ -29,7 +29,7 @@ const About = ({
     if (!userAlreadyExists(collaborators, person)) {
       let updatedCollabs = [...collaborators].concat(person);
       updatedCollabs = sortList(updatedCollabs);
-      setEvent({ ...event, collaborators: updatedCollabs });
+      updateEvent({ ...event, collaborators: updatedCollabs });
     }
   };
 
@@ -42,7 +42,7 @@ const About = ({
     updatedViewers = updatedViewers.filter(
       (p) => p.username !== person.username
     );
-    setEvent({ ...event, viewers: updatedViewers });
+    updateEvent({ ...event, viewers: updatedViewers });
   };
 
   const removeCollaborator = (person) => {
@@ -50,24 +50,24 @@ const About = ({
     updatedCollabs = updatedCollabs.filter(
       (p) => p.username !== person.username
     );
-    setEvent({ ...event, collaborators: updatedCollabs });
+    updateEvent({ ...event, collaborators: updatedCollabs });
   };
 
   const updateAddress = (updatedAddress) => {
     const updated = { ...location } || { address: "" };
     updated.address = updatedAddress;
-    setEvent({ ...event, location: updated });
+    updateEvent({ ...event, location: updated });
   };
 
-  const updateEvent = (name, value) => {
+  const updateField = (name, value) => {
     const updated = { ...event };
     updated[name] = value;
-    setEvent(updated);
+    updateEvent(updated);
   };
 
   return (
     <Stack gapSize={spacing32}>
-      <Description {...{ description, updateEvent }} />
+      <Description {...{ description, updateField }} />
       <MapEditor
         label="Event Location"
         onAddressChanged={updateAddress}

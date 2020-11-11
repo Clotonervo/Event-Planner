@@ -3,7 +3,7 @@ export const createDefaultEvent = () => {
     eventID: "",
     title: "",
     location: {
-      address: ""
+      address: "Provo, UT"
     },
     collaborators: [],
     viewers: [],

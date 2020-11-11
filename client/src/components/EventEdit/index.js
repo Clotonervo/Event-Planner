@@ -87,8 +87,8 @@ const EventEdit = () => {
     /** Sort viewers and collaborators alphabetically */
     updatedEvent.viewers = sortList(updatedEvent.viewers);
     updatedEvent.collaborators = sortList(updatedEvent.collaborators);
-    setEvent(updatedEvent);
     setOriginalEvent(updatedEvent);
+    setEvent(updatedEvent);
   };
 
   const sortList = (people) => {
@@ -125,31 +125,30 @@ const EventEdit = () => {
 
     newSaveStatus.loading = false;
 
-    setApiStatus(newSaveStatus);
+    setSaveStatus(newSaveStatus);
   };
 
-  const discardChanges = () => {};
+  const discardChanges = () => {
+    setEvent(originalEvent);
+    setEditing(false);
+  };
 
   const updateTitle = (newTitle) => {
     let updated = { ...event };
     updated.title = newTitle;
-    setEvent(updated);
+    updateEvent(updated);
   };
 
   const updateDate = (newDate) => {
     let updated = { ...event };
     updated.date.startDate = newDate;
-    setEvent(updated);
+    updateEvent(updated);
   };
 
-  useEffect(() => {
-    if (
-      originalEvent &&
-      JSON.stringify(originalEvent) !== JSON.stringify(event)
-    ) {
-      setEditing(true);
-    }
-  }, [event, originalEvent]);
+  const updateEvent = (updated) => {
+    setEditing(true);
+    setEvent(updated);
+  };
 
   return (
     <div>
@@ -196,7 +195,7 @@ const EventEdit = () => {
                   )}
                   <Tabs {...{ currentView, pageViews, setCurrentView }} />
                   {currentView === pageViews.about ? (
-                    <About event={event} {...{ setEvent, sortList }} />
+                    <About event={event} {...{ sortList, updateEvent }} />
                   ) : (
                     <TodoList />
                   )}

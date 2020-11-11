@@ -66,7 +66,7 @@ const MapEditor = ({ address = "", label, onAddressChanged }) => {
     }
   };
 
-  const lookupAddress = async function (address) {
+  const lookupAddress = async function (address, shouldUpdate = true) {
     let addressState = {
       error: false,
       message: ""
@@ -89,13 +89,13 @@ const MapEditor = ({ address = "", label, onAddressChanged }) => {
     setLocation(loc);
 
     /* Only want to update the event address if it is valid */
-    if (loc) {
+    if (loc && shouldUpdate) {
       onAddressChanged && onAddressChanged(address);
     }
   };
 
   useEffect(() => {
-    lookupAddress(tempAddress);
+    lookupAddress(tempAddress, false);
     // eslint-disable-next-line
   }, []);
 

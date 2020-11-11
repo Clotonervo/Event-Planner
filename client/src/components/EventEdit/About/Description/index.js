@@ -24,11 +24,11 @@ const TextArea = styled.textarea`
   }
 `;
 
-const Description = ({ description = "", updateEvent }) => {
+const Description = ({ description = "", updateField }) => {
   const [value, setValue] = useState(description);
 
   const updateDescription = () => {
-    updateEvent("description", value);
+    updateField("description", value);
   };
 
   const handleTextChange = (event) => {
