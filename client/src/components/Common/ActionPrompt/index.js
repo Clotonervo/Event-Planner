@@ -36,7 +36,7 @@ const PaddedButton = styled.div`
   padding-right: ${spacing16};
 `;
 
-const QuestionPrompt = ({
+const ActionPrompt = ({
   mainText,
   primaryText,
   secondaryText,
@@ -62,4 +62,4 @@ const QuestionPrompt = ({
   );
 };
 
-export default QuestionPrompt;
+export default ActionPrompt;
