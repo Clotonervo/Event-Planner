@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import styled from "styled-components";
 import { createDefaultEvent } from "./defaultEvent";
 import ServiceClient from "../../services";
 import About from "./About";
@@ -9,10 +10,16 @@ import Error from "../Common/Error";
 import Header from "./Header";
 import Layout from "../Layout";
 import PageAccess from "../Common/PageAccess";
+import ActionPrompt from "../Common/ActionPrompt";
 import Stack from "../Common/Stack";
 import Tabs from "./Tabs";
 import TodoList from "./Todo";
-import { fontSize24, spacing32, theme1 } from "../../resources/style-constants";
+import {
+  fontSize24,
+  spacing16,
+  spacing32,
+  theme1
+} from "../../resources/style-constants";
 
 const pageViews = {
   about: "About",
@@ -21,8 +28,13 @@ const pageViews = {
 
 const defaultEvent = createDefaultEvent();
 
+const PaddedPrompt = styled(ActionPrompt)`
+  margin-top: ${spacing16};
+`;
+
 const EventEdit = () => {
   const [currentView, setCurrentView] = useState("About");
+  const [eventId, setEventId] = useState("");
   const [originalEvent, setOriginalEvent] = useState();
   const [event, setEvent] = useState(defaultEvent);
   const [apiStatus, setApiStatus] = useState({
@@ -43,6 +55,7 @@ const EventEdit = () => {
     const params = new URLSearchParams(location.search);
     let eventId = params.get("id");
     if (eventId) {
+      setEventId(eventId);
       loadPageData(eventId);
     }
     // eslint-disable-next-line
@@ -85,8 +98,37 @@ const EventEdit = () => {
   };
 
   const saveEvent = async () => {
-    //TODO: implement this
+    setSaveStatus({ ...apiStatus, loading: true, error: false });
+    const newSaveStatus = { ...saveStatus };
+    try {
+      let results;
+      if (eventId) {
+        //Updating an existing event
+        results = await ServiceClient.updateEvent(event);
+      } else {
+        // creating a new event
+        results = await ServiceClient.createEvent(event);
+      }
+      if (results.success) {
+        setOriginalEvent(event);
+        setEditing(false);
+        //TODO: could add message that the event saved properly
+      } else {
+        newSaveStatus.error = true;
+        newSaveStatus.message =
+          results.message || "An error occurred. Please try again later.";
+      }
+    } catch (error) {
+      newSaveStatus.error = true;
+      newSaveStatus.message = error.message;
+    }
+
+    newSaveStatus.loading = false;
+
+    setApiStatus(newSaveStatus);
   };
+
+  const discardChanges = () => {};
 
   const updateTitle = (newTitle) => {
     let updated = { ...event };
@@ -105,12 +147,9 @@ const EventEdit = () => {
       originalEvent &&
       JSON.stringify(originalEvent) !== JSON.stringify(event)
     ) {
-      //TODO: verify that this works
       setEditing(true);
     }
-    console.log("event changed");
-    console.log(event);
-  }, [event]);
+  }, [event, originalEvent]);
 
   return (
     <div>
@@ -140,7 +179,15 @@ const EventEdit = () => {
               />
               <Layout>
                 <Stack gapSize={spacing32}>
-                  {editing && <div>Saving button placeholder</div>}
+                  {editing && (
+                    <PaddedPrompt
+                      mainText="You made changes to this event"
+                      primaryText="Save"
+                      primaryOnClick={saveEvent}
+                      secondaryText="Discard"
+                      secondaryOnClick={discardChanges}
+                    />
+                  )}
                   {saveStatus.error && (
                     <Error fontSize={fontSize24}>
                       {saveStatus.message ||
