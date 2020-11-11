@@ -136,44 +136,49 @@ createTestUserEvents = async function () {
     }
   ];
 
-
+  date.setDate(date.getDate() + 3);
 
   const Event1 = new Event({
     eventID: "12346",
     title: "Wedding",
     viewers: viewers,
     date: {
-      startDate: date.getDate() + 7,
+      startDate: date,
       displayDate: "displayDate test1"
     },
     collaborators: collaborators,
     location: {
       address: "50 N West Temple, Salt Lake City, UT 84150"
     },
+    description: "Please join us to celebrate the marriage of John and Jane.",
     color: "#FFA089"
   });
+
+  date.setDate(date.getDate() + 6);
 
   const Event2 = new Event({
     eventID: "12347",
     title: "Burfday",
     viewers: viewers,
     date: {
-      startDate: date.getDate() + 7,
+      startDate: date,
       displayDate: "displayDate test1"
     },
     collaborators: collaborators,
     location: {
       address: "Provo, UT 84606"
     },
-    color: "#FFD958",
+    color: "#FFD958"
   });
+
+  date.setDate(date.getDate() + 7);
 
   const Event3 = new Event({
     eventID: "12348",
     title: "Funeral",
     viewers: viewers,
     date: {
-      startDate: date.getDate() + 7,
+      startDate: date,
       displayDate: "displayDate test1"
     },
     collaborators: collaborators,
@@ -183,7 +188,8 @@ createTestUserEvents = async function () {
     color: "#E7FF89"
   });
 
-  viewers.push({   //This is gross I know
+  viewers.push({
+    //This is gross I know
     username: "Test@gmail.com",
     name: "testName",
     photoURL: "testurl.com"
@@ -197,7 +203,9 @@ createTestUserEvents = async function () {
       startDate: date.getDate() + 7,
       displayDate: "displayDate test1"
     },
-    collaborators: collaborators.filter(element => element.username !== "Test@gmail.com"),
+    collaborators: collaborators.filter(
+      (element) => element.username !== "Test@gmail.com"
+    ),
     location: {
       address: "Provo, UT 84606"
     },
