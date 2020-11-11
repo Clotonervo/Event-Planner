@@ -161,7 +161,7 @@ const EventEdit = () => {
                   )}
                   <Tabs {...{ currentView, pageViews, setCurrentView }} />
                   {currentView === pageViews.about ? (
-                    <About event={event} {...{ setEvent }} />
+                    <About event={event} {...{ setEvent, sortList }} />
                   ) : (
                     <TodoList />
                   )}

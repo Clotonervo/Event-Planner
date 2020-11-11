@@ -18,15 +18,23 @@ const About = ({
   sortList
 }) => {
   const addViewer = (person) => {
-    let updatedViewers = [...viewers].concat(person);
-    updatedViewers = sortList(updatedViewers);
-    setEvent({ ...event, viewers: updatedViewers });
+    if (!userAlreadyExists(viewers, person)) {
+      let updatedViewers = [...viewers].concat(person);
+      updatedViewers = sortList(updatedViewers);
+      setEvent({ ...event, viewers: updatedViewers });
+    }
   };
 
   const addCollaborator = (person) => {
-    let updatedCollabs = [...collaborators].concat(person);
-    updatedCollabs = sortList(updatedCollabs);
-    setEvent({ ...event, collaborators: updatedCollabs });
+    if (!userAlreadyExists(collaborators, person)) {
+      let updatedCollabs = [...collaborators].concat(person);
+      updatedCollabs = sortList(updatedCollabs);
+      setEvent({ ...event, collaborators: updatedCollabs });
+    }
+  };
+
+  const userAlreadyExists = (list, user) => {
+    return list.some((person) => person.username === user.username);
   };
 
   const removeViewer = (person) => {

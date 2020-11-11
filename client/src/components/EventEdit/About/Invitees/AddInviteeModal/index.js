@@ -68,20 +68,25 @@ const AddInviteeModal = ({
   };
 
   const closeModal = () => {
+    resetModal();
     setModalOpened(false);
   };
 
   const handleCancel = () => {
+    resetModal();
+    setModalOpened(false);
+  };
+
+  const resetModal = () => {
     setPersonName("");
     setAddedPerson("");
-
-    setModalOpened(false);
   };
 
   const handleAdd = () => {
     if (personName !== "") {
       let person = { name: personName, username: addedPerson };
       addPerson && addPerson(person);
+      resetModal();
     }
   };
 
@@ -115,7 +120,9 @@ const AddInviteeModal = ({
             <SecondaryButton onClick={handleCancel}>Cancel</SecondaryButton>
           </PaddedButton>
 
-          <PrimaryButton onClick={handleAdd}>Add</PrimaryButton>
+          <PrimaryButton onClick={handleAdd} disabled={personName === ""}>
+            Add
+          </PrimaryButton>
         </ButtonRow>
       </Stack>
     </Modal>
