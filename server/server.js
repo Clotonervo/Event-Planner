@@ -344,6 +344,7 @@ app.post("/event", async (req, res) => {
       success: false,
       message: "This authentication token does not exist"
     });
+    return;
   } else if (!authentication.isValid && authentication.timeout) {
     //This authentication token is expired, send back to login screen
     res.statusCode = 403;
@@ -351,15 +352,17 @@ app.post("/event", async (req, res) => {
       success: false,
       message: "This authentication token is expired, please login again"
     });
+    return;
   } else {
     //Authentication token is valid
-    if (req.body.title == null || req.body.title == "") {
+    if (req.body.title == null || req.body.title === "" || req.body.title === undefined) {
       //title is required error
       res.statusCode = 200
       res.send({
         success: false,
         message: "A title is required for the new event"
       });
+      return;
     }
     var newEvent = new Event({
       eventID: uuidv4().substring(0, 8),
@@ -396,7 +399,7 @@ app.post("/event", async (req, res) => {
         message: "Successfully added event to database with eventID: " + newEvent.eventID,
         eventID: newEvent.eventID
       });
-
+      return;
     } catch (error) {
       console.log(error);
       res.statusCode = 500;
@@ -404,6 +407,7 @@ app.post("/event", async (req, res) => {
         success: false,
         message: "Failed to save event to database"
       });
+      return;
     }
   }
 });
