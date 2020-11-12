@@ -98,8 +98,12 @@ const EventEdit = () => {
   };
 
   const saveEvent = async () => {
-    setSaveStatus({ ...apiStatus, loading: true, error: false });
-    const newSaveStatus = { ...saveStatus };
+    setSaveStatus({ ...saveStatus, loading: true, error: false, message: "" });
+    const newSaveStatus = {
+      ...saveStatus,
+      error: false,
+      message: ""
+    };
     try {
       let results;
       if (eventId) {
