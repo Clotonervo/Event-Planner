@@ -270,7 +270,7 @@ app.put('/event', async (req, res) => {
     } 
     else {
         //Authentication token is valid
-        if (req.body.eventID == null) {
+        if (req.body.eventID == null || req.body.eventID == "") {
             //title is required error
             res.statusCode = 200;
             res.send({
@@ -353,12 +353,12 @@ app.post("/event", async (req, res) => {
     });
   } else {
     //Authentication token is valid
-    if (req.body.title == null) {
+    if (req.body.title == null || req.body.title == "") {
       //title is required error
       res.statusCode = 200
       res.send({
         success: false,
-        message: "A title is required"
+        message: "A title is required for the new event"
       });
     }
     var newEvent = new Event({
@@ -393,7 +393,8 @@ app.post("/event", async (req, res) => {
       res.statusCode = 200;
       res.send({
         success: true,
-        message: "Successfully added event to database with eventID: " + newEvent.eventID
+        message: "Successfully added event to database with eventID: " + newEvent.eventID,
+        eventID: newEvent.eventID
       });
 
     } catch (error) {
