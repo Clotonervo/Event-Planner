@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import styled from "styled-components";
 import { createDefaultEvent } from "./defaultEvent";
 import ServiceClient from "../../services";
 import About from "./About";
@@ -9,10 +10,16 @@ import Error from "../Common/Error";
 import Header from "./Header";
 import Layout from "../Layout";
 import PageAccess from "../Common/PageAccess";
+import ActionPrompt from "../Common/ActionPrompt";
 import Stack from "../Common/Stack";
 import Tabs from "./Tabs";
 import TodoList from "./Todo";
-import { fontSize24, spacing32, theme1 } from "../../resources/style-constants";
+import {
+  fontSize24,
+  spacing16,
+  spacing32,
+  theme1
+} from "../../resources/style-constants";
 
 const pageViews = {
   about: "About",
@@ -21,33 +28,34 @@ const pageViews = {
 
 const defaultEvent = createDefaultEvent();
 
+const PaddedPrompt = styled(ActionPrompt)`
+  margin-top: ${spacing16};
+`;
+
 const EventEdit = () => {
   const [currentView, setCurrentView] = useState("About");
+  const [eventId, setEventId] = useState("");
+  const [originalEvent, setOriginalEvent] = useState();
   const [event, setEvent] = useState(defaultEvent);
   const [apiStatus, setApiStatus] = useState({
     loading: false,
     error: false,
     message: false
   });
+  const [saveStatus, setSaveStatus] = useState({
+    loading: false,
+    error: false,
+    message: false
+  });
+  const [editing, setEditing] = useState(false);
 
-  const testEvent = {
-    collaborators: [
-      { fullname: "Jane Doe", username: "test1" },
-      { fullname: "John Smith", username: "test2" },
-      { fullname: "Donald Duck ", username: "test3" }
-    ],
-    viewers: [
-      { fullname: "Mickey Mouse", username: "test4" },
-      { fullname: "Minnie Mouse", username: "test5" },
-      { fullname: "Daisy Duck", username: "test6" }
-    ]
-  };
   const location = useLocation();
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     let eventId = params.get("id");
     if (eventId) {
+      setEventId(eventId);
       loadPageData(eventId);
     }
     // eslint-disable-next-line
@@ -59,7 +67,7 @@ const EventEdit = () => {
     try {
       const results = await ServiceClient.event(eventId);
       if (results.success) {
-        setEvent(results.event);
+        prepareData(results.event);
       } else {
         // default message just in case
         newApiStatus.error = true;
@@ -74,9 +82,75 @@ const EventEdit = () => {
     setApiStatus(newApiStatus);
   };
 
-  const updateEvent = (name, value) => {
-    const updated = { ...event };
-    updated[name] = value;
+  const prepareData = (event) => {
+    let updatedEvent = { ...event };
+    /** Sort viewers and collaborators alphabetically */
+    updatedEvent.viewers = sortList(updatedEvent.viewers);
+    updatedEvent.collaborators = sortList(updatedEvent.collaborators);
+    setOriginalEvent(updatedEvent);
+    setEvent(updatedEvent);
+  };
+
+  const sortList = (people) => {
+    return people.sort((a, b) =>
+      a.name < b.name ? -1 : a.name > b.name ? 1 : 0
+    );
+  };
+
+  const saveEvent = async () => {
+    setSaveStatus({ ...saveStatus, loading: true, error: false, message: "" });
+    const newSaveStatus = {
+      ...saveStatus,
+      error: false,
+      message: ""
+    };
+    try {
+      let results;
+      if (eventId) {
+        //Updating an existing event
+        results = await ServiceClient.updateEvent(event);
+      } else {
+        // creating a new event
+        results = await ServiceClient.createEvent(event);
+      }
+      if (results.success) {
+        setOriginalEvent(event);
+        setEditing(false);
+        //TODO: could add message that the event saved properly
+      } else {
+        newSaveStatus.error = true;
+        newSaveStatus.message =
+          results.message || "An error occurred. Please try again later.";
+      }
+    } catch (error) {
+      newSaveStatus.error = true;
+      newSaveStatus.message = error.message;
+    }
+
+    newSaveStatus.loading = false;
+
+    setSaveStatus(newSaveStatus);
+  };
+
+  const discardChanges = () => {
+    setEvent(originalEvent);
+    setEditing(false);
+  };
+
+  const updateTitle = (newTitle) => {
+    let updated = { ...event };
+    updated.title = newTitle;
+    updateEvent(updated);
+  };
+
+  const updateDate = (newDate) => {
+    let updated = { ...event };
+    updated.date.startDate = newDate;
+    updateEvent(updated);
+  };
+
+  const updateEvent = (updated) => {
+    setEditing(true);
     setEvent(updated);
   };
 
@@ -101,20 +175,31 @@ const EventEdit = () => {
             </Layout>
           ) : (
             <>
-              <Header 
-                date={new Date("05 October 2020 14:48 UTC")}
-                onEditDate={(value) => {
-                  console.log(`Edited date: ${value}`);
-                }}
-                onEditTitle={(value) => {
-                  console.log(`Edited title: ${value}`);
-                }}
+              <Header
+                event={event}
+                onEditDate={updateDate}
+                onEditTitle={updateTitle}
               />
               <Layout>
                 <Stack gapSize={spacing32}>
+                  {editing && (
+                    <PaddedPrompt
+                      mainText="You made changes to this event"
+                      primaryText="Save"
+                      primaryOnClick={saveEvent}
+                      secondaryText="Discard"
+                      secondaryOnClick={discardChanges}
+                    />
+                  )}
+                  {saveStatus.error && (
+                    <Error fontSize={fontSize24}>
+                      {saveStatus.message ||
+                        "Error trying to save. Please try again later."}
+                    </Error>
+                  )}
                   <Tabs {...{ currentView, pageViews, setCurrentView }} />
                   {currentView === pageViews.about ? (
-                    <About event={testEvent} {...{ updateEvent }} />
+                    <About event={event} {...{ sortList, updateEvent }} />
                   ) : (
                     <TodoList />
                   )}

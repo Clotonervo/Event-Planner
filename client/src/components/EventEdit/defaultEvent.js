@@ -1,12 +1,16 @@
 export const createDefaultEvent = () => {
   let event = {
     eventID: "",
-    eventName: "",
-    location: "",
+    title: "",
+    location: {
+      address: "Provo, UT"
+    },
     collaborators: [],
     viewers: [],
-    date: "",
-    displayDate: "",
+    date: {
+      startDate: new Date(),
+      displayDate: ""
+    },
     description: "",
     past: false,
     color: "#8be4d2"

@@ -49,8 +49,10 @@ const ButtonBarContainer = styled.div`
  * The header which appears at the top of the event-edit page.
  */
 const Header = ({
-  title,
-  date,
+  event: {
+    title,
+    date: { startDate }
+  },
   // dateDisplay, TODO, add this in after the first demo
   backgroundColor,
   onPressDownload,
@@ -60,14 +62,23 @@ const Header = ({
   onEditDate,
   ...props
 }) => {
+  const realDate = new Date(startDate);
   return (
     <Container {...props}>
       <Stack>
         <TitleInputContainer>
-          <TitleInput as={InputEditable} value={title} onSaveValue={onEditTitle}/>
+          <TitleInput
+            as={InputEditable}
+            value={title}
+            onSaveValue={onEditTitle}
+          />
         </TitleInputContainer>
         <DateContainer>
-          <DateInput as={DateEditable} onEditValue={onEditDate} value={date} />
+          <DateInput
+            as={DateEditable}
+            onEditValue={onEditDate}
+            value={realDate}
+          />
         </DateContainer>
         <ButtonBarContainer bgcolor={backgroundColor}>
           <IconButton onPressed={onPressDownload}>
@@ -119,7 +130,7 @@ Header.propTypes = {
   onPressSettings: PropTypes.func,
 
   /** A callback rasied when the title is edited. */
-  onEditTitle: PropTypes.func,
+  onEditTitle: PropTypes.func
 };
 
 export default Header;

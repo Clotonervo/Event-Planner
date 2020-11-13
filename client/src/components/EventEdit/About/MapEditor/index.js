@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
@@ -47,8 +47,8 @@ const OptionsContainer = styled.div`
  * />
  * ```
  */
-const MapEditor = ({ label, onLocationChanged }) => {
-  const [address, setAddress] = useState("");
+const MapEditor = ({ address = "", label, onAddressChanged }) => {
+  const [tempAddress, setAddress] = useState(address);
   const [location, setLocation] = useState(undefined);
   const [validationState, setValidationState] = useState({
     address: {
@@ -66,7 +66,7 @@ const MapEditor = ({ label, onLocationChanged }) => {
     }
   };
 
-  const lookupAddress = async function () {
+  const lookupAddress = async function (address, shouldUpdate = true) {
     let addressState = {
       error: false,
       message: ""
@@ -87,8 +87,17 @@ const MapEditor = ({ label, onLocationChanged }) => {
     });
 
     setLocation(loc);
-    onLocationChanged && onLocationChanged(loc);
+
+    /* Only want to update the event address if it is valid */
+    if (loc && shouldUpdate) {
+      onAddressChanged && onAddressChanged(address);
+    }
   };
+
+  useEffect(() => {
+    lookupAddress(tempAddress, false);
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div>
@@ -101,11 +110,11 @@ const MapEditor = ({ label, onLocationChanged }) => {
           <InputFormField
             label={label}
             name="address"
-            value={address}
+            value={tempAddress}
             placeholder="123 Example Address"
             required
             changeHandler={handleChange}
-            onPressEnter={lookupAddress}
+            onPressEnter={() => lookupAddress(tempAddress)}
             validityState={validationState.address}
           />
         </OptionsContainer>

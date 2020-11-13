@@ -46,7 +46,7 @@ const EventMenu = styled(Menu)`
 
 const EventCard = ({
   event,
-  event: { eventName },
+  event: { title },
   color,
   text,
   redirectToEventView,
@@ -71,7 +71,7 @@ const EventCard = ({
         <ColorBar {...{ color }}>
           <EventMenu items={menuItems} {...{ event }} />
         </ColorBar>
-        <TextBar>{eventName}</TextBar>
+        <TextBar>{title}</TextBar>
       </CardStyle>
     </ActionCard>
   );

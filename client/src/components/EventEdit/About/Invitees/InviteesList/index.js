@@ -14,7 +14,8 @@ const InviteesList = ({ removePerson, people = [] }) => {
         return (
           <InviteeListItem
             key={index}
-            {...{ onDelete: { removePerson }, person }}
+            onDelete={() => removePerson(person)}
+            {...{ person }}
           />
         );
       })}

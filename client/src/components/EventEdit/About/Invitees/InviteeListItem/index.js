@@ -47,12 +47,7 @@ const ImgTrash = styled.div`
   }
 `;
 
-const InviteeListItem = ({
-  person,
-  person: { fullname },
-  onDelete,
-  ...props
-}) => {
+const InviteeListItem = ({ person, person: { name }, onDelete, ...props }) => {
   return (
     <InviteeContainer {...props}>
       <NameIconWrapper>
@@ -61,7 +56,7 @@ const InviteeListItem = ({
             <CgProfile />
           </IconContext.Provider>
         </PicStyle>
-        <TextBar>{fullname}</TextBar>
+        <TextBar>{name}</TextBar>
       </NameIconWrapper>
       <IconContext.Provider value={{ color: "gray", size: "1.25em" }}>
         <ImgTrash>
