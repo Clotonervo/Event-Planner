@@ -77,7 +77,7 @@ const LittleGuy = styled.p`
 `;
 
 
-const AppBar = ({ username = "Username", color = theme1, name, date = "default date"}) => {
+const AppBar = ({ username = "Username", color = theme1, name, date}) => {
   const history = useHistory();
   const redirectToHome = () => {
     history.push("/");

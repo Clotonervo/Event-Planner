@@ -10,6 +10,7 @@ import ClientService from "../../services";
 import CenteredLoadingSpinner from "../Common/CenteredLoadingSpinner";
 import Stack from "../Common/Stack";
 import Error from "../Common/Error";
+import About from "../EventEdit/About/index.js"
 //import PageAccess from "../Common/PageAccess";
 
 // const testEvent = {
@@ -68,8 +69,8 @@ const Main = () => {
   });
 
     const [event, setEvent] = useState({
-        eventName: "testName"
-
+        eventName: "testName",
+        description: "testDescription"
     });
     useEffect(() => {
       loadPageData();
@@ -93,9 +94,9 @@ const Main = () => {
     setApiStatus({ ...apiStatus, loading: true, error: false });
     const newApiStatus = { ...apiStatus };
     try {
-        let eventId = "12346"
-      //const results = await ClientService.events();
+      let eventId = "12346"
       const results = await ClientService.event(eventId);
+      //const results = await ClientService.event(eventId);
       //TODO: call endpoint for invites
       if (results.success) {
         //prepareData(results.events);
@@ -132,7 +133,8 @@ const Main = () => {
         <Stack gapSize={spacing64}>
           <DisplayStle>
         <Heading>Description</Heading>
-        <p>{event.eventName}</p>
+        <p>{event.description}</p>
+        {/* <About event={event}  /> */}
         <RSVPFloating/>
         <Heading>Location</Heading>
         <Map>{event.location}</Map>
@@ -165,10 +167,15 @@ const Main = () => {
   );
 };
 
+
+
 export default Main;
 
-// const EventView = () => {
-//   return <div>Event View</div>;
+// // const EventView = () => {
+// //   return <div>Event View</div>;
+// // };
+
+// // export default EventView;
+//   );
 // };
 
-// export default EventView;
