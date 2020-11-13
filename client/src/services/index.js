@@ -21,6 +21,14 @@ var ServiceClient = {
     return this.getDataFromApi(`/event/${eventId}`);
   },
 
+  createEvent: async function (event) {
+    return this.postDataToApi("/event", event);
+  },
+
+  updateEvent: async function (event) {
+    return this.putDataToApi("/event", event);
+  },
+
   getDataFromApi: async function (url) {
     let headers = {
       Accept: "application/json"
@@ -38,6 +46,18 @@ var ServiceClient = {
     };
     const params = {
       method: "POST",
+      data
+    };
+    return fetchWrapper(url, params, headers);
+  },
+
+  putDataToApi: async function (url, data) {
+    let headers = {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    };
+    const params = {
+      method: "PUT",
       data
     };
     return fetchWrapper(url, params, headers);

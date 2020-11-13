@@ -1,25 +1,46 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { theme1, theme2, lightBlue, grey3 } from "../../../../resources/style-constants";
+import {
+  highlightedLink,
+  link,
+  theme1,
+  theme2
+} from "../../../../resources/style-constants";
 import Button from "../Button";
 
 
 const theme = {
-  default: theme1,
+  backgroundColor: theme1,
+  border: theme1,
+  disabled: theme1,
   hover: theme2,
-  disabled: theme1
+  textColor: "black"
 };
 
 const accent = {
-    default: lightBlue,
-    hover: theme1,
-    disabled: grey3,
-    borderRadius: 0
-  };
+  backgroundColor: link,
+  border: link,
+  disabled: link,
+  hover: highlightedLink,
+  textColor: "white"
+};
 
-  const PrimaryButton = ({ onClick, fullWidth, disabled = true, type = "theme", children, ...props }) => {
-    return ( <Button theme={type === "theme" ? theme : accent }{...{ fullWidth, disabled, onClick, 
-        ...props }}> {children} </Button> );
+const PrimaryButton = ({
+  onClick,
+  fullWidth,
+  disabled = false,
+  type = "accent",
+  children,
+  ...props
+}) => {
+  return (
+    <Button
+      theme={type === "accent" ? accent : theme}
+      {...{ fullWidth, disabled, onClick, ...props }}
+    >
+      {children}
+    </Button>
+  );
 };
 export default PrimaryButton;
 
@@ -32,6 +53,9 @@ PrimaryButton.propTypes = {
 
   /** Whether or not the button is disabled */
   disabled: PropTypes.bool,
+
+  /** The type of color palette to be rendered.   */
+  type: PropTypes.oneOf(["accent", "theme"]),
 
   /** Method that is called when button is clicked*/
   onClick: PropTypes.func.isRequired

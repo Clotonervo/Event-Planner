@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import ClientService from "../../services";
+import ServiceClient from "../../services";
 import AppBar from "../Common/AppBar";
 import { eventPink, eventYellow } from "../../resources/style-constants";
 //import Invitee from "../../components/Main/Invitee/index.js";
@@ -8,6 +8,7 @@ import CenteredLoadingSpinner from "../Common/CenteredLoadingSpinner";
 import Error from "../Common/Error";
 import EventsSection from "./EventsSection";
 import InvitesSection from "./InvitesSection";
+import Layout from "../Layout";
 import PageAccess from "../Common/PageAccess";
 import Stack from "../Common/Stack";
 import { spacing64, fontSize24, theme1 } from "../../resources/style-constants";
@@ -46,7 +47,7 @@ const Main = () => {
     setApiStatus({ ...apiStatus, loading: true, error: false });
     const newApiStatus = { ...apiStatus };
     try {
-      const results = await ClientService.events();
+      const results = await ServiceClient.events();
       //TODO: call endpoint for invites
       if (results.success) {
         prepareData(results.events);
@@ -78,13 +79,13 @@ const Main = () => {
 
   const redirectToEventView = (event) => {
     let eventID = event.eventID;
-    history.push(`/event/${eventID}`);
+    history.push(`/event?id=${eventID}`);
   };
 
   const redirectToEventEdit = (event) => {
     let eventID = event?.eventID;
     if (eventID) {
-      history.push(`/event-edit/${eventID}`);
+      history.push(`/event-edit?id=${eventID}`);
     } else {
       history.push(`/event-edit`);
     }
@@ -111,36 +112,38 @@ const Main = () => {
 
       <PageAccess />
       <AppBar color={theme1} />
-      {apiStatus.loading ? (
-        <CenteredLoadingSpinner
-          size={150}
-          color={theme1}
-          loading={apiStatus.loading}
-        />
-      ) : (
-        <Stack gapSize={spacing64}>
-          {invites.length > 0 && (
-            <InvitesSection {...{ invites, setInvites }} />
-          )}
-          <EventsSection
-            isUpcoming={true}
-            events={upcomingEvents}
-            {...{ redirectToEventView, redirectToEventEdit, leaveEvent }}
+      <Layout>
+        {apiStatus.loading ? (
+          <CenteredLoadingSpinner
+            size={150}
+            color={theme1}
+            loading={apiStatus.loading}
           />
-          {pastEvents.length > 0 && (
+        ) : (
+          <Stack gapSize={spacing64}>
+            {invites.length > 0 && (
+              <InvitesSection {...{ invites, setInvites }} />
+            )}
             <EventsSection
-              isUpcoming={false}
-              events={pastEvents}
+              isUpcoming={true}
+              events={upcomingEvents}
               {...{ redirectToEventView, redirectToEventEdit, leaveEvent }}
             />
-          )}
-        </Stack>
-      )}
-      {apiStatus.error && (
-        <Error fontSize={fontSize24}>
-          {apiStatus.message || "An error occurred. Please try again later."}
-        </Error>
-      )}
+            {pastEvents.length > 0 && (
+              <EventsSection
+                isUpcoming={false}
+                events={pastEvents}
+                {...{ redirectToEventView, redirectToEventEdit, leaveEvent }}
+              />
+            )}
+          </Stack>
+        )}
+        {apiStatus.error && (
+          <Error fontSize={fontSize24}>
+            {apiStatus.message || "An error occurred. Please try again later."}
+          </Error>
+        )}
+      </Layout>
     </div>
   );
 };

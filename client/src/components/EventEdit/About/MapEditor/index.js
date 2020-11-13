@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 
 import MapService from "../../../../services/MapService";
 import { spacing32 } from "../../../../resources/style-constants";
 import InputFormField from "../../../Common/InputFormField";
-import Map from "../../../Common/";
+import Map from "../../../Common/Map";
 
 const Container = styled.div`
   width: 100%;
@@ -30,16 +30,16 @@ const OptionsContainer = styled.div`
 /**
  * Displays a map with an edit field beside it. Use this
  * to provide a GUI to update a maps geolocation (lat, lng).
- * 
+ *
  * ### IMPORTANT
- * For this api to work, you'll have to enable the geocoding 
+ * For this api to work, you'll have to enable the geocoding
  * API for your API key.
- * 
+ *
  * ### Sample usage:
- * 
+ *
  * ```
- * <MapEditor 
- *    label={'My Label'} 
+ * <MapEditor
+ *    label={'My Label'}
  *    onLocationChanged={(location) => {
  *      console.log(`latitude:  ${location.lat}`);
  *      console.log(`longitude: ${location.lng}`)
@@ -47,17 +47,14 @@ const OptionsContainer = styled.div`
  * />
  * ```
  */
-const MapEditor = ({
-  label,
-  onLocationChanged,
-}) => {
-  const [address, setAddress] = useState("");
+const MapEditor = ({ address = "", label, onAddressChanged }) => {
+  const [tempAddress, setAddress] = useState(address);
   const [location, setLocation] = useState(undefined);
   const [validationState, setValidationState] = useState({
     address: {
       error: true,
       message: ""
-    },
+    }
   });
 
   const handleChange = (e) => {
@@ -69,7 +66,7 @@ const MapEditor = ({
     }
   };
 
-  const lookupAddress = async function () {
+  const lookupAddress = async function (address, shouldUpdate = true) {
     let addressState = {
       error: false,
       message: ""
@@ -90,41 +87,53 @@ const MapEditor = ({
     });
 
     setLocation(loc);
-    onLocationChanged && onLocationChanged(loc);
-  }
+
+    /* Only want to update the event address if it is valid */
+    if (loc && shouldUpdate) {
+      onAddressChanged && onAddressChanged(address);
+    }
+  };
+
+  useEffect(() => {
+    lookupAddress(tempAddress, false);
+    // eslint-disable-next-line
+  }, []);
 
   return (
-    <Container>
-      <MapContainer>
-        <Map location={location} />
-      </MapContainer>
-      <OptionsContainer>
-        <InputFormField
-          label={label}
-          name="address"
-          value={address}
-          placeholder="123 Example Address"
-          required
-          changeHandler={handleChange}
-          onPressEnter={lookupAddress}
-          validityState={validationState.address}
-        />
-      </OptionsContainer>
-    </Container>
+    <div>
+      <h1>Location</h1>
+      <Container>
+        <MapContainer>
+          <Map location={location} />
+        </MapContainer>
+        <OptionsContainer>
+          <InputFormField
+            label={label}
+            name="address"
+            value={tempAddress}
+            placeholder="123 Example Address"
+            required
+            changeHandler={handleChange}
+            onPressEnter={() => lookupAddress(tempAddress)}
+            validityState={validationState.address}
+          />
+        </OptionsContainer>
+      </Container>
+    </div>
   );
-}
+};
 
 MapEditor.defaultProps = {
-  label: '',
-  onLocationChanged: undefined,
-}
+  label: "",
+  onLocationChanged: undefined
+};
 
 MapEditor.propTypes = {
   /** The text which appears above the input field. */
   label: PropTypes.string,
 
   /** A callback invoked whenever the location for the map changes. */
-  onLocationChanged: PropTypes.func,
+  onLocationChanged: PropTypes.func
 };
 
 export default MapEditor;

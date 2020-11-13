@@ -1,23 +1,44 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { theme1, grey3 } from "../../../../resources/style-constants";
+import {
+  lightGrey1,
+  lightGrey2,
+  link,
+  theme1
+} from "../../../../resources/style-constants";
 import Button from "../Button";
 
 const theme = {
-  default: "white",
-  hover: theme1,
-  disabled: grey3
+  backgroundColor: "white",
+  border: theme1,
+  disabled: lightGrey2,
+  hover: lightGrey1,
+  hoverBorder: theme1,
+  textColor: theme1
+};
+
+const accent = {
+  backgroundColor: "white",
+  border: link,
+  disabled: lightGrey2,
+  hover: lightGrey1,
+  hoverBorder: link,
+  textColor: link
 };
 
 const SecondaryButton = ({
   onClick,
   fullWidth,
-  disabled,
+  disabled = false,
+  type = "accent",
   children,
   ...props
 }) => {
   return (
-    <Button {...{ fullWidth, theme, onClick, disabled, ...props }}>
+    <Button
+      theme={type === "accent" ? accent : theme}
+      {...{ fullWidth, onClick, disabled, ...props }}
+    >
       {children}
     </Button>
   );
@@ -33,6 +54,9 @@ SecondaryButton.propTypes = {
 
   /** Whether or not the button is disabled */
   disabled: PropTypes.bool,
+
+  /** The type of color palette to be rendered.   */
+  type: PropTypes.oneOf(["accent", "theme"]),
 
   /** Method that is called when button is clicked*/
   onClick: PropTypes.func.isRequired
