@@ -64,7 +64,7 @@ const Header = ({
 }) => {
   const realDate = new Date(startDate);
   return (
-    <Container {...props}>
+    <Container {...{ bgcolor: backgroundColor, ...props }}>
       <Stack>
         <TitleInputContainer>
           <TitleInput
@@ -80,7 +80,7 @@ const Header = ({
             value={realDate}
           />
         </DateContainer>
-        <ButtonBarContainer bgcolor={backgroundColor}>
+        <ButtonBarContainer>
           <IconButton onPressed={onPressDownload}>
             <FiDownload />
           </IconButton>
@@ -93,7 +93,7 @@ const Header = ({
         </ButtonBarContainer>
         <div></div>
       </Stack>
-    </Container>
+    </Container >
   );
 };
 

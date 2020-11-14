@@ -4,14 +4,9 @@ import { Grid } from "@material-ui/core";
 import Event from "../EventCard";
 import AddEvent from "../AddEventCard";
 import LinkButton from "../../../Common/LinkButton";
-import {
-  fontSize24,
-  spacing24,
-  eventYellow,
-  eventOrange,
-  eventGreen,
-  eventPink
-} from "../../../../resources/style-constants";
+import ColorService from "../../../../services/ColorService";
+import { fontSize24, spacing24 } from "../../../../resources/style-constants";
+
 
 const ViewAllWrapper = styled.div`
   display: flex;
@@ -20,13 +15,11 @@ const ViewAllWrapper = styled.div`
   padding: ${spacing24};
 `;
 
-const colors = [eventYellow, eventOrange, eventGreen, eventPink];
-
 const Events = ({
   isUpcoming,
   events = [],
   redirectToEventView,
-  redirectToEventEdit,
+  redirectToEventEdit, 
   leaveEvent
 }) => {
   const [viewAll, setViewAll] = useState(false);
@@ -78,7 +71,7 @@ const Events = ({
                     redirectToEventEdit,
                     leaveEvent
                   }}
-                  color={colors[Math.floor(Math.random() * colors.length)]}
+                  color={ColorService.formatHex(event.color)}
                 />
               </Grid>
             );
