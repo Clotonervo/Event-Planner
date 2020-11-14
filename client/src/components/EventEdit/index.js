@@ -3,6 +3,7 @@ import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { createDefaultEvent } from "./defaultEvent";
 import ServiceClient from "../../services";
+import ColorService from "../../services/ColorService";
 import About from "./About";
 import AppBar from "../Common/AppBar";
 import CenteredLoadingSpinner from "../Common/CenteredLoadingSpinner";
@@ -34,7 +35,8 @@ const PaddedPrompt = styled(ActionPrompt)`
 
 const EventEdit = () => {
   const [currentView, setCurrentView] = useState("About");
-  const [eventId, setEventId] = useState("");
+  const [eventId, setEventId] = useState(theme1);
+  const [eventColor, setEventColor] = useState();
   const [originalEvent, setOriginalEvent] = useState();
   const [event, setEvent] = useState(defaultEvent);
   const [apiStatus, setApiStatus] = useState({
@@ -53,6 +55,12 @@ const EventEdit = () => {
 
   useEffect(() => {
     const params = new URLSearchParams(location.search);
+
+    let eventColor = ColorService.formatHex(params.get("color"));
+    if (eventColor) {
+      setEventColor(eventColor);
+    }
+
     let eventId = params.get("id");
     if (eventId) {
       setEventId(eventId);
@@ -157,7 +165,7 @@ const EventEdit = () => {
   return (
     <div>
       <PageAccess />
-      <AppBar color={theme1} />
+      <AppBar color={eventColor ?? theme1} />
       {apiStatus.loading ? (
         <CenteredLoadingSpinner
           size={150}
@@ -179,6 +187,7 @@ const EventEdit = () => {
                 event={event}
                 onEditDate={updateDate}
                 onEditTitle={updateTitle}
+                backgroundColor={eventColor}
               />
               <Layout>
                 <Stack gapSize={spacing32}>

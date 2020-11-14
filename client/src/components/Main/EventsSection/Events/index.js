@@ -20,13 +20,13 @@ const ViewAllWrapper = styled.div`
   padding: ${spacing24};
 `;
 
-const colors = [eventYellow, eventOrange, eventGreen, eventPink];
+const randColors = [eventYellow, eventOrange, eventGreen, eventPink];
 
 const Events = ({
   isUpcoming,
   events = [],
   redirectToEventView,
-  redirectToEventEdit,
+  redirectToEventEdit, 
   leaveEvent
 }) => {
   const [viewAll, setViewAll] = useState(false);
@@ -69,6 +69,7 @@ const Events = ({
             </Grid>
           )}
           {visibleEvents.map((event, index) => {
+            let color = event.color ?? randColors[Math.floor(Math.random() * randColors.length)];
             return (
               <Grid item key={index}>
                 <Event
@@ -78,7 +79,7 @@ const Events = ({
                     redirectToEventEdit,
                     leaveEvent
                   }}
-                  color={colors[Math.floor(Math.random() * colors.length)]}
+                  color={color}
                 />
               </Grid>
             );

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import ServiceClient from "../../services";
+import ColorService from "../../services/ColorService";
 import AppBar from "../Common/AppBar";
 import CenteredLoadingSpinner from "../Common/CenteredLoadingSpinner";
 import Error from "../Common/Error";
@@ -80,7 +81,7 @@ const Main = () => {
   const redirectToEventEdit = (event) => {
     let eventID = event?.eventID;
     if (eventID) {
-      history.push(`/event-edit?id=${eventID}`);
+      history.push(`/event-edit?id=${eventID}&color=${ColorService.formatRawHex(event.color)}`);
     } else {
       history.push(`/event-edit`);
     }
