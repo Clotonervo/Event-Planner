@@ -75,7 +75,7 @@ const Main = () => {
 
   const redirectToEventView = (event) => {
     let eventID = event.eventID;
-    history.push(`/event?id=${eventID}`);
+    history.push(`/event?id=${eventID}&color=${ColorService.formatRawHex(event.color)}`);
   };
 
   const redirectToEventEdit = (event) => {

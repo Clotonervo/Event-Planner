@@ -162,14 +162,15 @@ const EventEdit = () => {
     setEvent(updated);
   };
 
+  const effectiveColor = eventColor ?? theme1;
   return (
     <div>
       <PageAccess />
-      <AppBar color={eventColor ?? theme1} />
+      <AppBar color={effectiveColor} />
       {apiStatus.loading ? (
         <CenteredLoadingSpinner
           size={150}
-          color={theme1}
+          color={effectiveColor}
           loading={apiStatus.loading}
         />
       ) : (
@@ -187,7 +188,7 @@ const EventEdit = () => {
                 event={event}
                 onEditDate={updateDate}
                 onEditTitle={updateTitle}
-                backgroundColor={eventColor}
+                backgroundColor={effectiveColor}
               />
               <Layout>
                 <Stack gapSize={spacing32}>
