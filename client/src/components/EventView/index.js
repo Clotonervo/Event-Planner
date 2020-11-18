@@ -10,7 +10,10 @@ import ClientService from "../../services";
 import CenteredLoadingSpinner from "../Common/CenteredLoadingSpinner";
 import Stack from "../Common/Stack";
 import Error from "../Common/Error";
-import About from "../EventEdit/About/index.js"
+import EventHeader from "../EventView/Header/index.js";
+import About from "../EventEdit/About/index.js";
+import Date from "../Common/Date/index.js";
+
 //import PageAccess from "../Common/PageAccess";
 
 // const testEvent = {
@@ -70,7 +73,8 @@ const Main = () => {
 
     const [event, setEvent] = useState({
         eventName: "testName",
-        description: "testDescription"
+        description: "testDescription",
+        date: "05 October 2020 14:48 UTC"
     });
     useEffect(() => {
       loadPageData();
@@ -114,14 +118,21 @@ const Main = () => {
     }
     newApiStatus.loading = false;
 
-    setApiStatus(newApiStatus);
+
   };
+
+
 
 //const Main = () => {
   return (
     <div>
       <AppBar color={eventPink} name = {event.eventName} date = {event.date}>
       </AppBar>
+      <EventHeader
+                event={event}
+                date={"05 October 2020 14:48 UTC"}
+                title={event.eventName}
+              />
       <div>
       {apiStatus.loading ? (
         <CenteredLoadingSpinner

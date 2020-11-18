@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import ServiceClient from "../../services";
-import AppBar from "../Common/AppBar";
+import EventAppBar from "../EventView/Header/index.js";
 import { eventPink, eventYellow } from "../../resources/style-constants";
 //import Invitee from "../../components/Main/Invitee/index.js";
 import CenteredLoadingSpinner from "../Common/CenteredLoadingSpinner";
@@ -111,7 +111,7 @@ const Main = () => {
     <div>
 
       <PageAccess />
-      <AppBar color={theme1} />
+      <EventAppBar color={theme1} />
       <Layout>
         {apiStatus.loading ? (
           <CenteredLoadingSpinner
