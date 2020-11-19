@@ -16,11 +16,11 @@ const EventView = () => {
     if (eventColor) {
       setEventColor(eventColor);
     }
-  });
+  }, [location.search]);
 
   return (
     <div>
-      <AppBar color={eventColor ?? theme1}/>
+      <AppBar color={eventColor ?? theme1} />
       <Layout>Event View</Layout>
     </div>
   );
