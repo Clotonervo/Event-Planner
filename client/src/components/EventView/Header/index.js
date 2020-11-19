@@ -6,6 +6,7 @@ import styled from "styled-components";
 import IconButton from "../../Common/IconButton";
 import InputEditable from "../../Common/InputEditable";
 import DateEditable from "../../Common/DateEditable";
+//import Date from "../../Common/Date";
 import Stack from "../../Common/Stack";
 import {
   theme1,
@@ -67,30 +68,11 @@ const Header = ({
     <Container {...props}>
       <Stack>
         <TitleInputContainer>
-          <TitleInput
-            as={InputEditable}
-            value={title}
-            onSaveValue={onEditTitle}
-          />
+
         </TitleInputContainer>
         <DateContainer>
-          <DateInput
-            as={DateEditable}
-            onEditValue={onEditDate}
-            value={realDate}
-          />
+
         </DateContainer>
-        <ButtonBarContainer bgcolor={backgroundColor}>
-          <IconButton onPressed={onPressDownload}>
-            <FiDownload />
-          </IconButton>
-          <IconButton onPressed={onPressPrint}>
-            <FiPrinter />
-          </IconButton>
-          <IconButton onPressed={onPressSettings}>
-            <FiSettings />
-          </IconButton>
-        </ButtonBarContainer>
         <div></div>
       </Stack>
     </Container>
