@@ -4,7 +4,7 @@ import styled from "styled-components";
 const TextBar = styled.div`
 font-size: 2.2vw;
 font-weight: bold;
-padding: 3% 0%;
+padding: 2% 0%;
 `;
 
 //takes in a description
