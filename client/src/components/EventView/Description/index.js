@@ -2,16 +2,14 @@ import React from "react";
 import styled from "styled-components";
 
 const TextBar = styled.div`
-font-size: 2.2vw;
-font-weight: bold;
-padding: 2% 0%;
+font-size: 20px;
 `;
 
 //takes in a description
 const Description = ({description,...props}) => {
 return <div>
-    <TextBar>Description</TextBar>
-    <div>{description}</div>
+    <h1>Description</h1>
+    <TextBar>{description}</TextBar>
 </div>
 };
 export default Description;
