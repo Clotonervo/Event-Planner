@@ -2,17 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import PrimaryButton from "../../Common/Buttons/PrimaryButton";
 import SecondaryButton from "../../Common/Buttons/SecondaryButton";
-import {
-    borderRadius,
-    fontSize20,
-    spacing16
-  } from "../../../resources/style-constants";
+
 
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
 `;
 
 const CondensedMainHeader = styled.h1`
@@ -24,8 +19,10 @@ const CondensedSecondaryHeader = styled.h3`
   font-weight: normal;
 `;
 
+// I don't think we want to do it this way, I just wasn't aware of how it would be all built out afterwards.
+// This can be easily changed if need be.
 const ButtonWidth = styled.div`
-  width: 100%;
+  width: 30%;
   height: 0;
 `;
 
@@ -43,9 +40,11 @@ return (
         <Container>
             <CondensedMainHeader>{mainText}</CondensedMainHeader>
             <CondensedSecondaryHeader>{supportingText}</CondensedSecondaryHeader>
-          <PrimaryButton onClick={primaryOnClick} fullWidth>{primaryText}</PrimaryButton>
-          <SecondaryButton onClick={secondaryOnClick} fullWidth>{secondaryText}</SecondaryButton>
-      </Container>
+            <ButtonWidth>
+              <PrimaryButton onClick={primaryOnClick} fullWidth>{primaryText}</PrimaryButton>
+              <SecondaryButton onClick={secondaryOnClick} fullWidth>{secondaryText}</SecondaryButton>
+            </ButtonWidth>
+        </Container>
     </div>
 )
 };
