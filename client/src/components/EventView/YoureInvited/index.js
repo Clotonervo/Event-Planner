@@ -21,6 +21,7 @@ const CondensedMainHeader = styled.h1`
 
 const CondensedSecondaryHeader = styled.h3`
   margin-block-start: .1em;
+  font-weight: normal;
 `;
 
 const ButtonWidth = styled.div`
