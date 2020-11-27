@@ -17,16 +17,14 @@ const EventView = () => {
     if (eventColor) {
       setEventColor(eventColor);
     }
-  });
+  }, [location.search]);
 
   return (
     <div>
       <AppBar color={eventColor ?? theme1} />
       <Layout>
         Event View
-        <Location
-          address="Provo UT" 
-        />
+        <Location address="Provo UT" />
       </Layout>
     </div>
   );
