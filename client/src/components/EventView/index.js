@@ -4,6 +4,7 @@ import { theme1 } from "../../resources/style-constants";
 import ColorService from "../../services/ColorService";
 import AppBar from "../Common/AppBar";
 import Layout from "../Layout";
+import Description from "../../components/EventView/Description";
 import Location from "./Location";
 
 const EventView = () => {
@@ -25,6 +26,7 @@ const EventView = () => {
       <Layout>
         Event View
         <Location address="Provo UT" />
+        <Description description="The funest party you will ever image. You will have such a blast. Come and have fun in the sun with everyone. Hello keep reading lots of word. Want to make it wrap around to demonstate. Maybe this will do it."></Description>
       </Layout>
     </div>
   );
