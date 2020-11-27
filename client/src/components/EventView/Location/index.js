@@ -15,9 +15,9 @@ const MapContainer = styled.div`
 
 /**
  * A location view for an event. Displays a map.
- * 
+ *
  * ## Usage
- * 
+ *
  * ```
  * <Location address="Provo UT"/>
  * ```
@@ -36,7 +36,7 @@ const Location = ({ address = "", label = "Location" }) => {
 
   return (
     <div>
-      <H1>{label}</H1>
+      <h1>{label}</h1>
       <MapContainer>
         <Map location={location} />
       </MapContainer>
