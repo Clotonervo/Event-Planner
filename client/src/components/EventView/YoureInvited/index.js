@@ -19,11 +19,14 @@ const CondensedSecondaryHeader = styled.h3`
   font-weight: normal;
 `;
 
-// I don't think we want to do it this way, I just wasn't aware of how it would be all built out afterwards.
-// This can be easily changed if need be.
-const ButtonWidth = styled.div`
-  width: 30%;
-  height: 0;
+const StyledPrimary = styled(PrimaryButton)`
+  width: 300px;
+  margin-bottom: 8px;
+`;
+
+const StyledSecondary = styled(SecondaryButton)`
+  width: 300px;
+  margin-bottom: 8px;
 `;
 
 const YoureInvited = ({
@@ -40,10 +43,8 @@ return (
         <Container>
             <CondensedMainHeader>{mainText}</CondensedMainHeader>
             <CondensedSecondaryHeader>{supportingText}</CondensedSecondaryHeader>
-            <ButtonWidth>
-              <PrimaryButton onClick={primaryOnClick} fullWidth>{primaryText}</PrimaryButton>
-              <SecondaryButton onClick={secondaryOnClick} fullWidth>{secondaryText}</SecondaryButton>
-            </ButtonWidth>
+            <StyledPrimary onClick={primaryOnClick}>{primaryText}</StyledPrimary>
+            <StyledSecondary onClick={secondaryOnClick}>{secondaryText}</StyledSecondary>
         </Container>
     </div>
 )
