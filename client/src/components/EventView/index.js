@@ -7,9 +7,14 @@ import Layout from "../Layout";
 import YoureInvited from "./YoureInvited";
 import Description from "../../components/EventView/Description";
 import Location from "./Location";
-import RSVPFloating from "../EventView/RSVPFloating/index.js";
 import styled from "styled-components";
 import Invitee from "./InviteesDisplay/Invitee/index.js";
+import InviteesDisplay from "./InviteesDisplay";
+import ActionPrompt from "../Common/ActionPrompt";
+import Stack from "../Common/Stack";
+import {
+  spacing32
+} from "../../resources/style-constants";
 
 const DisplayStle = styled.div`
     display: flex;
@@ -50,18 +55,15 @@ const EventView = () => {
   return (
     <div>
       <AppBar color={eventColor ?? theme1} />
-      <Layout><DisplayStle>
-        <RSVPFloating></RSVPFloating></DisplayStle>
+      <Layout><Stack gapSize={spacing32}><DisplayStle>
+        <ActionPrompt
+         mainText = "Are you going?            "
+         primaryText = "Yes"
+         secondaryText = "NO"
+        ></ActionPrompt></DisplayStle>
         <Description description="The funest party you will ever image. You will have such a blast. Come and have fun in the sun with everyone. Hello keep reading lots of word. Want to make it wrap around to demonstate. Maybe this will do it."></Description>
-        <ExtraPadding></ExtraPadding>
         <Location address="Provo UT" />
-        <ExtraPadding></ExtraPadding>
-        <h1>Who's invited?</h1>
-        <InviteeRow>
-            Invitee Components will go here, but they need a person object or something, so I don't think I can hard code them
-        </InviteeRow>
-       </Layout>
-       <ExtraPadding></ExtraPadding>
+        <InviteesDisplay></InviteesDisplay>
     <YoureInvited
       mainText="You're Invited Too!"
       supportingText="Are You Going?"
@@ -69,7 +71,7 @@ const EventView = () => {
       primaryOnClick={invitedButtonClicked}
       secondaryText="No"
       secondaryOnClick={invitedButtonClicked}></YoureInvited>
-      <ExtraPadding></ExtraPadding>
+      </Stack></Layout>
     </div>
   );
 };
