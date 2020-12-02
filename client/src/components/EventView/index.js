@@ -8,7 +8,6 @@ import YoureInvited from "./YoureInvited";
 import Description from "../../components/EventView/Description";
 import Location from "./Location";
 import styled from "styled-components";
-import Invitee from "./InviteesDisplay/Invitee/index.js";
 import InviteesDisplay from "./InviteesDisplay";
 import ActionPrompt from "../Common/ActionPrompt";
 import Stack from "../Common/Stack";
@@ -21,18 +20,6 @@ const DisplayStle = styled.div`
     justify-content: center;
     align-items: center;
     padding: 7% 0%;
-`;
-
-const ExtraPadding = styled.div`
-    padding: 4% 0%;
-`;
-
-const InviteeRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  //align-items: center;
-  align-items:flex-start;
-  //justify-content: space-around;
 `;
 
 const EventView = () => {
