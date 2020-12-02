@@ -7,6 +7,20 @@ import Layout from "../Layout";
 import YoureInvited from "./YoureInvited";
 import Description from "../../components/EventView/Description";
 import Location from "./Location";
+import styled from "styled-components";
+import InviteesDisplay from "./InviteesDisplay";
+import ActionPrompt from "../Common/ActionPrompt";
+import Stack from "../Common/Stack";
+import {
+  spacing32
+} from "../../resources/style-constants";
+
+const DisplayStle = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 7% 0%;
+`;
 
 const EventView = () => {
   const [eventColor, setEventColor] = useState();
@@ -28,11 +42,15 @@ const EventView = () => {
   return (
     <div>
       <AppBar color={eventColor ?? theme1} />
-      <Layout>
-        Event View
-        <Location address="Provo UT" />
+      <Layout><Stack gapSize={spacing32}><DisplayStle>
+        <ActionPrompt
+         mainText = "Are you going?            "
+         primaryText = "Yes"
+         secondaryText = "NO"
+        ></ActionPrompt></DisplayStle>
         <Description description="The funest party you will ever image. You will have such a blast. Come and have fun in the sun with everyone. Hello keep reading lots of word. Want to make it wrap around to demonstate. Maybe this will do it."></Description>
-      </Layout>
+        <Location address="Provo UT" />
+        <InviteesDisplay></InviteesDisplay>
     <YoureInvited
       mainText="You're Invited Too!"
       supportingText="Are You Going?"
@@ -40,6 +58,7 @@ const EventView = () => {
       primaryOnClick={invitedButtonClicked}
       secondaryText="No"
       secondaryOnClick={invitedButtonClicked}></YoureInvited>
+      </Stack></Layout>
     </div>
   );
 };
