@@ -4,8 +4,6 @@ import { FiPrinter, FiDownload } from "react-icons/fi";
 import styled from "styled-components";
 
 import IconButton from "../../Common/IconButton";
-import InputEditable from "../../Common/InputEditable";
-import DateEditable from "../../Common/DateEditable";
 import Stack from "../../Common/Stack";
 import {
   theme1,
@@ -22,7 +20,7 @@ const Container = styled.div`
 `;
 
 const TitleContainer = styled.div`
-  width: 60%;
+  width: 100%;
 `;
 
 const TextContainer = styled.div`
@@ -36,7 +34,7 @@ const DateContainer = styled.div`
   font-size: ${fontSize24};
 `;
 
-const DateInput = styled.div`
+const DateTextContainer = styled.div`
   opacity: 0.5;
   margin: 0;
 `;
@@ -71,10 +69,7 @@ const Header = ({
             <TextContainer>{title}</TextContainer>
         </TitleContainer>
         <DateContainer>
-          <DateInput
-            as={DateEditable}
-            value={realDate}
-          />
+          <DateTextContainer>{realDate.toDateString()}</DateTextContainer>
         </DateContainer>
         <ButtonBarContainer>
           <IconButton onPressed={onPressDownload}>
@@ -117,12 +112,6 @@ Header.propTypes = {
 
   /** A callback rasied when the print icon button is pressed. */
   onPressPrint: PropTypes.func,
-
-  /** A callback rasied when the settings icon button is pressed. */
-  onPressSettings: PropTypes.func,
-
-  /** A callback rasied when the title is edited. */
-  onEditTitle: PropTypes.func
 };
 
 export default Header;
