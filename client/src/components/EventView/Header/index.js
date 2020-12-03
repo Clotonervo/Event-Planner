@@ -48,14 +48,13 @@ const ButtonBarContainer = styled.div`
 `;
 
 /**
- * The header which appears at the top of the event-edit page.
+ * The header which appears at the top of the event-view page.
  */
 const Header = ({
   event: {
     title,
     date: { startDate }
   },
-  // dateDisplay, TODO, add this in after the first demo
   backgroundColor,
   onPressDownload,
   onPressPrint,
