@@ -33,9 +33,6 @@ const TextContainer = styled.div`
 
 const DateContainer = styled.div`
   font-size: ${fontSize24};
-`;
-
-const DateTextContainer = styled.div`
   opacity: 0.5;
   margin: 0;
 `;
@@ -62,12 +59,12 @@ const Header = ({
   ...props
 }) => {
   const realDate = new Date(startDate);
-  const format = "short";
+  const format = "long";
   return (
     <Container {...{ bgcolor: backgroundColor, ...props }}>
       <Stack>
         <TitleContainer>
-            <TextContainer>{title}</TextContainer>
+          <TextContainer>{title}</TextContainer>
         </TitleContainer>
         <DateContainer>
           <DateDisplay {...{ format, realDate }} />
@@ -82,7 +79,7 @@ const Header = ({
         </ButtonBarContainer>
         <div></div>
       </Stack>
-    </Container >
+    </Container>
   );
 };
 
@@ -91,7 +88,7 @@ Header.defaultProps = {
   date: new Date("05 October 2020 14:48 UTC"),
   backgroundColor: undefined,
   onPressDownload: undefined,
-  onPressPrint: undefined,
+  onPressPrint: undefined
 };
 
 Header.propTypes = {
@@ -112,7 +109,7 @@ Header.propTypes = {
   onPressDownload: PropTypes.func,
 
   /** A callback rasied when the print icon button is pressed. */
-  onPressPrint: PropTypes.func,
+  onPressPrint: PropTypes.func
 };
 
 export default Header;
