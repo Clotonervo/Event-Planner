@@ -11,6 +11,7 @@ import styled from "styled-components";
 import InviteesDisplay from "./InviteesDisplay";
 import ActionPrompt from "../Common/ActionPrompt";
 import Stack from "../Common/Stack";
+import Header from "./Header"
 import {
   spacing32
 } from "../../resources/style-constants";
@@ -39,16 +40,22 @@ const EventView = () => {
     console.log("button pressed");
   }
 
+  const testEvent = {
+    title: "Test Event",
+    date: { startDate: "00000000000" }
+  }
+
   return (
     <div>
       <AppBar color={eventColor ?? theme1} />
+      <Header event={ testEvent } backgroundColor={eventColor}></Header>
       <Layout><Stack gapSize={spacing32}><DisplayStle>
         <ActionPrompt
          mainText = "Are you going?            "
          primaryText = "Yes"
          secondaryText = "NO"
         ></ActionPrompt></DisplayStle>
-        <Description description="The funest party you will ever image. You will have such a blast. Come and have fun in the sun with everyone. Hello keep reading lots of word. Want to make it wrap around to demonstate. Maybe this will do it."></Description>
+        <Description description="The funnest party you will ever image. You will have such a blast. Come and have fun in the sun with everyone. Hello keep reading lots of word. Want to make it wrap around to demonstate. Maybe this will do it."></Description>
         <Location address="Provo UT" />
         <InviteesDisplay></InviteesDisplay>
     <YoureInvited
