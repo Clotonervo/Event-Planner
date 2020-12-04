@@ -50,12 +50,12 @@ const ActionPrompt = ({
         <Left>{mainText}</Left>
         <Right>
           <PaddedButton>
-            <SecondaryButton onClick={secondaryOnClick}>
+            <SecondaryButton onClick={() => secondaryOnClick && secondaryOnClick()}>
               {secondaryText}
             </SecondaryButton>
           </PaddedButton>
 
-          <PrimaryButton onClick={primaryOnClick}>{primaryText}</PrimaryButton>
+          <PrimaryButton onClick={() => primaryOnClick && primaryOnClick()}>{primaryText}</PrimaryButton>
         </Right>
       </Container>
     </StyledCard>
