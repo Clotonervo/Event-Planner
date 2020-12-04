@@ -390,6 +390,9 @@ app.post("/event", async (req, res) => {
     if (req.body.color != null) {
       newEvent.color = req.body.color;
     }
+    if (req.body.description != null) {
+      newEvent.description = req.body.description;
+    }
 
     try {
       newEvent.save();
