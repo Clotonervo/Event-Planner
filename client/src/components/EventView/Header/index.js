@@ -67,7 +67,10 @@ const Header = ({
           <TextContainer>{title}</TextContainer>
         </TitleContainer>
         <DateContainer>
-          <DateDisplay {...{ format, realDate }} />
+          <DateDisplay 
+            format={format}
+            value={realDate}
+          />
         </DateContainer>
         <ButtonBarContainer>
           <IconButton onPressed={onPressDownload}>

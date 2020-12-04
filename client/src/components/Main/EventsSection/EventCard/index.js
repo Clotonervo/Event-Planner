@@ -56,14 +56,14 @@ const EventCard = ({
 }) => {
   const menuItems = event.isCollaborator
     ? [
-        { text: "View Event", onClick: redirectToEventView },
-        { text: "Edit Event", onClick: redirectToEventEdit },
-        { text: "Leave Event", onClick: leaveEvent }
-      ]
+      { text: "View Event", onClick: () => redirectToEventView && redirectToEventView(event) },
+      { text: "Edit Event", onClick: () => redirectToEventEdit && redirectToEventEdit(event) },
+      { text: "Leave Event", onClick: () => leaveEvent && leaveEvent(event) }
+    ]
     : [
-        { text: "View Event", onClick: redirectToEventView },
-        { text: "Leave Event", onClick: leaveEvent }
-      ];
+      { text: "View Event", onClick: () => redirectToEventView && redirectToEventView(event) },
+      { text: "Leave Event", onClick: () => leaveEvent && leaveEvent(event) }
+    ];
 
   return (
     <ActionCard {...props}>
