@@ -5,6 +5,7 @@ import styled from "styled-components";
 
 import IconButton from "../../Common/IconButton";
 import Stack from "../../Common/Stack";
+import DateDisplay from "../../Common/Date";
 import {
   theme1,
   fontSize64,
@@ -61,6 +62,7 @@ const Header = ({
   ...props
 }) => {
   const realDate = new Date(startDate);
+  const format = "short";
   return (
     <Container {...{ bgcolor: backgroundColor, ...props }}>
       <Stack>
@@ -68,7 +70,7 @@ const Header = ({
             <TextContainer>{title}</TextContainer>
         </TitleContainer>
         <DateContainer>
-          <DateTextContainer>{realDate.toDateString()}</DateTextContainer>
+          <DateDisplay {...{ format, realDate }} />
         </DateContainer>
         <ButtonBarContainer>
           <IconButton onPressed={onPressDownload}>
