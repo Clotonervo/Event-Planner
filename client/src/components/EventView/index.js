@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import ColorService from "../../services/ColorService";
-import MapService from "../../services/MapService";
 import ServiceClient from "../../services";
 import styled from "styled-components";
 
@@ -11,6 +10,7 @@ import AppBar from "../Common/AppBar";
 import CenteredLoadingSpinner from "../Common/CenteredLoadingSpinner";
 import Stack from "../Common/Stack";
 import Description from "./Description";
+import Header from "./Header";
 import Layout from "../Layout";
 import Location from "./Location";
 import InviteesDisplay from "./InviteesDisplay";
@@ -103,6 +103,8 @@ const EventView = () => {
   return (
     <>
       <AppBar color={effectiveColor} />
+      <Header event={event} backgroundColor={effectiveColor} />
+
       <Layout>
         <Stack gapSize={spacing32}>
           <PaddedPrompt
@@ -113,7 +115,7 @@ const EventView = () => {
 
           <Description description={event?.description ?? ""} />
           <Location address={event?.location?.address ?? "China"} />
-          <InviteesDisplay viewers={event?.viewers ?? []}/>
+          <InviteesDisplay viewers={event?.viewers ?? []} />
 
           <YoureInvited
             mainText="You're Invited Too!"
