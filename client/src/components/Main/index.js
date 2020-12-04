@@ -74,7 +74,7 @@ const Main = () => {
   const history = useHistory();
 
   const redirectToEventView = (event) => {
-    let eventID = event.eventID;
+    let eventID = event?.eventID ?? '';
     history.push(`/event?id=${eventID}&color=${ColorService.formatRawHex(event.color)}`);
   };
 
