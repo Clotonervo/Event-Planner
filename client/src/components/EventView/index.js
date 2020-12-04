@@ -36,7 +36,7 @@ const EventView = () => {
   const [event, setEvent] = useState(undefined);
   const [apiStatus, setApiStatus] = useState({
     loading: true,
-    success: undefined,
+    error: false,
     message: undefined
   });
 
