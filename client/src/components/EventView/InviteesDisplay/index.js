@@ -23,7 +23,7 @@ const InviteesDisplay = ({ viewers = [] }) => {
             return <Invitee key={index} {...{ person, index }} />;
           })}
       </Grid>
-      {viewers.length == 0 && (
+      {viewers.length === 0 && (
         <Text>
           No one is currently invited to the event. If you are the event owner,
           go to the event edit page to start inviting people.

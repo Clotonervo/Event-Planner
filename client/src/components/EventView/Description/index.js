@@ -12,7 +12,7 @@ const Description = ({ description, ...props }) => {
     <div {...props}>
       <h1>Description</h1>
       <TextBar>
-        {description != ""
+        {description !== ""
           ? description
           : "This event does not have a description yet. Check back later for more details."}
       </TextBar>

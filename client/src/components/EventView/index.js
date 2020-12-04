@@ -15,11 +15,14 @@ import Layout from "../Layout";
 import Location from "./Location";
 import InviteesDisplay from "./InviteesDisplay";
 import YoureInvited from "./YoureInvited";
+import PageAccess from "../Common/PageAccess";
+import Error from "../Common/Error";
 
 import {
   theme1,
   spacing32,
   spacing128,
+  fontSize24
 } from "../../resources/style-constants";
 
 const PaddedPrompt = styled(ActionPrompt)`
@@ -31,7 +34,11 @@ const EventView = () => {
   const [eventColor, setEventColor] = useState(undefined);
   const [eventID, setEventID] = useState(undefined);
   const [event, setEvent] = useState(undefined);
-  const [apiStatus, setApiStatus] = useState({ loading: true, success: undefined, message: undefined });
+  const [apiStatus, setApiStatus] = useState({
+    loading: true,
+    success: undefined,
+    message: undefined
+  });
 
   const location = useLocation();
 
@@ -51,7 +58,7 @@ const EventView = () => {
 
   const invitedButtonClicked = () => {
     console.log("button pressed");
-  }
+  };
 
   const sortPeople = (people) => {
     return people.sort((a, b) =>
@@ -62,7 +69,7 @@ const EventView = () => {
   const loadEvent = async (eventID) => {
     setApiStatus({
       ...apiStatus,
-      loading: true,
+      loading: true
     });
 
     const nextApiStatus = { ...apiStatus };
@@ -101,33 +108,54 @@ const EventView = () => {
   }
 
   return (
-    <>
+    <div>
+      <PageAccess />
       <AppBar color={effectiveColor} />
-      <Header event={event} backgroundColor={effectiveColor} />
+      {apiStatus.loading ? (
+        <CenteredLoadingSpinner
+          size={150}
+          color={effectiveColor}
+          loading={apiStatus.loading}
+        />
+      ) : (
+        <>
+          {apiStatus.error ? (
+            <Layout>
+              <Error fontSize={fontSize24}>
+                {apiStatus.message ||
+                  "An error occurred. Please try again later."}
+              </Error>
+            </Layout>
+          ) : (
+            <>
+              <Header event={event} backgroundColor={effectiveColor} />
+              <Layout>
+                <Stack gapSize={spacing32}>
+                  <PaddedPrompt
+                    mainText="Are you going?"
+                    primaryText="Yes"
+                    secondaryText="No"
+                  />
 
-      <Layout>
-        <Stack gapSize={spacing32}>
-          <PaddedPrompt
-            mainText="Are you going?"
-            primaryText="Yes"
-            secondaryText="NO"
-          />
+                  <Description description={event?.description ?? ""} />
+                  <Location address={event?.location?.address ?? "China"} />
+                  <InviteesDisplay viewers={event?.viewers ?? []} />
 
-          <Description description={event?.description ?? ""} />
-          <Location address={event?.location?.address ?? "China"} />
-          <InviteesDisplay viewers={event?.viewers ?? []} />
-
-          <YoureInvited
-            mainText="You're Invited Too!"
-            supportingText="Are You Going?"
-            primaryText="Yes!"
-            primaryOnClick={invitedButtonClicked}
-            secondaryText="No"
-            secondaryOnClick={invitedButtonClicked}
-          />
-        </Stack>
-      </Layout>
-    </>
+                  <YoureInvited
+                    mainText="You're Invited Too!"
+                    supportingText="Are You Going?"
+                    primaryText="Yes!"
+                    primaryOnClick={invitedButtonClicked}
+                    secondaryText="No"
+                    secondaryOnClick={invitedButtonClicked}
+                  />
+                </Stack>
+              </Layout>
+            </>
+          )}
+        </>
+      )}
+    </div>
   );
 };
 

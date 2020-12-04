@@ -5,7 +5,6 @@ import styled from "styled-components";
 import MapService from "../../../services/MapService";
 import { spacing32 } from "../../../resources/style-constants";
 import Map from "../../Common/Map";
-import H1 from "../../Common/Headings/Heading1";
 
 const MapContainer = styled.div`
   height: 30vw;
