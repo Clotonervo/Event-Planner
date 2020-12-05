@@ -3,7 +3,7 @@
  */
 var ColorService = {
   formatHex: function (value) {
-    if (!value.includes("#")) {
+    if (value && !value.includes("#")) {
       return "#" + value;
     }
 
@@ -12,7 +12,7 @@ var ColorService = {
 
   formatRawHex: function (value) {
     return value.replace("#", "");
-  },
+  }
 };
 
 export default ColorService;
