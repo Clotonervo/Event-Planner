@@ -35,8 +35,8 @@ const PaddedPrompt = styled(ActionPrompt)`
 
 const EventEdit = () => {
   const [currentView, setCurrentView] = useState("About");
-  const [eventId, setEventId] = useState(theme1);
-  const [eventColor, setEventColor] = useState();
+  const [eventId, setEventId] = useState();
+  const [eventColor, setEventColor] = useState(theme1);
   const [originalEvent, setOriginalEvent] = useState();
   const [event, setEvent] = useState(defaultEvent);
   const [apiStatus, setApiStatus] = useState({

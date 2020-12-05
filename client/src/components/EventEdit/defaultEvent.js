@@ -1,7 +1,7 @@
 export const createDefaultEvent = () => {
   let event = {
     eventID: "",
-    title: "",
+    title: "New Event",
     location: {
       address: "Provo, UT"
     },
