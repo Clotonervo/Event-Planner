@@ -4,12 +4,19 @@ import AddInviteeModal from "./AddInviteeModal";
 import InviteesList from "./InviteesList";
 import PrimaryButton from "../../../Common/Buttons/PrimaryButton";
 import { spacing16 } from "../../../../resources/style-constants";
+import Error from "../../../Common/Error";
 
 const inviteCollaborator =
   "Enter someone's email or username to invite them to collaborate on your event.";
 
 const inviteAttendee =
   "Enter someone's email or username to invite them to your event.";
+
+const noCollaborators =
+  "No collaborators have been added. Click 'Add Person' to invite someone to help organize the event.";
+
+const noInvitees =
+  "No one has been invited yet. Click 'Add Person' to invite someone to your event.";
 
 const AddButtonWrapper = styled.div`
   display: flex;
@@ -39,6 +46,9 @@ const Invitees = ({
     <div>
       <h1>{isCollaborators ? "Who's Collaborating?" : "Who's Invited?"}</h1>
       <InviteesList {...{ people, removePerson }} />
+      {people.length === 0 && (
+        <Error>{isCollaborators ? noCollaborators : noInvitees}</Error>
+      )}
       <AddButtonWrapper>
         <PrimaryButton onClick={openModal}>Add Person</PrimaryButton>
       </AddButtonWrapper>
