@@ -233,9 +233,3 @@ Response:
 }
 ```
 
-## /invitations
-
-I think the only endpoint we need is for GET because the invitations sent when the user creates/updates an event and sets the collaborators\
-Accepts: authToken (in header)\
-Returns: list of events?\
-Question: do we need an endpoint to mark an invitation as opened?
