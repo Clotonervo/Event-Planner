@@ -1,5 +1,3 @@
-[Class Wiki](https://github.com/cs428TAs/f2020/wiki/Event-planning-app)
-
 # Cloning the Project
 
 When you first clone the project, you need to make sure all dependencies are installed for both the client and server sides.
