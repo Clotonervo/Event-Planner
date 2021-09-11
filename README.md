@@ -1,3 +1,14 @@
+#Screenshots
+
+![](./design/app-mockups/auth-page/Login.png)
+![](./design/app-mockups/auth-page/Register.png)
+![](./design/app-mockups/home-page/Home.png)
+![](./design/app-mockups/event-viewer-page/Event_Viewer_(Invitation_Not_Accepted).png)
+![](./design/app-mockups/event-editor-page/Event_Editor_(Invitation_Accepted)_About.png)
+![](./design/app-mockups/event-editor-page/Event_Editor_(Invitation_Accepted)_Todo.png)
+
+
+
 # Cloning the Project
 
 When you first clone the project, you need to make sure all dependencies are installed for both the client and server sides.
